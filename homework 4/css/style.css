@@ -1,0 +1,289 @@
+main {
+    margin-left: 20px;
+}
+
+/** Exercise 1 **/
+
+.exercise_1 {
+    width: 100vw;
+    height: 500px;
+    padding-top: 18px;
+    background-color: #0d5825;
+    font-size: 25px;
+    color: #ffffff;
+    text-align: center;
+}
+
+blockquote{
+    margin-bottom: 5px;
+}   
+
+blockquote::before {
+    content: "\201C";
+}
+
+blockquote::after {
+    content: "\201D";
+}
+
+.author {
+    font-style: italic;
+    margin-top: 5px;
+}
+
+/** Positioning of cards **/
+:root {
+    /** Controls **/
+    --cards_top_base: 200px;
+    --card_2_top_deviation: -19px; 
+    --card_3_top_deviation: -26px;
+    
+    --cards_lift_up: -20px; /** When the card is selected **/
+
+    --cards_left_base: calc(50vw + 20px);
+    --card_2_left_deviation: -55px;
+    --card_3_left_deviation: -110px;
+
+    /** Calculations (I love them...) **/
+    --card_1_top: var(--cards_top_base);
+    --card_2_top: calc(var(--cards_top_base) + var(--card_2_top_deviation));
+    --card_3_top: calc(var(--cards_top_base) + var(--card_3_top_deviation));
+    
+    --card_1_top_selected: calc(var(--card_1_top) + var(--cards_lift_up));
+    --card_2_top_selected: calc(var(--card_2_top) + var(--cards_lift_up));
+    --card_3_top_selected: calc(var(--card_3_top) + var(--cards_lift_up));
+
+    --card_1_left: var(--cards_left_base);
+    --card_2_left: calc(var(--cards_left_base) + var(--card_2_left_deviation));
+    --card_3_left: calc(var(--cards_left_base) + var(--card_3_left_deviation));
+}
+
+/** And now the purity (validation) of this code is losted... I can reestablish it.
+But deliberately don't want :) 
+What are the consequences? **/
+
+.card_1,
+.card_2,
+.card_3 {
+    position: absolute;
+    width: 150px;
+    height: 225px;  /** =720*(150/480): 720px - original height; 480px - original width, 150px - width needed. **/
+    transition-property: top;
+    transition-duration: 0.5s;
+}
+
+.card_1 {
+    top: var(--card_1_top);
+    left: var(--card_1_left);
+    transform: rotate(9deg);
+    z-index: 3;
+}
+
+.card_1:hover {
+    top: var(--card_1_top_selected);
+}
+
+.card_2 {
+    top: var(--card_2_top);
+    left: var(--card_2_left);
+    transform: rotate(-9deg);
+    z-index: 2;
+}
+
+.card_2:hover {
+    top: var(--card_2_top_selected);
+}
+
+.card_3 {
+    top: var(--card_3_top);
+    left: var(--card_3_left);
+    transform: rotate(-24deg);
+    z-index: 1;
+}
+
+.card_3:hover {
+    top: var(--card_3_top_selected);
+}
+
+/** Exercise 2 **/
+
+.exercise_2 {
+    position: relative;
+    width: 100vw;
+    height: 33vw;
+}
+
+.red_square,
+.blue_square,
+.green_square {
+    width: 10vw;
+    height: 10vw;
+    position: absolute;
+}
+
+.red_square {
+    background-color: #ff8989;
+    top: 5vw;
+    left: 38.5vw;
+    z-index: 1;
+}
+
+.blue_square {
+    background-color: #7f8bec;
+    top: 11vw;
+    left: 45vw;
+    z-index: 2;
+}
+
+.green_square {
+    background-color: #4cf09a;
+    top: 17vw;
+    left: 51.5vw;
+    z-index: 1;
+}
+
+/** Exercise 3 **/
+
+:root {
+/** Just controls.
+Calculations are in atributes. Experiment.
+This way is harder to read :( I'll not use it lately.  **/
+    --width_menu: 200px;
+    --width_menu_title: 20px;
+}
+
+nav {
+    background-color: #818181;
+    position: fixed;
+    width: var(--width_menu);
+    height: 100vh;
+    top: 0px;
+    left: calc(var(--width_menu_title) - var(--width_menu));
+    transition-duration: 1s;
+    text-transform: uppercase;
+    z-index: 4;
+}
+
+nav:hover {
+    transform: translateX(calc(var(--width_menu) - var(--width_menu_title)));
+}
+
+nav:after {
+    content: "";
+    background-color: #818181;
+    position: absolute;
+    width: var(--width_menu);
+    height: 100vh;
+    opacity: 0;
+    transition-duration: 1s;
+}
+
+nav:hover:after {
+    content: "";
+    opacity: 1;
+}
+
+.nav_menu {
+    position: absolute;
+    z-index: 5;
+    margin: 0px;
+    padding: 0px;
+    height: 100vh;
+}
+
+.nav_title {
+    position: absolute;
+    height: 100vh;
+    left: calc(var(--width_menu) - var(--width_menu_title));
+    writing-mode: vertical-rl;
+    text-align: center;
+    color: #ffffff;
+    margin: 0px;
+}
+
+.nav_list {
+    padding-top: 10px;
+    padding-left: 25px;
+}
+
+.nav_list li {
+    list-style: none;
+    padding-top: 10px;
+}
+
+.nav_list li:before {
+    content: "";
+    display: inline-block;
+    position: relative;
+    right: 10px;
+    width: 10px;
+    height: 10px;
+    background-color: #ffa700;
+    border-color: #000000;
+    border-style: solid;
+    border-width: 1px;
+    transform: rotate(45deg);
+}
+
+.nav_list a {
+    text-decoration: none;
+    color: #ffffff;
+    transition-duration: 1s;
+}
+
+.nav_list a:hover {
+    color: #ffa700;
+}
+
+/** Exercise 4 **/
+
+.exercise_4 {
+    width: 100vw;
+    height: 400px;
+}
+
+.square_to_animate {
+    width: 100px;
+    height: 100px;
+    background-color: rgb(255, 0, 0);
+    top: 50px;
+    left: 50px;
+    position: relative;
+    animation-name: animation;
+    animation-duration: 4s;
+    animation-iteration-count: infinite;
+}
+
+@keyframes animation {
+    0% {
+        top: 50px;
+        left: 50px;
+        background-color: rgb(255, 0, 0);
+    }
+
+    25% {
+        top: 250px;
+        left: 50px;
+        background-color: rgb(0, 0, 255);
+    }
+
+    50% {
+        top: 250px;
+        left: 250px;
+        background-color: rgb(0, 255, 0);
+    }
+
+    75% {
+        top: 50px;
+        left: 250px;
+        background-color: rgb(255, 255, 0);
+    }
+
+    /**
+    100% {
+        top: 50px;
+        left: 50px;
+        background-color: rgb(255, 0, 0);
+    }
+    **/
+}

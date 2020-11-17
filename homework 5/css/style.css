@@ -1,0 +1,206 @@
+/* Exercise 1 */
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.header {
+    background-color: #d4b80c;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 20px;
+    flex-basis: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.logo {
+    display: block;
+}
+
+.nav_list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+.nav_list li {
+    margin: 5px;
+    list-style-type: none;
+}
+
+.nav_list a {
+    text-decoration: none;
+    color: #000000;
+}
+
+section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+    flex-shrink: 1;
+}
+
+main {
+    padding: 10px 10px 0;
+    flex-grow: 1;
+}
+
+.aside_left,
+.aside_right {
+    width: 210px; /*15vw; - my first variant: didn't notice on start...*/
+    text-align: center;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 10px;
+}
+
+.aside_left {
+    background-color: #c899ba;
+    order: -1;
+}
+
+.aside_right {
+    background-color: #9db2c8;
+    order: 1;
+}
+
+footer {
+    text-align: center;
+    background-color: #87ed87;
+    flex-basis: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: 10px;
+}
+
+/* Exercise 2 */
+
+.container_of_cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: stretch;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.card {
+    margin: 0.5vw;
+    padding: 10px 10px 15px ;
+    flex-basis: 20vw;
+    flex-shrink: 0;
+    flex-grow: 1;
+    border: #a8a8a8 solid 1px;
+    border-radius: 25px;
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition-property: box-shadow;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+.card:hover {
+    box-shadow: 0.2vw 0.2vw 0.6vw 0.2vw #c8b8b8;
+}
+
+.pic_holder img {
+    display: inline-block;
+    width: 10vw;
+    height: 10vw;
+    border: #c8b8b8 solid 1vw;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.button {
+    background-color: #685075;
+    padding: 10px 20px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-weight: bold;
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+.button:hover {
+    background-color: hsl(279, 40%, 39%);
+}
+
+/* Exercise 3 */
+
+.holder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: 30vw;
+    height: 70px;
+    border: #000000 solid 2px;
+    border-radius: 20px 20px 0 0;
+    overflow: hidden;
+}
+
+.holder div {
+    height: 50%;
+    text-align: center;
+    padding: 8px;
+}
+
+.holder div:nth-child(1) {
+    background-color: #fd644c;
+    order: 1;
+    flex-grow: 2;
+    flex-basis: 50%;
+}
+
+.holder div:nth-child(2) {
+    background-color: #4784b3;
+    order: 4;
+    flex-grow: 1;
+    flex-basis: 25%;
+}
+
+.holder div:nth-child(3) {
+    background-color: #663498;
+    order: 3;
+    flex-grow: 1;
+    flex-basis: 25%;
+}
+
+.holder div:nth-child(4) {
+    background-color: #05800a;
+    order: 5;
+    flex-grow: 2;
+    flex-basis: 25%;
+}
+
+.holder div:nth-child(5) {
+    background-color: #fda524;
+    order: 2;
+    flex-grow: 1;
+    flex-basis: 50%;
+}

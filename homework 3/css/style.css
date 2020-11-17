@@ -1,0 +1,75 @@
+.exercise_1 div {
+    position: relative;
+    left: 25%;
+    width: 50%;
+    text-align: justify;
+    margin: 20px;
+    padding: 20px;
+    background-color: aqua;
+    border-style: dotted;
+    border-width: 5px;
+    border-color: orange;
+    text-align: center;
+}
+
+.border_box {
+    box-sizing: border-box;
+}
+
+.content_box {
+    box-sizing: content-box;
+}
+
+/** Exercise 2 **/
+
+div.element {
+    width: 350px;
+    height: 250px;
+    padding-top: 15px;
+    padding-left: 10px;
+    padding-bottom: 20px;
+    padding-right: 10px;
+    margin-bottom: 30px;
+    border-style: dashed;
+    border-width: 5px;
+    border-color: red;
+    background-color: green;
+}
+
+
+/** Exercise 3 **/
+
+div.html_pic {
+    float: left;
+    margin-right: 20px;
+    margin-bottom: 20px;
+}
+
+div.html_css_pic {
+    top: 20px;
+    float: right;
+    margin-top: 20px;
+    margin-left: 20px;
+    margin-bottom: 20px;
+}
+
+div.html_css_pic img {
+    width: 300px;
+    height: 170px;
+}
+
+.make_me {
+    padding-left: 30px;
+    padding-right: 30px;
+    text-align: justify;
+}
+
+
+/** Global **/
+
+div.exercises:nth-of-type(-n+2) {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-bottom: 5px solid grey;
+}
+

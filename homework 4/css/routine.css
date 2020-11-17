@@ -1,0 +1,18 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    max-width: 100%;
+    position: absolute;
+    overflow: hidden;
+}
+
+div.exercises {
+    padding: 0px;
+    margin: 0px;
+    border-top: 5px solid #808080;
+    border-bottom: 5px solid #808080;
+}
