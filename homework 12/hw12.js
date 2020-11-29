@@ -4,8 +4,8 @@
 
 // Input data
 var total_Quantity_Of_Books = prompt("Введите количество книг."); // 5069
-var weight_Of_Book = 0.3; //  prompt("Введите вес книги.");
-var weight_Of_Wrap = 0.077; //  prompt("Введите вес упаковки.");
+var weight_Of_Book = 0.3; //  prompt("Введите вес книги (кг).");
+var weight_Of_Wrap = 0.077; //  prompt("Введите вес упаковки (кг).");
 var quantity_Of_Books_Per_Pack = 10; //  prompt("Введите количество книг в пачке.");
 var quantity_Of_Packs_Per_Level = 13; // prompt("Введите количество пачек на уровне.");
 var weight_Of_Pallet = 16;
@@ -46,7 +46,7 @@ var new_line = "\n";
 let result = "Количество полных поддонов: " + quantity_Of_Complete_Pallets + ".";
 result = result + new_line + "Количество уровней на полном поддоне: " + quantity_Of_Levels_On_Complete_Pallet + ".";
 result = result + new_line + "Количество пачек на полном поддоне: " + quantity_Of_Packs_On_Complete_Pallet + ".";
-result = result + new_line + "Вес одного полного поддона: " + weight_Of_Complete_Pallet + ".";
+result = result + new_line + "Вес одного полного поддона (кг): " + weight_Of_Complete_Pallet + ".";
 
 // Incomplete pallets
 result = result + new_line;
@@ -55,6 +55,12 @@ result = result + new_line + "Количество полных уровней �
 result = result + new_line + "Количество полных пачек на неполном уровне неполного поддона: " + quantity_Of_Complete_Packs_On_Incomplete_Level + ".";
 result = result + new_line + "Количество неполных пачек на неполном уровне неполного поддона: " + quantity_Of_Incomplete_Packs + ".";
 result = result + new_line + "Количество книг в неполной пачке: " + quantity_Of_Incomplete_Packs + ".";
-result = result + new_line + "Вес неполного поддона: " + weight_Of_Incomplete_Pallet + ".";
+result = result + new_line + "Вес неполного поддона (кг): " + weight_Of_Incomplete_Pallet + ".";
+
+// Total
+result = result + new_line;
+result = result + new_line + "Всего паллет: " + total_Quantity_Of_Pallets + ".";
+result = result + new_line + "Общий вес брутто (кг): " + total_Weight_Brutto + ".";
+result = result + new_line + "Общий вес нетто (кг): " + total_Weight_Netto + ".";
 
 alert(result);
