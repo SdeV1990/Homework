@@ -1,0 +1,437 @@
+/*
+    DO NOT WASTE YOUR TIME TO UNDERSTEND THIS CALCULATIONS!
+    THIS IS NOT HARD BUT USEFULL. I DID JUST EXPERIMENT.
+
+    I tried to find the solutions for a big monitors. 9000*4500 for example.
+    Include calculations were made in "root" to increase the speed of rendering. 
+    Testing later - even not close to the speed what I expected :(
+    I'll ask about it on lections.
+*/
+
+:root {
+    /* 
+    1024 * 768 - size of iPad.
+    1024 + 768 = 1792 px.
+    Formula IS NOT depends on revers: half of perimeter always the same.
+    */
+    --coefficient_pure: calc( (100vw + 100vh) / 1792);
+    /* 
+    1024 + 768/2 = 1408 px.
+    Formula IS depends on revers. Is used for logo in header.
+    */
+    --coefficient_half_h: calc( (100vw + 50vh) / 1408);
+    /* Pixels on screen 1024 * 768 */
+    --px_1: calc(1 * var(--coefficient_pure));
+    --px_2: calc(2 * var(--coefficient_pure));
+    --px_8: calc(8 * var(--coefficient_pure));
+    --px_10: calc(10 * var(--coefficient_pure));
+    --px_20: calc(20 * var(--coefficient_pure));
+    --px_25: calc(25 * var(--coefficient_pure));
+    /* vw */
+    --vw_0_2: 0.2vw;
+    --vw_0_5: 0.5vw;
+    --vw_0_6: 0.6vw;
+    --vw_1: 1vw;
+    --vw_10: 10vw;
+    --vw_15: 15vw;
+    --vw_20: 20vw;
+    --vw_30: 30vw;
+    --vw_40: 40vw;
+    --vw_50: 50vw;
+
+    --color: 200, 184, 184;
+}
+
+html {
+    font-size: calc(16 * var(--coefficient_pure));
+}
+
+.wrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+}
+
+.header {
+    background-color: #d4b80c;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: var(--px_20);
+    flex-basis: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+}
+
+.logo {
+    display: block;
+}
+
+.logo__img {
+    min-width: 150px;
+    min-height: 50px;
+    width: calc(149 * var(--coefficient_half_h));
+    height: calc(49 * var(--coefficient_half_h));
+}
+
+.nav_list {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0;
+    padding: 0;
+}
+
+.nav_list li {
+    margin: var(--px_10);
+    list-style-type: none;
+}
+
+.nav_list a {
+    font-weight: bold;
+    text-decoration: none;
+    color: #000000;
+}
+
+section {
+    width: 100%;
+    height: 100%; /* Without it holder on a big screen had bad behavior. */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.content {
+    display: flex;
+    flex-direction: row;
+    flex-grow: 2;
+    flex-shrink: 1;
+}
+
+.main {
+    padding: var(--px_10) var(--px_10) 0;
+    flex-grow: 1;
+}
+
+.aside_left,
+.aside_right {
+    text-align: center;
+    flex-grow: 1;
+    flex-shrink: 0;
+    flex-basis: var(--vw_15); /*min-width: 210px;*/
+    padding: var(--px_10);
+}
+
+.aside_left {
+    background-color: #c899ba;
+    order: -1;
+}
+
+.aside_right {
+    background-color: #9db2c8;
+    order: 1;
+}
+
+footer {
+    text-align: center;
+    background-color: #87ed87;
+    flex-basis: auto;
+    flex-grow: 0;
+    flex-shrink: 0;
+    padding: var(--px_10);
+}
+
+.container_of_cards {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-content: stretch;
+}
+
+h1 {
+    text-align: center;
+    text-transform: uppercase;
+}
+
+.card {
+    margin: var(--px_10);
+    padding: var(--px_10) 0.721vw var(--px_10);
+    flex-basis: var(--vw_20);
+    flex-shrink: 0;
+    flex-grow: 1;
+    border: #a8a8a8 solid var(--px_1);
+    border-radius: var(--px_25);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    transition-property: box-shadow;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+.card:hover {
+    box-shadow: var(--vw_0_2) var(--vw_0_2) var(--vw_0_6) var(--vw_0_2) rgb(var(--color)); /* Not valid :( */ 
+}
+
+.pic_holder img {
+    display: inline-block;
+    width: var(--vw_10);
+    height: var(--vw_10);
+    border: #c8b8b8 solid var(--vw_1);
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.button {
+    background-color: #685075;
+    padding: var(--px_10) var(--px_20);
+    border-radius: var(--px_10);
+    text-decoration: none;
+    font-weight: bold;
+    color: #ffffff;
+    transition-property: background-color;
+    transition-duration: 0.5s;
+    transition-timing-function: ease-in-out;
+}
+
+.button:hover {
+    background-color: hsl(279, 40%, 40%);
+}
+
+.holder {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    width: var(--vw_50);
+    height: auto;
+    border: #000000 solid var(--px_2);
+    border-radius: var(--px_20) var(--px_20) 0 0;
+    overflow: hidden;
+}
+
+.holder div {
+    height: 50%;
+    text-align: center;
+    padding: var(--px_8);
+}
+
+.holder div:nth-child(1) {
+    background-color: #fd644c;
+    order: 1;
+    flex-grow: 2;
+    flex-basis: 50%;
+}
+
+.holder div:nth-child(2) {
+    background-color: #4784b3;
+    order: 4;
+    flex-grow: 1;
+    flex-basis: 25%;
+}
+
+.holder div:nth-child(3) {
+    background-color: #663498;
+    order: 3;
+    flex-grow: 1;
+    flex-basis: 25%;
+}
+
+.holder div:nth-child(4) {
+    background-color: #05800a;
+    order: 5;
+    flex-grow: 1;
+    flex-basis: 25%;
+}
+
+.holder div:nth-child(5) {
+    background-color: #fda524;
+    order: 2;
+    flex-grow: 1;
+    flex-basis: 50%;
+}
+
+@media (max-width: 991px) {
+    
+    html {
+        font-size: 16px;
+    }
+
+    .header {
+        padding: var(--px_10);
+    }
+
+    h1,
+    h2,
+    p {
+        margin: 5px auto;
+    }
+
+    .content {
+        flex-direction: row;
+        flex-grow: 1;
+        flex-wrap: wrap;
+    }
+
+    .aside_left,
+    .aside_right {
+        order: 1;
+        flex-shrink: 1;
+        flex-basis: auto;
+    }
+
+    .card {
+        flex-basis: 250px;
+        flex-shrink: 1;
+    }
+
+}
+
+@media (max-width: 767px) {
+
+    .header {
+        position: fixed;
+        z-index: 80;
+        width: 100vw;
+        display: block;
+        height: 60px;
+        padding: 5px;
+    }
+    
+    .burger_menu__button {
+        position: fixed;
+        top: 0;
+        left: calc(100vw - 60px);
+        z-index: 100;
+        width: 60px;
+        height: 60px;
+        background-color: #d4b80c;
+    }
+
+    .burger_menu__decoration,
+    .burger_menu__decoration::before,
+    .burger_menu__decoration::after {
+        position: absolute;
+        width: 50px;
+        height: 10px;
+        background-color: #685075;
+        top: 25px;
+        left: 5px;
+    }
+
+    .burger_menu__decoration::before {
+        content: "";
+        top: -15px;
+        left: 0;
+ }
+
+    .burger_menu__decoration::after {
+        content: "";
+        top: 15px;
+        left: 0;
+    }
+
+    body {
+        overflow: auto;
+    }
+
+    .burger_menu__active {
+        overflow: hidden;
+    }
+
+    .burger_menu__active .burger_menu__decoration {
+        background-color: transparent;
+    }
+
+    .burger_menu__active .burger_menu__decoration::before {
+        transform: 
+            translateY(15px)
+            rotate(45deg);
+    }
+    
+    .burger_menu__active .burger_menu__decoration::after {
+        transform: 
+        translateY(-15px)
+        rotate(-45deg);
+    }
+
+    .burger_menu .nav_list {
+        position: fixed;
+        top: -100%;
+        left: 0;
+        z-index: 90;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0;
+        padding: 5px;
+        background-color: #d4b80c;
+    }
+
+    .burger_menu__active .nav_list {
+        position: fixed;
+        top: 60px;
+        left: 0;
+        z-index: 90;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        margin: 0;
+        padding: 5px;
+        background-color: #d4b80c;
+    }
+
+    .burger_menu__overlay {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        overflow: hidden;
+    }
+
+    .burger_menu__active .burger_menu__overlay {
+        display: block;
+    }
+
+
+    .content {
+        z-index: 1;
+        top: 60px;
+        display: flex;
+        flex-direction: column;
+        flex-grow: 2;
+    }
+
+    .aside_left,
+    .aside_right {
+        order: 0;
+    }
+
+    .pic_holder img {
+        display: inline-block;
+        width: 12vmax;
+        height: 12vmax;
+        border: #c8b8b8 solid 1vmax;
+        border-radius: 50%;
+        object-fit: cover;
+    }
+
+    .content {
+        margin-top: 60px;
+    }
+
+
+}
