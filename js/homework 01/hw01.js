@@ -31,7 +31,7 @@ if (is_Using_Prompt === false) {
 
 // Packs
 var total_Quantity_Of_Packs = Math.ceil(total_Quantity_Of_Books / quantity_Of_Books_Per_Pack);
-var weight_Of_Complete_Pack = (weight_Of_Book * quantity_Of_Books_Per_Pack) + weight_Of_Wrap;
+var weight_Of_Complete_Pack = weight_Of_Book * quantity_Of_Books_Per_Pack + weight_Of_Wrap;
 var quantity_Of_Books_In_Incomplete_Pack = total_Quantity_Of_Books % quantity_Of_Books_Per_Pack;
 var quantity_Of_Incomplete_Packs =  Math.ceil(quantity_Of_Books_In_Incomplete_Pack / quantity_Of_Books_Per_Pack);
 
@@ -39,25 +39,25 @@ var quantity_Of_Incomplete_Packs =  Math.ceil(quantity_Of_Books_In_Incomplete_Pa
 // weight_Of_Book = 0.3
 // quantity_Of_Books_In_Incomplete_Pack = 9
 // weight_Of_Book * quantity_Of_Books_In_Incomplete_Pack = 0.3 * 9 = 2.6999999999999997 ?
-var weight_Of_Incomplete_Pack = (weight_Of_Book * quantity_Of_Books_In_Incomplete_Pack) + weight_Of_Wrap;
+var weight_Of_Incomplete_Pack = weight_Of_Book * quantity_Of_Books_In_Incomplete_Pack + weight_Of_Wrap;
 
 var quantity_Of_Complete_Packs = total_Quantity_Of_Packs - quantity_Of_Incomplete_Packs
 
 // Complete pallets
 var quantity_Of_Levels_On_Complete_Pallet = Math.floor(max_Weight_Of_Pallet / (quantity_Of_Packs_Per_Level *  weight_Of_Complete_Pack));
 var quantity_Of_Packs_On_Complete_Pallet = quantity_Of_Levels_On_Complete_Pallet * quantity_Of_Packs_Per_Level;
-var quantity_Of_Complete_Pallets = Math.floor(quantity_Of_Complete_Packs / quantity_Of_Packs_On_Complete_Pallet ); 
+var quantity_Of_Complete_Pallets = Math.floor(quantity_Of_Complete_Packs / quantity_Of_Packs_On_Complete_Pallet); 
 var weight_Of_Complete_Pallet = Math.round(quantity_Of_Packs_On_Complete_Pallet * weight_Of_Complete_Pack + weight_Of_Pallet);
 
 // Incomplete pallets
-var quantity_Of_Incomplete_Pallets = Math.ceil( (quantity_Of_Complete_Packs % quantity_Of_Packs_On_Complete_Pallet) / quantity_Of_Packs_On_Complete_Pallet );
+var quantity_Of_Incomplete_Pallets = Math.ceil((quantity_Of_Complete_Packs % quantity_Of_Packs_On_Complete_Pallet) / quantity_Of_Packs_On_Complete_Pallet );
 var quantity_Of_Packs_On_Incomplete_Pallets = total_Quantity_Of_Packs - quantity_Of_Packs_On_Complete_Pallet * quantity_Of_Complete_Pallets;
 var quantity_Of_Complete_Levels_On_Incomplete_Pallet = Math.floor((quantity_Of_Packs_On_Incomplete_Pallets - quantity_Of_Incomplete_Packs) / quantity_Of_Packs_Per_Level);
 var quantity_Of_Complete_Packs_On_Incomplete_Level = quantity_Of_Packs_On_Incomplete_Pallets - quantity_Of_Complete_Levels_On_Incomplete_Pallet * quantity_Of_Packs_Per_Level - quantity_Of_Incomplete_Packs;
 var weight_Of_Incomplete_Pallet = Math.round((quantity_Of_Packs_On_Incomplete_Pallets - quantity_Of_Incomplete_Packs) * weight_Of_Complete_Pack + quantity_Of_Incomplete_Packs * weight_Of_Incomplete_Pack + quantity_Of_Incomplete_Pallets * weight_Of_Pallet);
 
 // Total parameters
-var total_Quantity_Of_Pallets = Math.ceil( total_Quantity_Of_Packs / quantity_Of_Packs_On_Complete_Pallet );
+var total_Quantity_Of_Pallets = Math.ceil(total_Quantity_Of_Packs / quantity_Of_Packs_On_Complete_Pallet);
 var total_Weight_Brutto = quantity_Of_Complete_Pallets * weight_Of_Complete_Pallet + weight_Of_Incomplete_Pallet;
 var total_Weight_Netto = total_Quantity_Of_Books * weight_Of_Book;
 
