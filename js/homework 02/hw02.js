@@ -338,3 +338,4 @@ var palette = {
     house.floorsQuantity = +prompt("Введите количество этажей в доме.")
     house.flatsOnFloorQuantity = +prompt("Введите количество квартир на этаже.")
     house.findEntranceFlorByNumber(+prompt("Введите номер квартиры в доме."))
+    
