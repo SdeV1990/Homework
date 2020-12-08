@@ -264,3 +264,58 @@
     else {
         toPlay(userAct, toGenerateAct())
     }
+
+// Задание на синий пояс
+// Сделать задания обмена валют используя ассоциативный массив (объект) подобной структуры. Добавьте дополнительные поля при надобности. Для обращения к нужному полю используйте [].
+// let ratios = {
+//     usd: 25.6,
+//     eur: 29
+// }
+// real data
+// Иcпользуя заготовку ниже реализуйте перевод валют с реальными данными.
+// fetch('https://api.exchangeratesapi.io/latest')
+//     .then(res => res.json())
+//     .then(d => {
+//         console.log(d) // тут у нас есть данные
+//         //и ниже с ними можно работать
+//         //нигде кроме этой функции (этих фигурных скобок) переменной d нет
+//     })
+    var isToBuy = confirm("Желаете приобрести валюту?")
+
+    if (isToBuy) {
+        var currencyBuy = prompt("Введите валюту, которую желаете купить.").toUpperCase()
+        var quantityBuy = +prompt("Введите сумму которую вы желаете купить.")
+        var currencySale = prompt("Введите валюту, которую желаете продать.").toUpperCase()
+    }
+    else {
+        var currencySale = prompt("Введите валюту, которую желаете продать.").toUpperCase()
+        var quantitySale = +prompt("Введите сумму которую вы желаете продать.")
+        var currencyBuy = prompt("Введите валюту, которую желаете купить.").toUpperCase()
+    }
+
+    var exchangeRateBuy
+    var exchangeRateSale
+
+    fetch('https://api.exchangeratesapi.io/latest')
+    .then(res => res.json())
+    .then(d => {
+        console.log(d) 
+        exchangeRateBuy = d.rates[currencyBuy]
+        exchangeRateSale = d.rates[currencySale]
+    })
+
+    if (isToBuy) {
+        quantitySale= (quantityBuy * +(exchangeRateSale / exchangeRateBuy).toFixed(6)).toFixed(2)
+        alert(`Cумму в ${quantityBuy} ${currencyBuy} по курсу ${(exchangeRateSale / exchangeRateBuy).toFixed(6)} можно купить за ${quantitySale} ${currencySale}.`)
+    }
+    else {
+        quantityBuy = (quantitySale * +(exchangeRateBuy / exchangeRateSale).toFixed(6)).toFixed(2)
+        alert(`Cумму в ${quantitySale} ${currencySale} по курсу ${(exchangeRateBuy / exchangeRateSale).toFixed(6)} можно продать за ${quantityBuy} ${currencyBuy}.`)
+    }
+
+// Задание на черный пояс
+// Сделайте игру "камень-ножницы-бумага", как описано выше, пользуясь логическими операциями (&&, ||, !), не используя if и switch. Задание должно быть решено одним выражением
+// Надеюсь, считается.
+var userAct = +(+prompt("Введите: 1 - камень, 2 - ножницы 3 - бумага.")).toFixed(0)
+var compAct = Math.random()
+var result = (userAct == (compAct < 1/3 && 1 || (compAct < 2/3 && 2 || 3))) && !(alert("Ничья.")) || ( ( (userAct == 1 && (compAct < 1/3 && 1 || (compAct < 2/3 && 2 || 3)) == 2) || (userAct == 2 && (compAct < 1/3 && 1 || (compAct < 2/3 && 2 || 3)) == 3) || (userAct == 3 && (compAct < 1/3 && 1 || (compAct < 2/3 && 2 || 3)) == 1)) && !(alert("Вы выиграли.")) || !(alert("Компьютер выиграл.")))
