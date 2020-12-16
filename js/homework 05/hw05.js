@@ -83,8 +83,8 @@
 // Сделайте цикл, которых добавляет поле fullName в каждый объект, содержащий ФИО. Учтите, что поле fathername не является обязательным.
     persons.map(
         objPerson => {
-            if ("name" in objPerson && "surname" in objPerson && "fatherName" in objPerson) {
-                objPerson["fullName"] = `${objPerson["name"]} ${objPerson["surname"]} ${objPerson["fatherName"]}`
+            if ("name" in objPerson && "surname" in objPerson) {
+                objPerson["fullName"] = `${objPerson["name"]} ${objPerson["surname"]}${"fatherName" in objPerson ? " " + objPerson["fatherName"] : ""}`
             }
         }
     )
