@@ -149,6 +149,10 @@
         alert("Плохих слов не обнаружено.")
     }
 
+    // Через filter: badWordsMassive.filter(badWord => text.indexOf(badWord) != -1).length > 0 ? alert("Обнаружено плохое слово!") : alert("Плохих слов не обнаружено.")
+    // Через find: badWordsMassive.find(badWord => text.includes(badWord)) != undefined ? alert("Обнаружено плохое слово!") : alert("Плохих слов не обнаружено.")
+    // Через some: badWordsMassive.some(badWord => text.includes(badWord)) == true ? alert("Обнаружено плохое слово!") : alert("Плохих слов не обнаружено.")
+
 
 // confirm
 // Поэкспериментируйте с confirm, определите тип данных, который он возвращает, и конкретные значения этого типа данных.
@@ -327,15 +331,19 @@ var palette = {
     var house = {
         floorsQuantity: 5,
         flatsOnFloorQuantity: 3,
-        findEntranceFlorByNumber(flatNumber) {
+        findEntranceFlorFlatByNumber(flatNumber) {
             flatNumber--
-            var entranceNumber = Math.floor(flatNumber / (house.floorsQuantity * house.flatsOnFloorQuantity))
-            var floorNumber = Math.floor((flatNumber - entranceNumber * house.floorsQuantity * house.flatsOnFloorQuantity) / (house.flatsOnFloorQuantity))
-            var flatOnFloorNumber = Math.floor(flatNumber - entranceNumber * house.floorsQuantity * house.flatsOnFloorQuantity - floorNumber * house.flatsOnFloorQuantity)
+            // var entranceNumber = Math.floor(flatNumber / (house.floorsQuantity * house.flatsOnFloorQuantity))
+            // var floorNumber = Math.floor((flatNumber - entranceNumber * house.floorsQuantity * house.flatsOnFloorQuantity) / (house.flatsOnFloorQuantity))
+            // var flatOnFloorNumber = Math.floor(flatNumber - entranceNumber * house.floorsQuantity * house.flatsOnFloorQuantity - floorNumber * house.flatsOnFloorQuantity)
+
+            var flatOnFloorNumber = (flatNumber % house.flatsOnFloorQuantity).toFixed(0)
+            var floorNumber = Math.floor((flatNumber / house.flatsOnFloorQuantity) % house.floorsQuantity)
+            var entranceNumber = Math.floor(flatNumber / (house.flatsOnFloorQuantity * house.floorsQuantity))
+
             alert(`Квартира № ${++flatNumber} располагается в подъезде № ${++entranceNumber} на этаже № ${++floorNumber}, ${++flatOnFloorNumber}-я на этаже.`)
         }
     }
     house.floorsQuantity = +prompt("Введите количество этажей в доме.")
     house.flatsOnFloorQuantity = +prompt("Введите количество квартир на этаже.")
-    house.findEntranceFlorByNumber(+prompt("Введите номер квартиры в доме."))
-    
+    house.findEntranceFlorFlatByNumber(+prompt("Введите номер квартиры в доме."))
