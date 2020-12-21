@@ -190,37 +190,23 @@
 // currency calc: if
 // Сделать тоже самое на if
     var isToBuy = confirm("Желаете приобрести валюту?")
-    var currency = prompt("Введите валюту.").toUpperCase()
+    var currency = prompt("Введите валюту.").toLocaleLowerCase()
     var quantity = +prompt("Введите сумму в гривнах.")
     var exchangeRate
-    var usd = {
-        name: "USD",
-        buy: 28.0786,
-        sale: 28.3109,
-    }
-    var eur = {
-        name: "EUR",
-        buy: 33.8615,
-        sale: 34.3215,
-    }
-
-    if (currency == usd.name) {
-        if (isToBuy) {
-            exchangeRate = usd.buy
-        }
-        else {
-            exchangeRate = usd.sale
-        }
-    }
-    else if (currency == eur.name) {
-        if (isToBuy) {
-            exchangeRate = eur.buy
-        }
-        else {
-            exchangeRate = eur.sale
+    var exchangeArray = {
+        usd: {
+            name: "USD",
+            buy: 28.0786,
+            sale: 28.3109,
+        },
+        eur: {
+            name: "EUR",
+            buy: 33.8615,
+            sale: 34.3215,
         }
     }
 
+    exchangeRate = exchangeArray[currency][isToBuy ? "buy" : "sale"]
     alert(`На сумму ${quantity} UAH. по курсу ${exchangeRate} можно ${isToBuy ? "приобрести" : "продать"} ${(quantity/exchangeRate).toFixed(2)} ${currency}.`)
 
     // Ох же код и корявый... но не успеваю
@@ -302,16 +288,16 @@
         console.log(d) 
         exchangeRateBuy = d.rates[currencyBuy]
         exchangeRateSale = d.rates[currencySale]
+        if (isToBuy) {
+            quantitySale= (quantityBuy * +(exchangeRateSale / exchangeRateBuy).toFixed(6)).toFixed(2)
+            alert(`Cумму в ${quantityBuy} ${currencyBuy} по курсу ${(exchangeRateSale / exchangeRateBuy).toFixed(6)} можно купить за ${quantitySale} ${currencySale}.`)
+        }
+        else {
+            quantityBuy = (quantitySale * +(exchangeRateBuy / exchangeRateSale).toFixed(6)).toFixed(2)
+            alert(`Cумму в ${quantitySale} ${currencySale} по курсу ${(exchangeRateBuy / exchangeRateSale).toFixed(6)} можно продать за ${quantityBuy} ${currencyBuy}.`)
+        }
     })
 
-    if (isToBuy) {
-        quantitySale= (quantityBuy * +(exchangeRateSale / exchangeRateBuy).toFixed(6)).toFixed(2)
-        alert(`Cумму в ${quantityBuy} ${currencyBuy} по курсу ${(exchangeRateSale / exchangeRateBuy).toFixed(6)} можно купить за ${quantitySale} ${currencySale}.`)
-    }
-    else {
-        quantityBuy = (quantitySale * +(exchangeRateBuy / exchangeRateSale).toFixed(6)).toFixed(2)
-        alert(`Cумму в ${quantitySale} ${currencySale} по курсу ${(exchangeRateBuy / exchangeRateSale).toFixed(6)} можно продать за ${quantityBuy} ${currencyBuy}.`)
-    }
 
 // Задание на черный пояс
 // Сделайте игру "камень-ножницы-бумага", как описано выше, пользуясь логическими операциями (&&, ||, !), не используя if и switch. Задание должно быть решено одним выражением
