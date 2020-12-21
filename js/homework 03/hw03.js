@@ -283,20 +283,21 @@
     var exchangeRateSale
 
     fetch('https://api.exchangeratesapi.io/latest')
-    .then(res => res.json())
-    .then(d => {
-        console.log(d) 
-        exchangeRateBuy = d.rates[currencyBuy]
-        exchangeRateSale = d.rates[currencySale]
-        if (isToBuy) {
-            quantitySale= (quantityBuy * +(exchangeRateSale / exchangeRateBuy).toFixed(6)).toFixed(2)
-            alert(`Cумму в ${quantityBuy} ${currencyBuy} по курсу ${(exchangeRateSale / exchangeRateBuy).toFixed(6)} можно купить за ${quantitySale} ${currencySale}.`)
+        .then(res => res.json())
+        .then(d => {
+            console.log(d) 
+            exchangeRateBuy = d.rates[currencyBuy]
+            exchangeRateSale = d.rates[currencySale]
+            if (isToBuy) {
+                quantitySale= (quantityBuy * +(exchangeRateSale / exchangeRateBuy).toFixed(6)).toFixed(2)
+                alert(`Cумму в ${quantityBuy} ${currencyBuy} по курсу ${(exchangeRateSale / exchangeRateBuy).toFixed(6)} можно купить за ${quantitySale} ${currencySale}.`)
+            }
+            else {
+                quantityBuy = (quantitySale * +(exchangeRateBuy / exchangeRateSale).toFixed(6)).toFixed(2)
+                alert(`Cумму в ${quantitySale} ${currencySale} по курсу ${(exchangeRateBuy / exchangeRateSale).toFixed(6)} можно продать за ${quantityBuy} ${currencyBuy}.`)
+            }
         }
-        else {
-            quantityBuy = (quantitySale * +(exchangeRateBuy / exchangeRateSale).toFixed(6)).toFixed(2)
-            alert(`Cумму в ${quantitySale} ${currencySale} по курсу ${(exchangeRateBuy / exchangeRateSale).toFixed(6)} можно продать за ${quantityBuy} ${currencyBuy}.`)
-        }
-    })
+    )
 
 
 // Задание на черный пояс
