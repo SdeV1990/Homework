@@ -245,4 +245,4 @@ console.log("-------------Рекурсия-------------")
     let exampleElementForTest = document.createElement("div")
     exampleElementForTest.innerHTML = constructorHTML(exampleForTest)
     document.getElementsByClassName("wrapper")[0].prepend(exampleElementForTest)
-    
+    // Блин, номер ДЗ то 08, а не 09.
