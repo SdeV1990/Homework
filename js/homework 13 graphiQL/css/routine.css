@@ -1,0 +1,11 @@
+*,
+*:before,
+*:after {
+    box-sizing: border-box;
+}
+
+.wrapper {
+    max-width: 100%;
+    position: relative;
+    overflow: hidden;
+}
