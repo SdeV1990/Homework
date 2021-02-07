@@ -243,24 +243,29 @@
     // Одиночные теги можно скинуть в один массив и по нему сверять (убирая - если единичный - проверку вложенных элементов и убирая запись закрывания тега).
     var exampleForTest = {
         tagName: "body",
+        isPaired: true,
         attrs: {},
         subTags: [
             {
                 tagName: "div",
+                isPaired: true,
                 attrs: {},
                 subTags: [
                     {
                         tagName: "span",
+                        isPaired: true,
                         attrs: {},
                         subTags: ["Enter a data please:"]
                     },
                     {
                         tagName: "br",
+                        isPaired: false,
                         attrs: {},
                         subTags: []
                     },
                     {
                         tagName: "input",
+                        isPaired: false,
                         attrs: {
                             type: 'text',
                             id: 'name'
@@ -269,6 +274,7 @@
                     },
                     {
                         tagName: "input",
+                        isPaired: false,
                         attrs: {
                             type: 'text',
                             id: 'surname'
@@ -279,10 +285,12 @@
             },
             {
                 tagName: "div",
+                isPaired: true,
                 attrs: {},
                 subTags: [
                     {
                         tagName: "button",
+                        isPaired: true,
                         attrs: {
                             id: 'ok'
                         },
@@ -290,6 +298,7 @@
                     },
                     {
                         tagName: "button",
+                        isPaired: true,
                         attrs: {
                             id: 'cancel'
                         },
@@ -301,13 +310,13 @@
     }
 
     function constructorHTML(objectHTML) {
-        var htmlCode = ""
+        let htmlCode = ""
 
         // Open first tag.
         htmlCode += `<${objectHTML.tagName}`
 
             // Write attributes.
-            for (var key in objectHTML.attrs) {
+            for (let key in objectHTML.attrs) {
                 htmlCode += ` ${key} = \'${objectHTML.attrs[key]}\'`
             }
 
@@ -315,21 +324,21 @@
         htmlCode += `>`
             
             // Write children.
-            for (var index = 0; index <= objectHTML.subTags.length-1; index++) {
+            for (let subTag of objectHTML.subTags) {
 
                 // If child is object (another tag).
-                if (typeof objectHTML.subTags[index] == "object") {
-                    htmlCode += constructorHTML(objectHTML.subTags[index]) // Recursion.
+                if (typeof subTag == "object") {
+                    htmlCode += constructorHTML(subTag) // Recursion.
 
                 // Else convert in string.
                 } else { 
-                    htmlCode += String(objectHTML.subTags[index])
+                    htmlCode += String(subTag)
                 }
 
             }
 
-        // Second tad.
-        htmlCode += `</${objectHTML.tagName}>`
+        // If tag is paird - create second tad.
+        if (objectHTML.isPaired === true) htmlCode += `</${objectHTML.tagName}>`
 
         return htmlCode;
     }
@@ -367,13 +376,13 @@ let obj = {name: 'Ivan',
         {name: 'Nikolay'}
     ]}
 
-    var {children: [name1, name2]} = obj
+    let {children: [{name:name1}, {name:name2}]} = obj
 
 // destruct 3
 // извлеките используя деструктуризацию объектов два первых элемента и длину массива в переменные a, b и length
-let arr = [1,2,3,4, 5,6,7,10]
+let arr = [1,2,3,4,5,6,7,10]
 
-    var [length,a,b] = [arr.length, arr.splice(0,3), arr]
+    let {0:b, 1:c, length} = arr
 
 
 // Задание на черный пояс
