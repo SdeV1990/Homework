@@ -36,7 +36,7 @@
                         subTags: []
                     },
                     {
-                        tagName: "br/",
+                        tagName: "br",
                         attrs: {},
                         text: "",
                         subTags: []
@@ -244,10 +244,10 @@
         color: "black",
     };
 
-    person["smartphone"] = phone
-    person["laptop"] = notebook
-    notebook["owner"] = person
-    phone["owner"] = person
+    person.smartphone = phone
+    person.laptop = notebook
+    notebook.owner = person
+    phone.owner = person
 
     person.smartphone.owner.laptop.owner.smartphone == person.smartphone
 
@@ -347,7 +347,7 @@
     var quantityOfColumns = +prompt("Enter quantity of columns.")
     for (var i=0; i<=quantityOfColumns; i++) {
         for (var j=0; j<=quantityOfRows; j++) {
-            string += ".#."[ (j + i % 2 ) %2 ] // Смещение на нечётных рядах на 1 символ вправо.
+            string += ".#"[ (j + i) %2 ] // Смещение на нечётных рядах на 1 символ вправо.
         }
         string += "\n"
     }
@@ -411,18 +411,10 @@
         var quanttyOfOctothorpe = 1 + (i-1) * 2 // Arithmetic progression.
         var quantityOfDots = (lengthOfString - quanttyOfOctothorpe)/2
         
-        string += writeSign(".", quantityOfDots)
-        string += writeSign("#", quanttyOfOctothorpe)
-        string += writeSign(".", quantityOfDots)
+        string += ".".repeat(quantityOfDots)
+        string += "#".repeat(quanttyOfOctothorpe)
+        string += ".".repeat(quantityOfDots)
         string += "\n"
-    }
-
-    function writeSign (sign, quantityOfSign) {
-        var signString = ""
-        for (var j=1; j <=quantityOfSign; j++) {
-            signString += sign
-        }
-        return signString
     }
 
     alert(string)
