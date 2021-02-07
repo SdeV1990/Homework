@@ -5,19 +5,25 @@
 //    alert(timer()); //alert должен вывести время в микросекундах от выполнения makeProfileTimer до момента вызова timer(), 
 //                    // т. е. измерить время выполнения alert
 // Используйте performance.now()
-    function makeProfileTimer(measuringFunction) {
+    function makeProfileTimer() {
+
+        // Seving stare time
         let startTime = performance.now()
-        measuringFunction()
-        let endTime = performance.now()
-        return endTime - startTime;
+
+        // Return function to measure time
+        return () => {
+
+            // Return measuring time
+            return performance.now() - startTime;
+
+        }
+
     }
 
-    // function myFunction() {
-    //     for (let i = 1; i < 3000000000; i++) {}
-    // }
-    // 
-    // let timer = makeProfileTimer(myFunction)
-    // alert(`Время выполнения функции составляет ${timer.toFixed(3)} милисекунд.`)
+//    var timer = makeProfileTimer()
+//    alert('Замеряем время работы этого alert');  //некий код, время выполнения которого мы хотим измерить с высокой точностью
+//    alert(`Время выполнения функции составляет ${timer().toFixed(3)} милисекунд.`); //alert должен вывести время в микросекундах от выполнения makeProfileTimer до момента вызова timer(), 
+//                    // т. е. измерить время выполнения alert
 
 
 // makeSaver
@@ -40,21 +46,33 @@
     function makeSaver(calledFunction) {
         let result
         let isRunned = false
-        if (isRunned == false) {
-            isRunned = true
-            result = calledFunction()
-            return result
+
+        // Function to save results and return it
+        return () => {
+
+            // If function hasn't been runned - run it, save and return results
+            if (isRunned === false) {
+                isRunned = true
+                result = calledFunction()
+                return result
+            }
+            // If function has been runned - return saved results
+            else {
+                return result
+            }
+
         }
+        
     }
 
     var saver = makeSaver(Math.random)  //создает функцию-хранилище результата переданной в качестве параметра функции (Math.random в примере). На этом этапе Math.random НЕ вызывается
-    var value1 = saver                  //saver вызывает переданную в makeSaver функцию, запоминает результат и возвращает его
-    var value2 = saver                  //saver в дальнейшем просто хранит результат функции, и более НЕ вызывает переданную в makeSaver функцию;
+    var value1 = saver()                  //saver вызывает переданную в makeSaver функцию, запоминает результат и возвращает его
+    var value2 = saver()                  //saver в дальнейшем просто хранит результат функции, и более НЕ вызывает переданную в makeSaver функцию;
     console.log(value1 === value2)      // всегда true
 
     var saver2 = makeSaver(() => console.log('saved function called') || [null, undefined, false, '', 0, Math.random()][Math.ceil(Math.random()*6)])
-    var value3 = saver2
-    var value4 = saver2
+    var value3 = saver2()
+    var value4 = saver2()
     console.log(value3 === value4) // тоже должно быть true
 
 
