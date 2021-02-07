@@ -11,6 +11,7 @@
 // cube
 // Напишите функцию cube, которая возвращает число в третьей степени:
     function cube(number){
+        number=Number(number)
         return number*number*number;
     }
     // cube(3)
@@ -20,6 +21,8 @@
 // Напишите функцию avg2, которая рассчитывает среднюю для двух чисел:
 // формула для подсчета среднего: (a + b) / 2
     function avg2(a,b) {
+        a= +a
+        b= +b
         return (a+b)/2;
     }
     // avg2(1,2); // возвращает 1.5
@@ -30,6 +33,9 @@
 // Напишите функцию sum3 для суммирования 3 чисел:
 // Обратите внимание, что sum3 от двух параметров тоже работает корректно.
     function sum3(a,b,c=0) {
+        a= +a
+        b= +b
+        c= +c
         return a+b+c;
     }
     // sum3(1,2,3) // => 6
@@ -42,10 +48,12 @@
 // Обратите внимание, что если передан один параметр (intRandom(10) в примере выше), то функция работает как будто первый параметр равен 0, а переданный параметр становится вторым параметром (intRandom(0,10))
 // Используйте умножение для расширения значения встроенной функции Math.random c диапозона 1, сложениe для смещения результата на первый параметр, и Math.round для округления результата
     function intRandom(a,b) {
+        a = +a
+        b = +b
         if (b === undefined) {
             b=a
             a=0
-        } 
+        }
         return +(a+(b-a)* Math.random(1,2)).toFixed(0);
     }
     // intRandom(2,15) // возвращает целое случайное число от 2 до 15 (включительно)
@@ -79,7 +87,7 @@
     function sum() {
         let result = 0
         for (let item of arguments) {
-            result += item
+            result += +item
         }
         return result;
     }
@@ -112,13 +120,23 @@
 
 // Union declarative
 // Используйте ассоциативный массив вместо switchs
-    var functions = new Map([
-        ["a", a("Хай!")],
-        ["cube", cube(3)],
-        ["avg2", avg2(5,15)],
-        ["sum3", sum3(1,2,3)],
-        ["intRandom", intRandom(15)],
-        ["greetAll", greetAll("Tanos", "Ultron", "Loki")],
-        ["sum", sum(1,2,3,4,5)]
-    ]);
-    functions.get(prompt("Введите название функции."))
+    let functions = {
+        a,
+        cube,
+        avg2,
+        sum3,
+        intRandom,
+        greetAll,
+        sum
+    }
+
+    function execute() {
+        let selectedFunction = prompt("Введите название функции:")
+
+        if (functions[selectedFunction] === undefined) return alert ("Функция не обнаружена!")
+        
+        let parameters = prompt("Введите параметры функции через запятую:").split(",")
+        alert(functions[selectedFunction](...parameters))
+    }
+
+    execute()
