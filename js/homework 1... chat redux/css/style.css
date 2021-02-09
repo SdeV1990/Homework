@@ -1,0 +1,146 @@
+/* 
+Ice schema 
+https://color.romanuke.com/tsvetovaya-palitra-1321/
+*/
+:root {
+    --nick_time_color: #005c9d;
+    --text_color: #018abd;
+    --border_color: #02b9f3;
+    --bg1_color: #93e1ed;
+    --bg2_color: #e2f3fb;
+    --alert: #ff0000;
+    /* 
+    If screen width = 320 px then width = 300 px
+    If screen width = 2560 px then width = 1300 px
+    */
+    --fullWidth: 100vw;
+    --width: calc(var(--fullWidth) * 0.4464 + 157px);
+    /* 
+    If screen width = 320 px then font size = 20 px
+    If screen width = 2560 px then font size = 40 px
+    */
+    --font_size: calc(var(--fullWidth) * 0.00893 + 17px);
+
+    --messageColor0: var(--bg1_color);
+    --messageColor1: var(--bg2_color);
+} 
+
+body {
+    background-color: var(--bg2_color);
+}
+
+.form {
+    margin-top: 5px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#inputNick {
+    width: var(--width);
+    border: 1px solid var(--border_color);
+    margin: 2px;
+    padding: 2px;
+    font-weight: 800;
+    font-size: var(--font_size);
+    text-align: center;
+    background-color: var(--bg1_color);
+    color: var(--nick_time_color);
+}
+
+#inputMessage {
+    width: var(--width);
+    border: 1px solid var(--border_color);
+    margin: 2px;
+    padding: 2px;
+    font-size: var(--font_size);
+    text-align: center;
+    resize: vertical;
+    background-color: var(--bg1_color);
+    color: var(--text_color);
+}
+
+#sendButton {
+    width: var(--width);
+    border: 1px solid var(--border_color);
+    margin: 2px;
+    padding: 2px;
+    font-size: var(--font_size);
+    text-align: center;
+    background-color: var(--bg1_color);
+    color: var(--nick_time_color);
+}
+
+#sendButton:hover {
+    background-color: var(--nick_time_color);
+    color: var( --bg1_color);
+}
+
+#statusBar {
+    width: var(--width);
+
+    margin: 2px;
+    font-size: var(--font_size);
+    text-align: center;
+}
+
+#chatHistory {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: var(--font_size);
+}
+
+.messageWrapper {
+    display: flex;
+    flex-direction: column;
+    width: var(--width);
+    border: 1px solid var(--border_color);
+    border-radius: 10px;
+    margin: 2px;
+}
+
+.messageWrapper:nth-of-type(2n) {
+    background-color: var(--messageColor0);
+}
+
+.messageWrapper:nth-of-type(2n+1) {
+    background-color: var(--messageColor1);
+}
+
+.messageNick {
+    font-weight: 800;
+    margin: 5px 15px 5px;
+    color: var(--nick_time_color);
+}
+
+.messageText {
+    margin: 5px 15px 5px;
+    color: var(--text_color);
+    word-wrap: break-word;
+}
+
+.messageTime {
+    font-weight: 800;
+    margin: 5px 15px 5px;
+    text-align: end;
+    color: var(--nick_time_color);
+}
+
+.dateLimit {
+    margin: 5px;
+    padding: 2px;
+    border-radius: 10px;
+    background-color: var(--nick_time_color);
+    color: var(--bg1_color);
+    font-size: var(--font_size);
+    position: sticky;
+    top: 10px;
+}
+
+#sendButton.disabled {
+    background-color: var(--bg2_color);
+    color: var(--bg1_color);
+}
