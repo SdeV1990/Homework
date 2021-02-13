@@ -391,16 +391,16 @@ function createMessagesList(data) {
                 dateLimit.innerHTML = currentMessageDateValue
 
                 // // Delete old same date
-                // let dateLimits = [...document.getElementsByClassName("dateLimit")]
+                let dateLimits = [...document.getElementsByClassName("dateLimit")]
 
-                // // If there are more than 2 dates
-                // if (dateLimits.length >= 2) {
-                //     // If previous limit is the same - delete it
-                //     if (dateLimits[0].innerHTML === dateLimits[1].innerHTML) {
-                //         dateLimits[1].remove()
-                //     }
+                // If there are more than 2 dates
+                if (dateLimits.length >= 2) {
+                    // If previous limit is the same - delete it
+                    if (dateLimits[0].innerHTML === dateLimits[1].innerHTML) {
+                        dateLimits[1].remove()
+                    }
 
-                // }
+                }
 
             }
             
