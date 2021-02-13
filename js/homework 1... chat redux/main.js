@@ -348,7 +348,7 @@ store.subscribe(() => {
 function createMessagesList(data) {
 
     // Previous timeStamp to compare date
-    let lastMessageDateValue = ""
+    let nextMessageDateValue = ""
     
     //Creating messages
     for (let index = store.getState().lastMessageID; index<data.length; index++) {
@@ -377,30 +377,30 @@ function createMessagesList(data) {
 
 
             // Date measuring
-            let messageDateValue = timeStamp.toLocaleDateString()
+            let currentMessageDateValue = timeStamp.toLocaleDateString()
 
-            // Save date for the first message
-            if (lastMessageDateValue === "") lastMessageDateValue = messageDateValue
+            // If it isn't last message - get date of next message, if it is - just get date of current message
+            if (index<data.length-1) nextMessageDateValue = new Date(+data[index + 1].timestamp).toLocaleDateString()
+            else nextMessageDateValue = currentMessageDateValue
 
-            // If current date is different on date of last message or it is last message
-            if (lastMessageDateValue !== messageDateValue || index === data.length-1) {
+            // If date of current message is different on date of next message or it is last message
+            if (nextMessageDateValue !== currentMessageDateValue || index === data.length-1) {
 
                 // Create date limit
                 let dateLimit = elementConstructor("div", "dateLimit", chatHistory, false)
-                dateLimit.innerHTML = lastMessageDateValue
-                lastMessageDateValue = messageDateValue
+                dateLimit.innerHTML = currentMessageDateValue
 
-                // Delete old same date
-                let dateLimits = [...document.getElementsByClassName("dateLimit")]
+                // // Delete old same date
+                // let dateLimits = [...document.getElementsByClassName("dateLimit")]
 
-                // If there are more than 2 dates
-                if (dateLimits.length >= 2) {
-                    // If previous limit is the same - delete it
-                    if (dateLimits[0].innerHTML === dateLimits[1].innerHTML) {
-                        dateLimits[1].remove()
-                    }
+                // // If there are more than 2 dates
+                // if (dateLimits.length >= 2) {
+                //     // If previous limit is the same - delete it
+                //     if (dateLimits[0].innerHTML === dateLimits[1].innerHTML) {
+                //         dateLimits[1].remove()
+                //     }
 
-                }
+                // }
 
             }
             
@@ -415,7 +415,7 @@ function createMessagesList(data) {
 }
 
 // Constructor of elements
-function elementConstructor(element, className, parent, inEnd = true) {
+function elementConstructor(element, className, parent, incertToEnd = true) {
 
     // Create element
     let newElement = document.createElement(element) 
@@ -424,7 +424,7 @@ function elementConstructor(element, className, parent, inEnd = true) {
     if (className !== "") newElement.className = className
 
     // Set new element to parent
-    if (inEnd) {
+    if (incertToEnd) {
         parent.appendChild(newElement)
     }
     else {
