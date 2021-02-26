@@ -35,7 +35,7 @@ function chatReducer(
         messages: [],
         sendStatus: "",
         getStatus: "",
-        lastMessageID: ""
+        lastMessageID: "000000000000000000000000"
     }, 
     {type, data}
 ) {
@@ -140,6 +140,8 @@ const actionGet = () =>
                 redux.getState().lastMessageID : // True
                 redux.getState().messages[redux.getState().messages.length-1].timeStamp // False
             
+            console.log("lastMessageID = " + lastMessageID)
+            
             let result = await jsonPost(
                 URL + "/message-after", 
                 {
@@ -182,9 +184,11 @@ const sendAndCheck = (nick, message) =>
 
                 // If there is no messages in state - return last message ID (empty string), if not - get time stamp of last message in state
                 let lastMessageID = 
-                redux.getState().messages.length === 0 ?  // If
-                redux.getState().lastMessageID : // True
-                redux.getState().messages[redux.getState().messages.length-1].timeStamp // False
+                    redux.getState().messages.length === 0 ?  // If
+                    redux.getState().lastMessageID : // True
+                    redux.getState().messages[redux.getState().messages.length-1].timeStamp// False
+                
+                console.log("lastMessageID = " + lastMessageID)
                 
                 let result = await jsonPost(
                     URL + "/message-after", 
@@ -367,8 +371,8 @@ function createMessagesList(data) {
             let messageText = elementConstructor("div", "messageText", messageWraper)
             messageText.innerHTML = message.message
 
-            // Time
-            let timeStamp = new Date(message.timeStamp)
+            // Time 
+            let timeStamp = new Date( parseInt( message.timeStamp.substr(0,8), 16 ) )
             let messageTime = elementConstructor("div", "messageTime", messageWraper)
             messageTime.innerHTML = timeStamp.toLocaleTimeString()
 
