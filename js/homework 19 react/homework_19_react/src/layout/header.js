@@ -6,10 +6,11 @@ const MenuItem = ( {menuItem: {url, title}} ) =>
     </li>
 
 const Menu = ({menuItems=[
-    {url: '/spoiler',title: 'Spoiler'},
-    {url: '/range_input',title: 'Range input'},
-    {url: '/password_confirm',title: 'Password confirm'},
-    {url: '/timer',title: 'Timer'}
+    {url: '/spoiler', title: 'Spoiler'},
+    {url: '/range-input', title: 'Range input'},
+    {url: '/password-confirm', title: 'Password confirm'},
+    {url: '/timer', title: 'Timer'},
+    {url: '/timer-control', title: 'Timer control'}
 ]}) => 
     <ul className='Menu'>
         {menuItems.map(menuItem => <MenuItem menuItem={menuItem} key={menuItem.url}/>)}

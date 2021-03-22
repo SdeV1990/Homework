@@ -48,3 +48,7 @@
     border: 1px black solid;
     border-radius: 2px;
 }
+
+.timer_input {
+    width: 5em;
+}
