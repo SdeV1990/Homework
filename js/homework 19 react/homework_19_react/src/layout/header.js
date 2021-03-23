@@ -10,7 +10,8 @@ const Menu = ({menuItems=[
     {url: '/range-input', title: 'Range input'},
     {url: '/password-confirm', title: 'Password confirm'},
     {url: '/timer', title: 'Timer'},
-    {url: '/timer-control', title: 'Timer control'}
+    {url: '/timer-control', title: 'Timer control'},
+    {url: '/timer-container', title: 'Timer container'}
 ]}) => 
     <ul className='Menu'>
         {menuItems.map(menuItem => <MenuItem menuItem={menuItem} key={menuItem.url}/>)}

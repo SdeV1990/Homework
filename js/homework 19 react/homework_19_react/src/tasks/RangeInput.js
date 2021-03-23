@@ -1,14 +1,14 @@
 import React, {useState} from 'react'
-import PropTypes from "prop-types"
+import PropTypes from 'prop-types'
 
 const RangeInput = ({minLength = 3, maxLength = 20}) => {
-    const [inputValue, setInputValue] = useState("")
+    const [inputValue, setInputValue] = useState('')
 
     return (<>
         <h1>Task "RangeInput"</h1>
         <input 
             onChange = {(event) => setInputValue(event.target.value)}
-            style={{backgroundColor: minLength > +inputValue.length || maxLength < +inputValue.length ? "LightCoral" : ""}}
+            style={{backgroundColor: minLength > +inputValue.length || maxLength < +inputValue.length ? 'LightCoral' : ''}}
         />
     </>)
 }

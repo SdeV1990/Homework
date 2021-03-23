@@ -5,16 +5,18 @@ import RangeInput from '../tasks/RangeInput'
 import PasswordConfirm from '../tasks/PasswordConfirm'
 import Timer from '../tasks/Timer'
 import TimerControl from '../tasks/TimerControl'
+import TimerContainer from '../tasks/TimerContainer'
 
 const Main = () =>
     <main>
         <Switch>
-            <Redirect from="/" to="/spoiler" exact/>
-            <Route path="/spoiler" component={Spoiler}/>
-            <Route path="/range-input" component={RangeInput}/>
-            <Route path="/password-confirm" component={PasswordConfirm}/>
-            <Route path="/timer" component={Timer}/>
-            <Route path="/timer-control" component={TimerControl}/>
+            <Redirect from='/' to='/spoiler' exact/>
+            <Route path='/spoiler' component={Spoiler}/>
+            <Route path='/range-input' component={RangeInput}/>
+            <Route path='/password-confirm' component={PasswordConfirm}/>
+            <Route path='/timer' component={Timer}/>
+            <Route path='/timer-control' component={TimerControl}/>
+            <Route path='/timer-container' component={TimerContainer}/>
             <Route component={() => <h1>Шось нэ то...</h1>}/>
         </Switch>
     </main>

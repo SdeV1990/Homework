@@ -1,5 +1,5 @@
-import React, {useState} from "react"
-import PropTypes from "prop-types" // Not needed, but just want to practice in validation
+import React, {useState} from 'react'
+import PropTypes from 'prop-types' // Not needed, but just want to practice in validation
 
 const SpoilerContent = ({content}) => {
     return (
@@ -13,7 +13,7 @@ const Spoiler = ({header, open, children}) => {
     return (
         <>
             <div onClick={()=>setIsOpen(()=>!isOpen)}>{header}</div>
-            {isOpen ? <SpoilerContent content={children}/> : ""}
+            {isOpen ? <SpoilerContent content={children}/> : ''}
             <hr/>
         </>
     )

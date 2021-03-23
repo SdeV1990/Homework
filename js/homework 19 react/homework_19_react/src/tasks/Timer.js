@@ -1,25 +1,25 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 import {createStore} from 'redux';
 import {Provider, connect}   from 'react-redux';
 
 let store = createStore((state={count: 1800, isRun: true}, {type, count, isRun}) => {
-    if (type === "DECREASE") {
+    if (type === 'DECREASE') {
         return {...state, count: state.count - 1}
     }
-    if (type === "STOP") {
+    if (type === 'STOP') {
         return {...state, isRun: false}
     }
-    if (type === "START") {
+    if (type === 'START') {
         return {...state, isRun: true}
     }
     return state;
 })
 
 // Actions
-const actionDecrease = () => ({type: "DECREASE"})
-const actionStop = () => ({type: "STOP"})
-const actionStart = () => ({type: "START"})
+const actionDecrease = () => ({type: 'DECREASE'})
+const actionStop = () => ({type: 'STOP'})
+const actionStart = () => ({type: 'START'})
 
 // store.subscribe(() => console.log(store.getState()));
 
@@ -42,14 +42,14 @@ const Timer = ({count, isRun, actionStop, actionStart}) => {
 
     // Join zero if it is needed
     const joinZero = (number) => {
-        return number < 10 ? "0" + number.toString() : number
+        return number < 10 ? '0' + number.toString() : number
     }
 
     return (
         <>
             <span>{joinZero(hours)+':'+joinZero(minutes)+':'+joinZero(seconds)}</span>
             <br/>
-            <button onClick={isRun ? actionStop: actionStart}>{isRun ? "Stop" : "Start"}</button>
+            <button onClick={isRun ? actionStop: actionStart}>{isRun ? 'Stop' : 'Start'}</button>
         </>
     )
 }

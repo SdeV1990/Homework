@@ -1,4 +1,4 @@
-import PropTypes from "prop-types";
+import PropTypes from 'prop-types';
 
 import {createStore} from 'redux';
 import {Provider, connect}   from 'react-redux';
@@ -8,7 +8,7 @@ let store = createStore((state={count: 0, hours: 0, minutes: 0, seconds: 0, isRu
 
         // Join zero if it is needed
         const joinZero = (number) => {
-            return number < 10 ? "0" + number.toString() : number
+            return number < 10 ? '0' + number.toString() : number
         }
 
         let newCount = state.count - 1
@@ -30,7 +30,7 @@ let store = createStore((state={count: 0, hours: 0, minutes: 0, seconds: 0, isRu
 
         // Join zero if it is needed
         const joinZero = (number) => {
-            return number < 10 ? "0" + number.toString() : number
+            return number < 10 ? '0' + number.toString() : number
         }
 
         // Convert count (seconds) into time (hh:mm:ss)
@@ -87,7 +87,7 @@ setInterval(() => {
         store.dispatch(actionDecrease())
     }
     // If timer is over
-    else if (store.getState().isRun && store.getState().count == 1) {
+    else if (store.getState().isRun && store.getState().count === 1) {
         store.dispatch(actionDecrease())
         store.dispatch(actionStop())
     }
@@ -133,7 +133,7 @@ const Timer = ({count, isRun, actionStop, actionStart}) => {
         <>
             <InputsContainer count={count} isRun={isRun}/>
             <br/>
-            <button disabled={count <= 0 ? true : false} onClick={isRun ? actionStop: actionStart}>{isRun ? "Stop" : "Start"}</button>
+            <button disabled={count <= 0 ? true : false} onClick={isRun ? actionStop: actionStart}>{isRun ? 'Stop' : 'Start'}</button>
         </>
     )
 }
@@ -152,7 +152,7 @@ const CTimer = connect((state) => ({count: state.count, isRun: state.isRun}), {a
 // Result
 const TimerContainer = () => 
     <Provider store={store}>
-        <h1>Task "Timer"</h1>
+        <h1>Task "TimerControl"</h1>
         <CTimer/>
     </Provider>
 
