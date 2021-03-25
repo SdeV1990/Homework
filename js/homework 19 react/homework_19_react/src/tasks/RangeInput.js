@@ -12,7 +12,6 @@ const RangeInput = ({minLength = 3, maxLength = 20}) => {
         />
     </>)
 }
-
 // Validation
 RangeInput.propTypes = {
     minLength: PropTypes.number,

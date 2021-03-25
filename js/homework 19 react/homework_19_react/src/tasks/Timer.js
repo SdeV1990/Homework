@@ -1,25 +1,17 @@
-import PropTypes from 'prop-types';
+import PropTypes from 'prop-types'; // Validation
 
 import {createStore} from 'redux';
 import {Provider, connect}   from 'react-redux';
 
-let store = createStore((state={count: 1800, isRun: true}, {type, count, isRun}) => {
-    if (type === 'DECREASE') {
-        return {...state, count: state.count - 1}
-    }
-    if (type === 'STOP') {
-        return {...state, isRun: false}
-    }
-    if (type === 'START') {
-        return {...state, isRun: true}
-    }
-    return state;
-})
+import dispatchTimer from '../dispatches/dispatchTimer'
 
-// Actions
-const actionDecrease = () => ({type: 'DECREASE'})
-const actionStop = () => ({type: 'STOP'})
-const actionStart = () => ({type: 'START'})
+import actionTimerDecrease from '../actions/actionTimerDecrease'
+import actionTimerStop from '../actions/actionTimerStop'
+import actionTimerStart from '../actions/actionTimerStart'
+
+import myCustomFunctions from '../customFunctions'
+
+let store = createStore(dispatchTimer)
 
 // store.subscribe(() => console.log(store.getState()));
 
@@ -28,42 +20,34 @@ setInterval(() => {
 
     // If timer is running and count is more then zero - decrease timer
     if (store.getState().isRun && +store.getState().count > 0) {
-        store.dispatch(actionDecrease())
+        store.dispatch(actionTimerDecrease())
     }
 
 }, 1000);
 
-const Timer = ({count, isRun, actionStop, actionStart}) => {
+const Timer = ({count, isRun, actionTimerStop, actionTimerStart}) => {
 
-    // Convert count (seconds) into time (hh:mm:ss)
-    let hours = Math.floor(count/3600)
-    let minutes = Math.floor((count-hours*3600)/60)
-    let seconds = Math.round(count-minutes*60-hours*3600)
-
-    // Join zero if it is needed
-    const joinZero = (number) => {
-        return number < 10 ? '0' + number.toString() : number
-    }
+    // Convert count (seconds) into time
+    let {hours, minutes, seconds} = myCustomFunctions.convertSecondsIntoTime(count)
 
     return (
         <>
-            <span>{joinZero(hours)+':'+joinZero(minutes)+':'+joinZero(seconds)}</span>
+            <span>{hours + ':' + minutes + ':' + seconds}</span>
             <br/>
-            <button onClick={isRun ? actionStop: actionStart}>{isRun ? 'Stop' : 'Start'}</button>
+            <button onClick={isRun ? actionTimerStop: actionTimerStart}>{isRun ? 'Stop' : 'Start'}</button>
         </>
     )
 }
-
 // Validation
 Timer.propTypes = {
     count: PropTypes.number.isRequired,
     isRun: PropTypes.bool.isRequired,
-    actionStop: PropTypes.func.isRequired,
-    actionStart: PropTypes.func.isRequired,
+    actionTimerStop: PropTypes.func.isRequired,
+    actionTimerStart: PropTypes.func.isRequired,
 }
 
 // Connect timer to Redux
-const CTimer = connect((state) => ({count: state.count, isRun: state.isRun}), {actionStop, actionStart})(Timer)
+const CTimer = connect((state) => ({count: state.count, isRun: state.isRun}), {actionTimerStop, actionTimerStart})(Timer)
 
 // Result
 const TimerContainer = () => 

@@ -1,7 +1,7 @@
 import {Link} from 'react-router-dom'
 
 const MenuItem = ( {menuItem: {url, title}} ) => 
-    <li type='None' className="MenuItem">
+    <li type='None' className='MenuItem'>
         <Link to={url} children={title}/>
     </li>
 

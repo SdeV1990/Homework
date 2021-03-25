@@ -14,7 +14,7 @@ const InputsValidation = ({inputValue_1, inputValue_2, minLength=3}) => {
     }
 
 }
-
+// Validation
 InputsValidation.propTypes = {
     inputValue_1: PropTypes.string.isRequired,
     inputValue_2: PropTypes.string.isRequired,
@@ -40,7 +40,7 @@ const PasswordConfirm = ({minLength=3}) => {
         </div>
     </>)
 }
-
+// Validation
 PasswordConfirm.propTypes = {
     minLength: PropTypes.number
 }

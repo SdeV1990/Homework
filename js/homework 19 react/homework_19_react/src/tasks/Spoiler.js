@@ -18,7 +18,6 @@ const Spoiler = ({header, open, children}) => {
         </>
     )
 }
-
 // Validation
 Spoiler.propTypes = {
     header: PropTypes.object.isRequired,
