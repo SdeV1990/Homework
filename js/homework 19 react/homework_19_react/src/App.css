@@ -49,6 +49,16 @@
     border-radius: 2px;
 }
 
+.MenuItem a {
+    text-decoration: none;
+    font-size: 1.5em;
+    color:blue;
+}
+
 .timer_input {
     width: 5em;
+}
+
+.watch_wrapper img {
+    position: absolute;
 }

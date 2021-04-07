@@ -49,6 +49,11 @@ body {
     color: var(--nick_time_color);
 }
 
+#inputNick.disabled {
+    background-color: var(--bg2_color);
+    color: var(--bg1_color);
+}
+
 #inputMessage {
     width: var(--width);
     border: 1px solid var(--border_color);
@@ -59,6 +64,11 @@ body {
     resize: vertical;
     background-color: var(--bg1_color);
     color: var(--text_color);
+}
+
+#inputMessage.disabled {
+    background-color: var(--bg2_color);
+    color: var(--bg1_color);
 }
 
 #sendButton {

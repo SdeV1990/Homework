@@ -1,4 +1,3 @@
-
 // Redux
 function createStore(reducer){
     let state = reducer(undefined, {})
@@ -390,7 +389,7 @@ function createMessagesList(data) {
                 let dateLimit = elementConstructor("div", "dateLimit", chatHistory, false)
                 dateLimit.innerHTML = currentMessageDateValue
 
-                // // Delete old same date
+                // Delete old same date
                 let dateLimits = [...document.getElementsByClassName("dateLimit")]
 
                 // If there are more than 2 dates

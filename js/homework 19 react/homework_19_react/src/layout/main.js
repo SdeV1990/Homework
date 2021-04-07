@@ -6,6 +6,7 @@ import PasswordConfirm from '../tasks/PasswordConfirm'
 import Timer from '../tasks/Timer'
 import TimerControl from '../tasks/TimerControl'
 import TimerContainer from '../tasks/TimerContainer'
+import Watch from '../tasks/Watch'
 
 const Main = () =>
     <main>
@@ -17,6 +18,7 @@ const Main = () =>
             <Route path='/timer' component={Timer}/>
             <Route path='/timer-control' component={TimerControl}/>
             <Route path='/timer-container' component={TimerContainer}/>
+            <Route path='/watch' component={Watch}/>
             <Route component={() => <h1>Шось нэ то...</h1>}/>
         </Switch>
     </main>

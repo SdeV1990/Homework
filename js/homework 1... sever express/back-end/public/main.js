@@ -35,12 +35,15 @@ function chatReducer(
         messages: [],
         sendStatus: "",
         getStatus: "",
+        enterKeyPressed: false,
+        inputNickFilled: false,
+        inputMessageFilled: false,
         lastMessageID: "000000000000000000000000"
     }, 
     {type, data}
 ) {
 
-    // Send status
+    // Send statuses
     if (type === 'SEND_PENDING'){
         return {
             ...state, 
@@ -66,7 +69,7 @@ function chatReducer(
         }
     }
 
-    //Get status
+    //Get statuses
     if (type === 'GET_PENDING'){
         return {
             ...state, 
@@ -85,6 +88,48 @@ function chatReducer(
         return {
             ...state, 
             getStatus: 'REJECTED'
+        }
+    }
+
+    // Enter key statuses
+    if (type === 'ENTER_KEY_UP'){
+        return {
+            ...state, 
+            enterKeyPressed:  false
+        }
+    }
+    if (type === 'ENTER_KEY_DOWN'){
+        return {
+            ...state, 
+            enterKeyPressed:  true
+        }
+    }
+
+    // Input nick statuses
+    if (type === 'INPUT_NICK_EMPTY'){
+        return {
+            ...state, 
+            inputNickFilled:  false
+        }
+    }
+    if (type === 'INPUT_NICK_FILLED'){
+        return {
+            ...state, 
+            inputNickFilled:  true
+        }
+    }
+
+    // Input message statuses
+    if (type === 'INPUT_MESSAGE_EMPTY'){
+        return {
+            ...state, 
+            inputMessageFilled:  false
+        }
+    }
+    if (type === 'INPUT_MESSAGE_FILLED'){
+        return {
+            ...state, 
+            inputMessageFilled:  true
         }
     }
 
@@ -128,6 +173,18 @@ const actionGetPending = () => ({type: "GET_PENDING"})
 const actionGetResolved = (data) => ({type: "GET_RESOLVED", data})
 const actionGetRejected = () => ({type: "GET_REJECTED"})
 
+// Enter key actions
+const actionEnterKeyUp = () => ({type: "ENTER_KEY_UP"})
+const actionEnterKeyDown = () => ({type: "ENTER_KEY_DOWN"})
+
+// Input nick actions
+const actionInputNickEmpty = () => ({type: "INPUT_NICK_EMPTY"})
+const actionInputNickFilled = () => ({type: "INPUT_NICK_FILLED"})
+
+// Input message actions
+const actionInputMessageEmpty = () => ({type: "INPUT_MESSAGE_EMPTY"})
+const actionInputMessageFilled = () => ({type: "INPUT_MESSAGE_FILLED"})
+
 // Script of getting messages
 const actionGet = () =>
     async dispatch => {
@@ -157,7 +214,7 @@ const actionGet = () =>
     }
 
 // Script of sending message and loading it as fast as possible
-const sendAndCheck = (nick, message) => 
+const actionSendAndCheck = (nick, message) => 
     async dispatch => {
 
         // Send message
@@ -225,41 +282,108 @@ const sendAndCheck = (nick, message) =>
 // Logging
 redux.subscribe(() => console.log(redux.getState()))
 
-// Edit inputs
+// Edit nick input
 redux.subscribe(() => {
 
     // Get status from redux
-    const {sendStatus} = redux.getState()
+    const {sendStatus, getStatus} = redux.getState()
 
-    // Check redux status and clean input if it is needed
+    // Then message is send - clear input and make it enabled and clear local storage
     if (sendStatus === "RESOLVED") {
-        inputMessage.value = ""
-        localStorage.setItem("message", "")
+        inputNick.value = ""
+        inputNick.disabled = false
+        inputNick.classList.remove("disabled")
+    }
+
+    // Then message is sending - make input disabled
+    if (sendStatus === "PENDING") {
+        inputNick.disabled = true
+        inputNick.classList.add("disabled")
+    }
+
+    // Then message is rejected - make input enabled
+    if (sendStatus === "REJECTED") {
+        inputNick.disabled = false
+        inputNick.classList.remove("disabled")
+    }
+
+
+    // Then try to get messages is failed
+    if (getStatus === "REJECTED") {
+        inputNick.disabled = true
+        inputNick.classList.add("disabled")
     }
 
 })
 
-// Edit button
-let startPointAnimation = false// Is there are more delicate solution?
+// Edit message input
 redux.subscribe(() => {
 
     // Get status from redux
-    const {sendStatus} = redux.getState()
-    const {getStatus} = redux.getState()
+    const {sendStatus, getStatus} = redux.getState()
+
+    // Then message is send - clear input and make it enabled and clear local storage
+    if (sendStatus === "RESOLVED") {
+        inputMessage.value = ""
+        inputMessage.disabled = false
+        inputMessage.classList.remove("disabled")
+        inputMessage.focus()
+
+        localStorage.setItem("message", "")
+    }
+
+    // Then message is sending - make input disabled
+    if (sendStatus === "PENDING") {
+        inputMessage.disabled = true
+        inputMessage.classList.add("disabled")
+    }
+
+    // Then message is rejected - make input enabled
+    if (sendStatus === "REJECTED") {
+        inputMessage.disabled = false
+        inputMessage.classList.remove("disabled")
+    }
+
+
+    // Then try to get messages is failed
+    if (getStatus === "REJECTED") {
+        inputMessage.disabled = true
+        inputMessage.classList.add("disabled")
+    }
+
+})
+
+// Edit send button
+
+// Check send button for disabling
+function checkSendButtonForDisabling() {
+
+
+
+}
+
+let isPointAnimationStarted = false // Is there are more delicate solution?
+redux.subscribe(() => {
+
+    // Get statuses from redux
+    const {sendStatus, getStatus, enterKeyPressed, inputNickFilled, inputMessageFilled} = redux.getState()
     
-    // Check redux status and clean status bar
-    if (sendStatus === "PENDING" && startPointAnimation === false) {
+    // Send message statuses
+    
+    // If send status is "pending" and point animation isn't started
+    if (sendStatus === "PENDING" && isPointAnimationStarted === false) {
 
         // Styling button
         sendButton.disabled = true
         sendButton.className = "disabled"
 
         // Start point animation
-        startPointAnimation = true
+        isPointAnimationStarted = true
+        
         let loadingPointAnimation = pointAnimation()
         let timerId = setTimeout(function request() {
             
-            if (startPointAnimation) {
+            if (isPointAnimationStarted) {
                 timerId = setTimeout(request, 500);
                 loadingPointAnimation(sendStatus)
             }
@@ -268,25 +392,115 @@ redux.subscribe(() => {
 
     }
 
-    // Check redux status and clean status bar
-    if (sendStatus === "RESOLVED") {
-        startPointAnimation = false
-        checkSendButtonForDisabling()
-        inputMessage.focus()
-    }
+    // If sending message is failed
+    if (sendStatus === "REJECTED") {
 
-    // Check redux status and make error caption if it is needed
-    if (sendStatus === "REJECTED" && getStatus === "RESOLVED") {
-        startPointAnimation = false
-        checkSendButtonForDisabling()
-    }
+        isPointAnimationStarted = false
 
-    // Check redux status and clean status bar
-    if (sendStatus === "REJECTED" && getStatus === "REJECTED") {
-        startPointAnimation = false
-        // checkSendButtonForDisabling()
+        sendButton.disabled = true
+        sendButton.classList.add("disabled")
         sendButton.innerHTML = "ОШИБКА! Отсутствует соединение."
+
+        // If getting message is successful
+        if (getStatus === "RESOLVED") {
+            sendButton.disabled = false
+            sendButton.classList.remove("disabled")
+        }
+
     }
+
+    // If message is sended
+    if (sendStatus === "RESOLVED") {
+
+        isPointAnimationStarted = false
+
+        // If getting message is failed
+        if (getStatus === "REJECTED") {
+            sendButton.innerHTML = "ОШИБКА! Отсутствует соединение."
+            sendButton.disabled = true
+            sendButton.classList.add("disabled")
+        }
+
+        // If getting message is successful
+        if (getStatus === "RESOLVED") {
+            sendButton.innerHTML = "Отправить сообщение"
+            sendButton.disabled = false
+            sendButton.classList.remove("disabled")
+        }
+
+    }
+
+    // Send status "clear" is ignored
+
+    // If input nick is empty
+    if (inputNickFilled === false) {
+        sendButton.innerHTML = "Введите ник!"
+        sendButton.disabled = true
+        sendButton.className = "disabled"
+    }
+
+    // If input message is empty
+    if (inputMessageFilled === false) {
+        sendButton.innerHTML = "Введите сообщение!"
+        sendButton.disabled = true
+        sendButton.className = "disabled"
+    }
+
+
+
+
+
+    // if (sendStatus !== "PENDING") {
+
+    //     // If nick input is empty
+    //     if (inputNick.value === "" ) {
+
+    //         // Make and style send button as disabled
+    //         sendButton.innerHTML = "Введите ник!"
+    //         sendButton.disabled = true
+    //         sendButton.className = "disabled"
+
+    //     }
+    //     // If message input is empty
+    //     else if (inputMessage.value === "" ) {
+
+    //         // Make and style send button as disabled
+    //         sendButton.innerHTML = "Введите сообщение!"
+    //         sendButton.disabled = true
+    //         sendButton.className = "disabled"
+    //     }
+        
+    //     // If user pressing enter key
+    //     else if ((inputMessage.value).includes("\n")) {
+
+    //         // Make and style send button as disabled
+    //         inputMessage.value = (inputMessage.value).replace("\n", "")
+    //         sendButton.innerHTML = "ОПУТИ!"
+    //         sendButton.disabled = true
+    //         sendButton.className = "disabled"
+    //     }
+
+    //     // If all is good
+    //     else {
+
+    //         // Make and style send button as abled
+    //         sendButton.innerHTML = "Отправить сообщение"
+    //         sendButton.disabled = false
+    //         sendButton.className = ""
+
+    //     }
+    
+    // }
+
+
+
+
+
+
+
+
+
+
 
 })
 
@@ -447,7 +661,7 @@ redux.subscribe(() => {
 sendButton.onclick = () => {
 
     // Send message and loag messages
-    redux.dispatch(sendAndCheck(inputNick.value, inputMessage.value))
+    redux.dispatch(actionSendAndCheck(inputNick.value, inputMessage.value))
 
 }
 
@@ -479,10 +693,11 @@ inputNick.oninput = () => {
     // Check input nick for not empty value
     checkSendButtonForDisabling()
 
+    
+
 }
 
-loadNickFromStorage()
-function loadNickFromStorage() {
+(function loadNickFromStorage() {
     
     // Load nick from storage
     if (localStorage.getItem("nick") !== null) inputNick.value = localStorage.getItem("nick")
@@ -490,7 +705,7 @@ function loadNickFromStorage() {
     // Check input nick for not empty value
     checkSendButtonForDisabling()
     
-}
+})()
 
 inputMessage.oninput = () => {
     
@@ -502,8 +717,7 @@ inputMessage.oninput = () => {
 
 }
 
-loadMessageFromStorage()
-function loadMessageFromStorage() {
+(function loadMessageFromStorage() {
 
     // Load message from storage
     if (localStorage.getItem("message") !== null) inputMessage.value = localStorage.getItem("message")
@@ -511,56 +725,7 @@ function loadMessageFromStorage() {
     // Check input message for not empty value
     checkSendButtonForDisabling()
 
-}
-
-
-
-// Check send button for disabling
-function checkSendButtonForDisabling() {
-
-    if (redux.getState().sendStatus !== "PENDING") {
-
-        // If nick input is empty
-        if (inputNick.value === "" ) {
-
-            // Make and style send button as disabled
-            sendButton.innerHTML = "Введите ник!"
-            sendButton.disabled = true
-            sendButton.className = "disabled"
-
-        }
-        // If message input is empty
-        else if (inputMessage.value === "" ) {
-
-            // Make and style send button as disabled
-            sendButton.innerHTML = "Введите сообщение!"
-            sendButton.disabled = true
-            sendButton.className = "disabled"
-        }
-        
-        // If user pressing enter key
-        else if ((inputMessage.value).includes("\n")) {
-
-            // Make and style send button as disabled
-            inputMessage.value = (inputMessage.value).replace("\n", "")
-            sendButton.innerHTML = "ОПУТИ!"
-            sendButton.disabled = true
-            sendButton.className = "disabled"
-        }
-
-        // If all is good
-        else {
-
-            // Make and style send button as abled
-            sendButton.innerHTML = "Отправить сообщение"
-            sendButton.disabled = false
-            sendButton.className = ""
-
-        }
-    
-    }
-
-}
+})()
 
 document.addEventListener("keypress", (event) => {
 
@@ -599,7 +764,7 @@ const pressEnterActions = (event) => {
 
         // If sendbutton is not disable
         else  {
-            redux.dispatch(sendAndCheck(inputNick.value, inputMessage.value))
+            redux.dispatch(actionSendAndCheck(inputNick.value, inputMessage.value))
         }
 
     }

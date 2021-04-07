@@ -21,20 +21,37 @@ const convertSecondsIntoTime = (count=0) => {
 
 }
 // Validation
-convertSecondsIntoTime.PropTypes = {
+convertSecondsIntoTime.propTypes = {
     count: PropTypes.number.isRequired
 }
 
 
 const convertTimeIntoSeconds = (hours=0, minutes=0, seconds=0) => {
+
     return +hours*3600 + +minutes*60 + +seconds
+    
 }
 // Validation
-convertSecondsIntoTime.PropTypes = {
+convertSecondsIntoTime.propTypes = {
     hours: PropTypes.number,
     minutes: PropTypes.number,
     seconds: PropTypes.number
 }
 
 
-export default {convertSecondsIntoTime, convertTimeIntoSeconds}
+const convertTimeIntoRotationDegrees = ({hours, minutes, seconds}) => {
+
+    let hoursDegrees = (hours % 24) / 12 *360
+    let minutesDegrees = (minutes % 60) / 60 *360
+    let secondsDegrees = (seconds % 60) / 60 *360
+
+    return {hoursDegrees, minutesDegrees, secondsDegrees}
+}
+// Validation
+convertTimeIntoRotationDegrees.propTypes = {
+    hours: PropTypes.number,
+    minutes: PropTypes.number,
+    seconds: PropTypes.number
+}
+
+export default {convertSecondsIntoTime, convertTimeIntoSeconds, convertTimeIntoRotationDegrees}
