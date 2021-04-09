@@ -7,6 +7,9 @@ const router = express.Router();
 
 export const getDocuments = async (req, res) => { 
     try {
+        
+        console.log('Get documents server.')
+
         const userId = req.userId
         const userState = await User.findById(userId);
         // const documents = user.documents;
@@ -23,19 +26,21 @@ export const createDocument = async (req, res) => {
     try {
         const userId = req.userId
         const newDocument = req.body;
-        // console.log(newDocument);
+
+        console.log("111111111111111111111111111111111");
+        console.log(newDocument);
         
-        let newUser = await User.findById(userId);
-        // console.log(newUser);
+        // let newUser = await User.findById(userId);
+        // // console.log(newUser);
 
-        await newUser.documents.push({
-            name: newDocument.name, 
-            createdAt: new Date(),
-            changedAt: new Date(),
-        })
-        // console.log(newUser);
+        // await newUser.documents.push({
+        //     name: newDocument.name, 
+        //     createdAt: new Date(),
+        //     changedAt: new Date(),
+        // })
+        // // console.log(newUser);
 
-        const userState = await User.findByIdAndUpdate(userId, newUser, { new: true });
+        // const userState = await User.findByIdAndUpdate(userId, newUser, { new: true });
         
         // console.log(userState)
                 

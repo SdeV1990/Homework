@@ -13,7 +13,7 @@ const Home = () => {
     }, []);
 
     const handleCreateDocument = () => {
-        dispatch(createDocument({name: newDocumentName}));
+        dispatch(createDocument({ name: newDocumentName }));
     }
 
     return (

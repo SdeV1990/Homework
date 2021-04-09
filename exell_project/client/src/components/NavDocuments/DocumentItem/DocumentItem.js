@@ -5,8 +5,8 @@ const DocumentItem = ({doc, deleteDocument }) => {
     const history = useHistory();
 
     const openDocument = (docID) => {
-        // console.log(docID);
-        history.push(`/document/${docID}`);
+        console.log(docID);
+        // history.push(`/document/${docID}`);
     }
 
     return (

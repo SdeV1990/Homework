@@ -16,6 +16,8 @@ API.interceptors.request.use((req) => {
 // export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
 // export const deletePost = (id) => API.delete(`/posts/${id}`);
 
+export const getDocument = (id) => API.get(`/document/${id}`);
+
 export const getDocuments = () => API.get('/documents');
 export const createDocument = (newDocument) => API.post('/documents', newDocument);
 export const deleteDocument = (id) => API.delete(`/documents/${id}`);

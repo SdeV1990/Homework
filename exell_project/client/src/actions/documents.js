@@ -1,13 +1,13 @@
-import { FETCH_DOCUMENTS, CREATE_DOCUMENT, DELETE_DOCUMENT } from '../constants/actionTypes';
+import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
 export const getDocuments = () => async (dispatch) => {
     try {
         const userState = await api.getDocuments();
 
-        // console.log(`User state: ${userState}`)
+        console.log(`User state: ${userState}`)
         
-        dispatch({ type: FETCH_DOCUMENTS, payload: userState });
+        dispatch({ type: actionType.FETCH_DOCUMENTS, payload: userState });
     } catch (error) {
         console.log(error);
     }
@@ -20,7 +20,7 @@ export const createDocument = (newDocument) => async (dispatch) => {
     
         // console.log(`User state: ${userState}`)
 
-        dispatch({ type: CREATE_DOCUMENT, payload: userState });
+        dispatch({ type: actionType.CREATE_DOCUMENT, payload: userState });
     } catch (error) {
         console.log(error); 
     }
@@ -33,7 +33,7 @@ export const deleteDocument = (documentIDToDelete) => async (dispatch) => {
     
         // console.log(userState)
         
-        dispatch({ type: DELETE_DOCUMENT, payload: userState });
+        dispatch({ type: actionType.DELETE_DOCUMENT, payload: userState });
     } catch (error) {
         console.log(error); 
     }
