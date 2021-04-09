@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import DocumentItem from './DocumentItem/DocumentItem.js';
-import { actionGetDocuments, actionDeleteDocument, actionCreateDocument } from '../../actions/documents.js';
+import { actionGetDocuments, actionCreateDocument, actionDeleteDocument } from '../../actions/documents.js';
 import { connect } from 'react-redux';
 
-const DocItems = ({docs, actionDeleteDocument}) => {
+const DocItems = ( {docs, actionDeleteDocument} ) => {
     return (
         <>
             {docs.map(
@@ -21,23 +21,21 @@ const DocItems = ({docs, actionDeleteDocument}) => {
     );
 }
 
-const NavDocuments = ( { documents, actionGetDocuments, actionDeleteDocument, actionCreateDocument } ) => {
+const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, actionDeleteDocument } ) => {
     const [ newDocumentName, setNewDocumentName ] = useState('');
 
     useEffect( () => {
         actionGetDocuments();
-    }, []);
+    }, [] );
 
     console.log('Local state')
     console.log(documents);
 
-    const createDocumentHandle = () => {
-        actionCreateDocument( { name: newDocumentName } );
-    }
-
+    // const createDocumentHandle = () => actionCreateDocument( { name: newDocumentName } );
+    
     return (
         <>
-            <button onClick={ createDocumentHandle }>Create new document </button>
+            <button onClick={ () => actionCreateDocument( { name: newDocumentName } ) }>Create new document </button>
             <p>
                 <input onChange={(e) => setNewDocumentName(e.target.value)} id='newDocumentName' type='text'></input>
             </p>
@@ -55,6 +53,6 @@ const NavDocuments = ( { documents, actionGetDocuments, actionDeleteDocument, ac
     );
 }
 
-const CNavDocuments = connect( state => ({documents: state.documents}), { actionGetDocuments, actionDeleteDocument, actionCreateDocument } )(NavDocuments);
+const CNavDocuments = connect( state => ({ documents: state.documents }), { actionGetDocuments, actionCreateDocument, actionDeleteDocument } )(NavDocuments);
 
 export default CNavDocuments;
