@@ -2,21 +2,19 @@ import express from 'express';
 import mongoose from 'mongoose';
 
 import User from '../models/user.js';
+import Document from '../models/document.js';
 
 const router = express.Router();
 
 export const getDocuments = async (req, res) => { 
     try {
-        
-        console.log('Get documents server.')
 
         const userId = req.userId
-        const userState = await User.findById(userId);
-        // const documents = user.documents;
+        const userDocuments = await Document.find({createdBy: userId})
 
-        // console.log(userState)
+        // console.log(userDocuments)
                 
-        res.status(200).json(userState);
+        res.status(200).json(userDocuments);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -25,26 +23,30 @@ export const getDocuments = async (req, res) => {
 export const createDocument = async (req, res) => { 
     try {
         const userId = req.userId
-        const newDocument = req.body;
+        const newDocumentName = req.body.name;
+        const newDocument = {
+            name: newDocumentName, 
+            createdBy: userId,
+        }
 
-        console.log("111111111111111111111111111111111");
-        console.log(newDocument);
+        const newDoc = await Document.create(newDocument);
         
+        // console.log(userState2)
+        // 
         // let newUser = await User.findById(userId);
-        // // console.log(newUser);
-
+        // 
         // await newUser.documents.push({
         //     name: newDocument.name, 
         //     createdAt: new Date(),
-        //     changedAt: new Date(),
+        //     changedAt: new Date()
         // })
-        // // console.log(newUser);
-
+        // console.log(newUser);
+        // 
         // const userState = await User.findByIdAndUpdate(userId, newUser, { new: true });
-        
+        // 
         // console.log(userState)
                 
-        res.status(200).json(userState);
+        res.status(200).json(newDoc);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -53,11 +55,21 @@ export const createDocument = async (req, res) => {
 export const deleteDocument = async (req, res) => { 
     try {
         const userId = req.userId
-        const { id } = req.params;
+        const { id } = req.params
         // console.log(id);
+
+        // If user is autor or a friend with right to delete
+        const neededDocument = await Document.findById(id);
+
+        if ( userId = neededDocument.createdBy ) {
+            console.log('Deleted by user');
+        } else if ( neededDocument.rightsAccess.delete.includes(userId) ) {
+            console.log('Deleted by friend')
+        }
+
         
         let newUser = await User.findOne({_id: userId });
-        let newDocumentList = newUser.documents.filter( (doc)=> doc._id != id )
+        let newDocumentList = newUser.documents.filter( (doc)=> doc._id != id );
         newUser.documents = newDocumentList
         // console.log(newUser);
 

@@ -7,7 +7,7 @@ export const getDocument = (docID) => async (dispatch) => {
 
         // console.log(`User state: ${userState}`)
         
-        // dispatch({ type: actionType.FETCH_DOCUMENTS, payload: userState });
+        dispatch({ type: actionType.FETCH_DOCUMENTS, payload: userState });
     } catch (error) {
         console.log(error);
     }

@@ -3,10 +3,11 @@ import mongoose from "mongoose";
 const documentSchema = mongoose.Schema({
     id: { type: String },
     name: { type: String, required:  true },
-    createdAt: { type: Date, required: true },
+    createdAt: { type: Date, required: true, default: new Date() },
     createdBy: { type: String },
-    changedAt: { type: Date, required: true },
+    changedAt: { type: Date, required: true, default: new Date() },
     changedBy: { type: String },
+    isDeleted: { type: Boolean, required: true, default: false },
     // Arrays of userID who has rights, user-defined 
     rightsAccess: {
         read: [{ type: String }],

@@ -1,32 +1,32 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
-export const getDocuments = () => async (dispatch) => {
+export const actionGetDocuments = () => async (dispatch) => {
     try {
-        const userState = await api.getDocuments();
+        const documents = await api.getDocuments();
 
-        console.log(`User state: ${userState}`)
+        // console.log(`User state: ${documents}`)
         
-        dispatch({ type: actionType.FETCH_DOCUMENTS, payload: userState });
+        dispatch({ type: actionType.FETCH_DOCUMENTS, payload: documents });
     } catch (error) {
         console.log(error);
     }
 };
 
-export const createDocument = (newDocument) => async (dispatch) => {
+export const actionCreateDocument = (newDocument) => async (dispatch) => {
     try {
-        console.log(newDocument)
-        const userState  = await api.createDocument(newDocument);
-    
+        const createdDocument  = await api.createDocument(newDocument);
+        
+        console.log(createdDocument.data)
         // console.log(`User state: ${userState}`)
 
-        dispatch({ type: actionType.CREATE_DOCUMENT, payload: userState });
+        dispatch({ type: actionType.CREATE_DOCUMENT, payload: createdDocument.data });
     } catch (error) {
         console.log(error); 
     }
 };
 
-export const deleteDocument = (documentIDToDelete) => async (dispatch) => {
+export const actionDeleteDocument = (documentIDToDelete) => async (dispatch) => {
     try {
         console.log(documentIDToDelete);
         const userState  = await api.deleteDocument(documentIDToDelete);
