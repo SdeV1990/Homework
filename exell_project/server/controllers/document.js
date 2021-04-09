@@ -12,11 +12,11 @@ export const getDocument = async (req, res) => {
         const { id } = req.params;
         console.log(userId + '/' + id);
 
-        // const documents = user.documents;
+        const documents = user.documents;
 
-        // console.log(userState)
+        console.log(userState)
                 
-        // res.status(200).json(userState);
+        res.status(200).json(userState);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
