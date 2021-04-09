@@ -10,10 +10,8 @@ export const getDocuments = async (req, res) => {
     try {
 
         const userId = req.userId
-        const userDocuments = await Document.find({createdBy: userId})
-
-        // console.log(userDocuments)
-                
+        const userDocuments = await Document.find({isDeleted: false}) //{createdBy: userId, isDeleted: false}
+        
         res.status(200).json(userDocuments);
     } catch (error) {
         res.status(404).json({ message: error.message });
@@ -24,27 +22,14 @@ export const createDocument = async (req, res) => {
     try {
         const userId = req.userId
         const newDocumentName = req.body.name;
+        
         const newDocument = {
             name: newDocumentName, 
             createdBy: userId,
+            changedBy: userId,
         }
 
         const newDoc = await Document.create(newDocument);
-        
-        // console.log(userState2)
-        // 
-        // let newUser = await User.findById(userId);
-        // 
-        // await newUser.documents.push({
-        //     name: newDocument.name, 
-        //     createdAt: new Date(),
-        //     changedAt: new Date()
-        // })
-        // console.log(newUser);
-        // 
-        // const userState = await User.findByIdAndUpdate(userId, newUser, { new: true });
-        // 
-        // console.log(userState)
                 
         res.status(200).json(newDoc);
     } catch (error) {
@@ -56,28 +41,43 @@ export const deleteDocument = async (req, res) => {
     try {
         const userId = req.userId
         const { id } = req.params
-        // console.log(id);
-
+        
         // If user is autor or a friend with right to delete
         const neededDocument = await Document.findById(id);
-
-        if ( userId = neededDocument.createdBy ) {
-            console.log('Deleted by user');
-        } else if ( neededDocument.rightsAccess.delete.includes(userId) ) {
-            console.log('Deleted by friend')
-        }
-
         
-        let newUser = await User.findOne({_id: userId });
-        let newDocumentList = newUser.documents.filter( (doc)=> doc._id != id );
-        newUser.documents = newDocumentList
-        // console.log(newUser);
+        // Deleted by creator
+        if ( userId === neededDocument.createdBy ) {
+            // console.log('Deleted by creator');
 
-        const userState = await User.findByIdAndUpdate(userId, newUser, { new: true });
+            neededDocument.isDeleted = true
+            neededDocument.changedAt = new Date();
+            neededDocument.changedBy = userId
+            neededDocument.save();
+
+            // console.log(neededDocument);
+
+        // Deleted by friend
+        } else if ( neededDocument.rightsAccess.delete.includes(userId) ) {
+            // console.log('Deleted by friend');
+            
+            neededDocument.isDeleted = true
+            neededDocument.changedAt = new Date();
+            neededDocument.changedBy = userId
+            neededDocument.save();
+
+            // console.log(neededDocument);
+        }
+        
+        // let newUser = await User.findOne({_id: userId });
+        // let newDocumentList = newUser.documents.filter( (doc)=> doc._id != id );
+        // newUser.documents = newDocumentList
+        // // console.log(newUser);
+
+        // const userState = await User.findByIdAndUpdate(userId, newUser, { new: true });
                 
-        // console.log(userState)
+        // // console.log(userState)
 
-        res.status(200).json(userState);
+        res.status(200).json(neededDocument);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

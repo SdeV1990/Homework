@@ -10,7 +10,7 @@ const DocItems = ( {docs, actionDeleteDocument} ) => {
                 curDoc => { 
                     return (
                         <DocumentItem 
-                            doc={curDoc} 
+                            doc={curDoc}
                             key={curDoc._id}
                             deleteDocument={actionDeleteDocument}
                         />
@@ -43,7 +43,9 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
                 <tr>
                     <th>Name</th>
                     <th>Changed at</th>
+                    <th>Changed by</th>
                     <th>Created at</th>
+                    <th>Created by</th>
                 </tr>
                 <tbody>
                     <DocItems docs={ documents } actionDeleteDocument={ actionDeleteDocument } />

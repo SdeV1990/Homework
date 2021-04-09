@@ -5,7 +5,6 @@ const DocumentItem = ({doc, deleteDocument }) => {
     const history = useHistory();
 
     const openDocument = (docID) => {
-        // console.log(docID);
         // history.push(`/document/${docID}`);
     }
 
@@ -13,7 +12,9 @@ const DocumentItem = ({doc, deleteDocument }) => {
         <tr>
             <td>{doc.name}</td>
             <td>{`${new Date(doc.changedAt).toLocaleTimeString()} ${new Date(doc.changedAt).toLocaleDateString()}`}</td>
+            <td>{doc.changedBy}</td>
             <td>{`${new Date(doc.createdAt).toLocaleTimeString()} ${new Date(doc.createdAt).toLocaleDateString()}`}</td>
+            <td>{doc.createdBy}</td>
             <td>
                 <button onClick={ () => deleteDocument(doc._id) }>Delete</button>
             </td>

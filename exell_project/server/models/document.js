@@ -4,9 +4,9 @@ const documentSchema = mongoose.Schema({
     id: { type: String },
     name: { type: String, required:  true },
     createdAt: { type: Date, required: true, default: new Date() },
-    createdBy: { type: String },
+    createdBy: { type: String, required: true},
     changedAt: { type: Date, required: true, default: new Date() },
-    changedBy: { type: String },
+    changedBy: { type: String, required: true},
     isDeleted: { type: Boolean, required: true, default: false },
     // Arrays of userID who has rights, user-defined 
     rightsAccess: {

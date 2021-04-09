@@ -3,18 +3,15 @@ import * as actionType from '../constants/actionTypes';
 const documents = (state = [], action) => {
   switch (action.type) {
     case actionType.FETCH_DOCUMENTS:
-
         return [...action.payload.data];
 
     case actionType.CREATE_DOCUMENT:
-        
         state.push(action.payload)
-        console.log('Create document status');
-        console.log(state);
         return [...state];
 
     case actionType.DELETE_DOCUMENT:
-        return action.payload.data.documents;
+        const newState = state.filter(document => document._id != action.payload.data._id)
+        return newState;
 
     // case CREATE:
     //   return [...posts, action.payload];
