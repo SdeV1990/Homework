@@ -1,5 +1,7 @@
 import React from 'react';
 import { useHistory } from 'react-router-dom';
+import Button from '@material-ui/core/Button';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const DocumentItem = ({doc, deleteDocument }) => {
     const history = useHistory();
@@ -16,10 +18,12 @@ const DocumentItem = ({doc, deleteDocument }) => {
             <td>{`${new Date(doc.createdAt).toLocaleTimeString()} ${new Date(doc.createdAt).toLocaleDateString()}`}</td>
             <td>{doc.createdBy}</td>
             <td>
-                <button onClick={ () => deleteDocument(doc._id) }>Delete</button>
+                <Button onClick={ () => deleteDocument(doc._id) }>
+                    <DeleteIcon color="action" />
+                </Button>
             </td>
             <td>
-                <button onClick={ () => openDocument(doc._id) }>Open</button>
+                <Button onClick={ () => openDocument(doc._id) }>Open</Button>
             </td>
         </tr>
     );

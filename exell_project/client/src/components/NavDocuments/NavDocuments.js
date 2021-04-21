@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import DocumentItem from './DocumentItem/DocumentItem.js';
+import FormCreateDocument from './CreateDocumentForm/CreateDocumentForm.js';
 import { actionGetDocuments, actionCreateDocument, actionDeleteDocument } from '../../actions/documents.js';
 import { connect } from 'react-redux';
 
@@ -39,6 +40,7 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
             <p>
                 <input onChange={(e) => setNewDocumentName(e.target.value)} id='newDocumentName' type='text'></input>
             </p>
+            <FormCreateDocument/>
             <table border={2}>
                 <tr>
                     <th>Name</th>
