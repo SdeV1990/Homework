@@ -6,12 +6,12 @@ const documents = (state = [], action) => {
         return [...action.payload.data];
 
     case actionType.CREATE_DOCUMENT:
-        state.push(action.payload)
+        state.push(action.payload);
         return [...state];
 
     case actionType.DELETE_DOCUMENT:
-        const newState = state.filter(document => document._id != action.payload.data._id)
-        return newState;
+        const newState = state.filter(document => document._id !== action.payload.data._id);
+        return [...newState];
 
     // case CREATE:
     //   return [...posts, action.payload];

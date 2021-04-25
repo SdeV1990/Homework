@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import DocumentItem from './DocumentItem/DocumentItem.js';
 import FormCreateDocument from './CreateDocumentForm/CreateDocumentForm.js';
+import EnhancedTable from './DocumentsRules.js';
 import { actionGetDocuments, actionCreateDocument, actionDeleteDocument } from '../../actions/documents.js';
 import { connect } from 'react-redux';
 
@@ -29,7 +30,7 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
         actionGetDocuments();
     }, [] );
 
-    console.log('Local state')
+    // console.log('Local state')
     console.log(documents);
 
     // const createDocumentHandle = () => actionCreateDocument( { name: newDocumentName } );
@@ -53,6 +54,7 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
                     <DocItems docs={ documents } actionDeleteDocument={ actionDeleteDocument } />
                 </tbody>
             </table>
+            <EnhancedTable/>
         </>
     );
 }
