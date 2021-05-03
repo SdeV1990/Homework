@@ -3,21 +3,42 @@ import * as api from '../api/index.js';
 
 export const actionGetDocuments = () => async (dispatch) => {
     try {
+        // Pending status
+        dispatch({type: actionType.FETCH_DOCUMENTS_PENDING});
+
+        // Request to database
         const documents = await api.getDocuments();
 
-        dispatch({ type: actionType.FETCH_DOCUMENTS, payload: documents });
+        // Success status
+        dispatch({ type: actionType.FETCH_DOCUMENTS_SUCCESS, payload: documents });
+
     } catch (error) {
+
+        // Rejected status
+        dispatch({ type: actionType.FETCH_DOCUMENTS_REJECTED });
         console.log(error);
+
     }
 };
 
 export const actionCreateDocument = (newDocument) => async (dispatch) => {
     try {
+
+        // Pending status
+        dispatch({type: actionType.CREATE_DOCUMENT_PENDING});
+
+        // Request to database
         const createdDocument  = await api.createDocument(newDocument);
 
-        dispatch({ type: actionType.CREATE_DOCUMENT, payload: createdDocument.data });
+        // Success status
+        dispatch({ type: actionType.CREATE_DOCUMENT_SUCCESS, payload: createdDocument.data });
+
     } catch (error) {
+
+        // Rejected status
+        dispatch({ type: actionType.CREATE_DOCUMENT_REJECTED });
         console.log(error); 
+
     }
 };
 
@@ -26,7 +47,7 @@ export const actionDeleteDocument = (documentIDToDelete) => async (dispatch) => 
         console.log(documentIDToDelete);
         const userState  = await api.deleteDocument(documentIDToDelete);
     
-        // console.log(userState)
+        console.log(userState)
         
         dispatch({ type: actionType.DELETE_DOCUMENT, payload: userState });
     } catch (error) {

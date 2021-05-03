@@ -1,17 +1,33 @@
 import * as actionType from '../constants/actionTypes';
 
-const documents = (state = [], action) => {
+const documents = (state = {status:'', list: []}, action) => {
   switch (action.type) {
-    case actionType.FETCH_DOCUMENTS:
-        return [...action.payload.data];
+    
+    // Fetch documents
+    case actionType.FETCH_DOCUMENTS_SUCCESS:
+        return {status:'FETCH_DOCUMENTS_SUCCESS', list: [...action.payload.data]};
 
-    case actionType.CREATE_DOCUMENT:
-        state.push(action.payload);
-        return [...state];
+    case actionType.FETCH_DOCUMENTS_PENDING:
+        return {status:'FETCH_DOCUMENTS_PENDING', list: [...state.list]};
 
+    case actionType.FETCH_DOCUMENTS_REJECTED:
+        return {status:'FETCH_DOCUMENTS_REJECTED', list: [...state.list]};
+
+    // Create document
+    case actionType.CREATE_DOCUMENT_SUCCESS:
+        state.list.push(action.payload);
+        return {...state, status:'CREATE_DOCUMENT_SUCCESS'};
+
+    case actionType.CREATE_DOCUMENT_PENDING:
+        return {...state, status:'CREATE_DOCUMENT_PENDING'};
+
+    case actionType.CREATE_DOCUMENT_REJECTED:
+        return {...state, status: 'CREATE_DOCUMENT_REJECTED'};
+
+    // Delete documents
     case actionType.DELETE_DOCUMENT:
-        const newState = state.filter(document => document._id !== action.payload.data._id);
-        return [...newState];
+        const newStateDocuments = state.filter(document => document._id !== action.payload.data._id);
+        return {status:'', list: [...newStateDocuments]};
 
     // case CREATE:
     //   return [...posts, action.payload];

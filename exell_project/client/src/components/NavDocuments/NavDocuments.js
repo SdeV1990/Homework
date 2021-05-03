@@ -1,60 +1,59 @@
-import React, { useState, useEffect } from 'react';
-import DocumentItem from './DocumentItem/DocumentItem.js';
-import FormCreateDocument from './CreateDocumentForm/CreateDocumentForm.js';
-import EnhancedTable from './DocumentsRules.js';
+import React, { useEffect } from 'react';
+import EnhancedTable from './EnhancedTable.js';
 import { actionGetDocuments, actionCreateDocument, actionDeleteDocument } from '../../actions/documents.js';
+import * as actionType from '../../constants/actionTypes.js';
 import { connect } from 'react-redux';
 
-const DocItems = ( {docs, actionDeleteDocument} ) => {
-    return (
-        <>
-            {docs.map(
-                curDoc => { 
-                    return (
-                        <DocumentItem 
-                            doc={curDoc}
-                            key={curDoc._id}
-                            deleteDocument={actionDeleteDocument}
-                        />
-                    )
-                }
-            )}
-        </>
-    );
-}
+import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js';
+import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js';
 
 const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, actionDeleteDocument } ) => {
-    const [ newDocumentName, setNewDocumentName ] = useState('');
 
     useEffect( () => {
         actionGetDocuments();
     }, [] );
 
-    // console.log('Local state')
-    console.log(documents);
+    console.log(documents.list);
+    console.log(documents.status);
+    
+    let isOpen = false
+    let alertText
+    let severity // error, warning, info, success 
 
-    // const createDocumentHandle = () => actionCreateDocument( { name: newDocumentName } );
+    // Fetch statuses
+    if (documents.status == actionType.FETCH_DOCUMENTS_SUCCESS) {
+        isOpen = true
+        alertText = "Documents are loaded!"
+        severity = "success"
+    } else if (documents.status == actionType.FETCH_DOCUMENTS_REJECTED) {
+        isOpen = true
+        alertText = "ERROR: cann't load documents!"
+        severity = "error"
+    }
+    // Create document statuses
+    else if (documents.status == actionType.CREATE_DOCUMENT_SUCCESS) {
+        isOpen = true
+        alertText = "Document is created!"
+        severity = "success"
+    } else if (documents.status == actionType.CREATE_DOCUMENT_REJECTED) {
+        isOpen = true
+        alertText = "Error: document isn't created!"
+        severity = "error"
+    // Else statuses
+    } else {
+        isOpen = false
+    }
     
     return (
         <>
-            <button onClick={ () => actionCreateDocument( { name: newDocumentName } ) }>Create new document </button>
-            <p>
-                <input onChange={(e) => setNewDocumentName(e.target.value)} id='newDocumentName' type='text'></input>
-            </p>
-            <FormCreateDocument/>
-            <table border={2}>
-                <tr>
-                    <th>Name</th>
-                    <th>Changed at</th>
-                    <th>Changed by</th>
-                    <th>Created at</th>
-                    <th>Created by</th>
-                </tr>
-                <tbody>
-                    <DocItems docs={ documents } actionDeleteDocument={ actionDeleteDocument } />
-                </tbody>
-            </table>
-            <EnhancedTable/>
+            <EnhancedTable 
+                documents={documents}
+                actionGetDocuments={actionGetDocuments}
+                actionCreateDocument={actionCreateDocument}
+                actionDeleteDocument={actionDeleteDocument}
+            />
+            <CustomizedBackdrop status={documents.status}/>
+            <CustomizedSnackbar isOpen={isOpen} alertText={alertText} severity={severity}/>
         </>
     );
 }

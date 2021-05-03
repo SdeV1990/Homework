@@ -13,32 +13,39 @@ export const getDocuments = async (req, res) => {
         const userDocuments = await Document.find({isRecycled: false, createdBy: userId })
                                             .populate('createdBy', 'name');
 
-        // console.log(userDocuments);
-
         res.status(200).json(userDocuments);
+
     } catch (error) {
+
         res.status(404).json({ message: error.message });
+        console.log('Get documents error.');
+
     }
 }
 
 export const createDocument = async (req, res) => { 
     try {
-        const user = await User.findById(req.userId)
+        const user = await User.findById(req.userId);
         const newDocumentName = req.body.name
-        
+
         const newDocument = {
             name: newDocumentName, 
             createdBy: user._id,
+            createdAt: new Date(),
+            changedAt: new Date(),
         }
-
+        
         let newDoc = await Document.create(newDocument);
-
+        newDoc = await newDoc.populate('createdBy', 'name').execPopulate();
         newDoc = newDoc.toObject();
-        newDoc.createdBy = {_id: user._id, name: user.name};
 
         res.status(200).json(newDoc);
+
     } catch (error) {
+
         res.status(404).json( { message: error.message } );
+        console.log('Create documents error.');
+
     }
 }
 
@@ -47,16 +54,13 @@ export const deleteDocument = async (req, res) => {
         const userId = req.userId
         const { id } = req.params
         
-        // If user is autor or a friend with right to delete
         const neededDocument = await Document.findById(id);
         
-        // Paranoi...
+        // If user is autor
         if ( userId == neededDocument.createdBy ) {
-
             neededDocument.isRecycled = true
             neededDocument.changedAt = new Date();
             neededDocument.save();
-
         }
 
         res.status(200).json(neededDocument);
