@@ -42,12 +42,10 @@ export const actionCreateDocument = (newDocument) => async (dispatch) => {
     }
 };
 
-export const actionDeleteDocument = (documentIDToDelete) => async (dispatch) => {
+export const actionDeleteDocument = (documentsIDToDelete) => async (dispatch) => {
     try {
-        console.log(documentIDToDelete);
-        const userState  = await api.deleteDocument(documentIDToDelete);
-    
-        console.log(userState)
+        
+        const userState  = await api.deleteDocument(documentsIDToDelete);
         
         dispatch({ type: actionType.DELETE_DOCUMENT, payload: userState });
     } catch (error) {

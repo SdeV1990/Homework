@@ -13,7 +13,7 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
         actionGetDocuments();
     }, [] );
 
-    console.log(documents.list);
+    console.table(documents.list);
     console.log(documents.status);
     
     let isOpen = false

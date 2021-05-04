@@ -26,8 +26,16 @@ const documents = (state = {status:'', list: []}, action) => {
 
     // Delete documents
     case actionType.DELETE_DOCUMENT:
-        const newStateDocuments = state.filter(document => document._id !== action.payload.data._id);
+
+        // Get documents ID list from document list
+        const documentsIDAreDeleted = action.payload.data.map( document => document._id)
+
+        // Remove deleted documents from list by ID list
+        const newStateDocuments = state.list.filter( document => !documentsIDAreDeleted.includes(document._id) );
+
         return {status:'', list: [...newStateDocuments]};
+
+    
 
     // case CREATE:
     //   return [...posts, action.payload];
@@ -36,7 +44,7 @@ const documents = (state = {status:'', list: []}, action) => {
     //   return posts.map((post) => (post._id === action.payload._id ? action.payload : post));
 
     default:
-      return state;
+        return state;
 
   }
 };

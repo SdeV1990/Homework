@@ -52,18 +52,21 @@ export const createDocument = async (req, res) => {
 export const deleteDocument = async (req, res) => { 
     try {
         const userId = req.userId
-        const { id } = req.params
-        
-        const neededDocument = await Document.findById(id);
-        
-        // If user is autor
-        if ( userId == neededDocument.createdBy ) {
-            neededDocument.isRecycled = true
-            neededDocument.changedAt = new Date();
-            neededDocument.save();
-        }
+        const documentsIDToDelete = req.body.selectedDocuments
 
-        res.status(200).json(neededDocument);
+        const documentsToDelete = await Document.find( { _id: { $in: documentsIDToDelete } } );
+
+        // If user is autor
+        documentsToDelete.map( (document) => {
+            if ( userId == document.createdBy ) {
+                document.isRecycled = true
+                document.recycledAt = new Date();
+                document.save(); 
+            }
+        })
+        Document.updateMany(documentsToDelete);
+
+        res.status(200).json(documentsToDelete);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

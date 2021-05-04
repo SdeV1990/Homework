@@ -7,6 +7,7 @@ const documentSchema = mongoose.Schema({
     changedAt: { type: Date, required: true, default: new Date() }, 
     // changedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true},
     isRecycled: { type: Boolean, required: true, default: false },
+    recycledAt: {type: Date, required: false},
     isDeleted: { type: Boolean, required: true, default: false },
     rightsAccess: {
         readAndCopy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],

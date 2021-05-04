@@ -20,7 +20,7 @@ export const getDocument = (id) => API.get(`/document/${id}`);
 
 export const getDocuments = () => API.get('/documents');
 export const createDocument = (newDocument) => API.post('/documents', newDocument);
-export const deleteDocument = (id) => API.delete(`/documents/${id}`);
+export const deleteDocument = (documentsIDToDelete) => API.post(`/documents/delete`, documentsIDToDelete);
 
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);

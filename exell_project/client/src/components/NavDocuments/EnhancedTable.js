@@ -137,31 +137,29 @@ const useToolbarStyles = makeStyles((theme) => ({
 }));
 
 const EnhancedTableToolbar = (props) => {
-  const classes = useToolbarStyles();
-  const { numSelected, actionCreateDocument, rows, selectedDocuments } = props;
+    const classes = useToolbarStyles();
+    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionDeleteDocument, setSelected } = props;
 
-  const handleDeleteSelected = () => {
-        console.log('delete selected documents');
-        console.log(selectedDocuments);
-        console.log(rows);
+    const handleDeleteSelected = () => {
+        actionDeleteDocument({selectedDocuments: selectedDocuments});
+        setSelected([]);
+    }
 
-  }
-
-  return (
-    <Toolbar
-      className={clsx(classes.root, {
-        [classes.highlight]: numSelected > 0,
-      })}
-    >
-      {numSelected > 0 ? (
-        <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
-          {numSelected} selected
-        </Typography>
-      ) : (
-        <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-          My Documents
-        </Typography>
-      )}
+    return (
+        <Toolbar
+        className={clsx(classes.root, {
+            [classes.highlight]: numSelected > 0,
+        })}
+        >
+        {numSelected > 0 ? (
+            <Typography className={classes.title} color="inherit" variant="subtitle1" component="div">
+            {numSelected} selected
+            </Typography>
+        ) : (
+            <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
+            My Documents
+            </Typography>
+        )}
 
         {numSelected > 0 ? (
             <>
@@ -290,7 +288,14 @@ export default function EnhancedTable(props) {
     return (
         <div className={classes.root}>
         <Paper className={classes.paper}>
-            <EnhancedTableToolbar numSelected={selected.length} actionCreateDocument={actionCreateDocument} rows={rows} selectedDocuments={selected}/>
+            <EnhancedTableToolbar 
+                numSelected={selected.length} 
+                rows={rows} 
+                selectedDocuments={selected}
+                actionCreateDocument={actionCreateDocument}
+                actionDeleteDocument={actionDeleteDocument}
+                setSelected={setSelected}
+            />
             <TableContainer>
             <Table
                 className={classes.table}
