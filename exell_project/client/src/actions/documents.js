@@ -45,10 +45,20 @@ export const actionCreateDocument = (newDocument) => async (dispatch) => {
 export const actionDeleteDocument = (documentsIDToDelete) => async (dispatch) => {
     try {
         
-        const userState  = await api.deleteDocument(documentsIDToDelete);
+        // Pending status
+        dispatch({ type: actionType.DELETE_DOCUMENTS_PENDING });
+
+        // Request to database
+        const userState  = await api.deleteDocuments(documentsIDToDelete);
         
-        dispatch({ type: actionType.DELETE_DOCUMENT, payload: userState });
+        // Success status
+        dispatch({ type: actionType.DELETE_DOCUMENTS_SUCCESS, payload: userState });
+
     } catch (error) {
+
+        // Rejected status
+        dispatch({ type: actionType.DELETE_DOCUMENTS_REJECTED });
         console.log(error); 
+
     }
 };

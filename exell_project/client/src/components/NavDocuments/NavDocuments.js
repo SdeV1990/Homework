@@ -20,7 +20,7 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
     let alertText
     let severity // error, warning, info, success 
 
-    // Fetch statuses
+    // Fetch documents statuses
     if (documents.status == actionType.FETCH_DOCUMENTS_SUCCESS) {
         isOpen = true
         alertText = "Documents are loaded!"
@@ -30,6 +30,7 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
         alertText = "ERROR: cann't load documents!"
         severity = "error"
     }
+
     // Create document statuses
     else if (documents.status == actionType.CREATE_DOCUMENT_SUCCESS) {
         isOpen = true
@@ -39,6 +40,17 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
         isOpen = true
         alertText = "Error: document isn't created!"
         severity = "error"
+
+    // Delete documents statuses
+    } else if (documents.status == actionType.DELETE_DOCUMENTS_SUCCESS) {
+        isOpen = true
+        alertText = "Documents are deleted!"
+        severity = "success"
+    } else if (documents.status == actionType.DELETE_DOCUMENTS_REJECTED) {
+        isOpen = true
+        alertText = "Error: documents aren't deleted!"
+        severity = "error"
+
     // Else statuses
     } else {
         isOpen = false

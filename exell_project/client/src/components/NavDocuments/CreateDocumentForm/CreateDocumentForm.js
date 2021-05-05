@@ -15,10 +15,11 @@ import PostAddIcon from '@material-ui/icons/PostAdd';
 export default function CreateDocumentForm(props) {
 
     // Create new default document name
-    const { rows } = props;
+    const { rows } = props
     const nameList = rows.map(row => row.name);
-    let defaultDocumentName = 'NewDocument'
 
+    // Create new default document name with index if it is
+    let defaultDocumentName = 'NewDocument'
     if (nameList.includes(defaultDocumentName)) {
         let index = 2
         do {
@@ -26,37 +27,61 @@ export default function CreateDocumentForm(props) {
             index++
         } while (nameList.includes(defaultDocumentName));
     }
-        
-    // Validate new document name
-    const [isNewDocumentNameValid, setIsNewDocumentNameValid] = useState(false);
-
-    const handleChange = (e) => {
-        defaultDocumentName = e.target.value;
-        if (nameList.includes(e.target.value)) {
-            setIsNewDocumentNameValid(true);
-        } else {
-            setIsNewDocumentNameValid(false);
-        }
-    }
-
-    // Create new document
-    const { actionCreateDocument } = props;
-
-    const createNewDocument = (e) => {
-        actionCreateDocument({ name: defaultDocumentName });
-        handleClose();
-    }
 
     // Dialog controls
     const [open, setOpen] = useState(false);
     
     const handleClickOpen = () => {
         setOpen(true);
+        validate(defaultDocumentName);
     };
     
     const handleClose = () => {
         setOpen(false);
     };
+
+    console.log('Start');
+    console.log(defaultDocumentName);
+    
+    // Validate new document name
+    const [isNewDocumentNameValid, setIsNewDocumentNameValid] = useState(false);
+
+    const validate = (documentName) => {
+        if ( nameList.includes(documentName) ) {
+            defaultDocumentName = documentName;
+            setIsNewDocumentNameValid(true);
+        } else {
+            setIsNewDocumentNameValid(false);
+        }
+    }
+    
+    const handleChange = (e) => {
+        console.log('change');
+        console.log(e.target.value);
+        // if ( nameList.includes(e.target.value) ) {
+        //     defaultDocumentName = e.target.value;
+        //     setIsNewDocumentNameValid(true);
+        // } else {
+        //     setIsNewDocumentNameValid(false);
+        // }
+
+        validate(e.target.value);
+    
+    }
+    
+    // Create new document
+    const createNewDocument = (e) => {
+        
+        const { actionCreateDocument } = props;
+        
+        actionCreateDocument({ name: defaultDocumentName });
+        
+        handleClose();
+        
+    }
+    
+    console.log('End');
+    console.log(defaultDocumentName);
 
     return (
         <div>

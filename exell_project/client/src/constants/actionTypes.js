@@ -1,8 +1,4 @@
-// export const CREATE = 'CREATE';
-// export const UPDATE = 'UPDATE';
-// export const DELETE = 'DELETE';
-// export const FETCH_ALL = 'FETCH_ALL';
-// export const LIKE = 'LIKE';
+// Documents
 
 // Fetch documents
 export const FETCH_DOCUMENTS_SUCCESS = 'FETCH_DOCUMENTS_SUCCESS';
@@ -15,7 +11,15 @@ export const CREATE_DOCUMENT_PENDING = 'CREATE_DOCUMENT_PENDING';
 export const CREATE_DOCUMENT_REJECTED = 'CREATE_DOCUMENT_REJECTED';
 
 // Delete documents
-export const DELETE_DOCUMENT = 'DELETE_DOCUMENT';
+export const DELETE_DOCUMENTS_SUCCESS = 'DELETE_DOCUMENTS_SUCCESS';
+export const DELETE_DOCUMENTS_PENDING = 'DELETE_DOCUMENTS_PENDING';
+export const DELETE_DOCUMENTS_REJECTED = 'DELETE_DOCUMENTS_REJECTED';
+
+
+// Document
+
+
+
 export const GET_DOCUMENT = 'DELETE_DOCUMENT';
 
 export const AUTH = 'AUTH';

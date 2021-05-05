@@ -25,7 +25,7 @@ const documents = (state = {status:'', list: []}, action) => {
         return {...state, status: 'CREATE_DOCUMENT_REJECTED'};
 
     // Delete documents
-    case actionType.DELETE_DOCUMENT:
+    case actionType.DELETE_DOCUMENTS_SUCCESS:
 
         // Get documents ID list from document list
         const documentsIDAreDeleted = action.payload.data.map( document => document._id)
@@ -33,9 +33,13 @@ const documents = (state = {status:'', list: []}, action) => {
         // Remove deleted documents from list by ID list
         const newStateDocuments = state.list.filter( document => !documentsIDAreDeleted.includes(document._id) );
 
-        return {status:'', list: [...newStateDocuments]};
+        return {status:'DELETE_DOCUMENTS_SUCCESS', list: [...newStateDocuments]};
 
-    
+    case actionType.DELETE_DOCUMENTS_PENDING:
+        return {...state, status:'DELETE_DOCUMENTS_PENDING'};
+
+    case actionType.DELETE_DOCUMENTS_REJECTED:
+        return {...state, status: 'DELETE_DOCUMENTS_REJECTED'};
 
     // case CREATE:
     //   return [...posts, action.payload];
