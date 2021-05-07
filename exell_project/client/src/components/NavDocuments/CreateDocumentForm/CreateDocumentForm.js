@@ -1,87 +1,91 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react'
 
-import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogContentText from '@material-ui/core/DialogContentText';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
-import Tooltip from '@material-ui/core/Tooltip';
-
-import PostAddIcon from '@material-ui/icons/PostAdd';
+import Button from '@material-ui/core/Button'
+import TextField from '@material-ui/core/TextField'
+import Dialog from '@material-ui/core/Dialog'
+import DialogActions from '@material-ui/core/DialogActions'
+import DialogContent from '@material-ui/core/DialogContent'
+import DialogContentText from '@material-ui/core/DialogContentText'
+import DialogTitle from '@material-ui/core/DialogTitle'
+import IconButton from '@material-ui/core/IconButton'
+import Tooltip from '@material-ui/core/Tooltip'
+import PostAddIcon from '@material-ui/icons/PostAdd'
 
 export default function CreateDocumentForm(props) {
 
-    // Create new default document name
+    // Get documents name list for comparing for creating only unique value
     const { rows } = props
-    const nameList = rows.map(row => row.name);
+    const nameList = rows.map(row => row.name)
 
-    // Create new default document name with index if it is
-    let defaultDocumentName = 'NewDocument'
-    if (nameList.includes(defaultDocumentName)) {
-        let index = 2
-        do {
-            defaultDocumentName = `${'NewDocument'}(${index})`
-            index++
-        } while (nameList.includes(defaultDocumentName));
-    }
+    // Create new default document name
+    const defaultDocumentName = useRef('NewDocument')
 
-    // Dialog controls
-    const [open, setOpen] = useState(false);
-    
-    const handleClickOpen = () => {
-        setOpen(true);
-        validate(defaultDocumentName);
-    };
-    
-    const handleClose = () => {
-        setOpen(false);
-    };
+    // Create new default document name with index if it already exist
+    const generateNewDocumentName = () => {
 
-    console.log('Start');
-    console.log(defaultDocumentName);
-    
-    // Validate new document name
-    const [isNewDocumentNameValid, setIsNewDocumentNameValid] = useState(false);
+        if ( nameList.includes(defaultDocumentName.current) ) {
 
-    const validate = (documentName) => {
-        if ( nameList.includes(documentName) ) {
-            defaultDocumentName = documentName;
-            setIsNewDocumentNameValid(true);
-        } else {
-            setIsNewDocumentNameValid(false);
+            // Create unique name by increasing index
+            let index = 2
+            do {
+                defaultDocumentName.current = `${'NewDocument'}(${index})`
+                index++
+            } while (nameList.includes(defaultDocumentName.current))
         }
     }
-    
-    const handleChange = (e) => {
-        console.log('change');
-        console.log(e.target.value);
-        // if ( nameList.includes(e.target.value) ) {
-        //     defaultDocumentName = e.target.value;
-        //     setIsNewDocumentNameValid(true);
-        // } else {
-        //     setIsNewDocumentNameValid(false);
-        // }
 
-        validate(e.target.value);
+    // Document name validation state
+    const [isNewDocumentNameValid, setIsNewDocumentNameValid] = useState(false)
+
+    // Validation of new document name
+    const validate = (documentName) => {
+
+        // If entered document name is exist in list
+        if ( nameList.includes(documentName) ) {
+            setIsNewDocumentNameValid(true)
+        } else {
+            setIsNewDocumentNameValid(false)
+        }
+    }
+
+    // Open/close dialog form state
+    const [open, setOpen] = useState(false)
     
+    // To open dialog form
+    const handleClickOpen = () => {
+        setOpen(true)
+
+        // Creating new document name with index
+        generateNewDocumentName()
+
+        // Validate new document name
+        validate(defaultDocumentName.current)
+    }
+    
+    //To close dialog form
+    const handleClose = () => {
+        setOpen(false);
+    }
+
+    // On changin input value of new document name
+    const handleChange = (e) => {
+        
+        // Save value
+        defaultDocumentName.current = (e.target.value)
+
+        // Check entered new document name for existing in list
+        validate(e.target.value)
     }
     
     // Create new document
     const createNewDocument = (e) => {
-        
+
         const { actionCreateDocument } = props;
-        
-        actionCreateDocument({ name: defaultDocumentName });
-        
-        handleClose();
-        
+        actionCreateDocument({ name: defaultDocumentName.current })
+
+        // Close dialog form after creation
+        handleClose()
     }
-    
-    console.log('End');
-    console.log(defaultDocumentName);
 
     return (
         <div>
@@ -103,7 +107,7 @@ export default function CreateDocumentForm(props) {
                     label="New document name"
                     type="text"
                     required={true}
-                    defaultValue={defaultDocumentName}
+                    defaultValue={defaultDocumentName.current}
                     error={isNewDocumentNameValid} // Will customize
                     onChange={handleChange}
                     fullWidth
@@ -119,5 +123,5 @@ export default function CreateDocumentForm(props) {
                 </DialogActions>
             </Dialog>
         </div>
-    );
+    )
 }
