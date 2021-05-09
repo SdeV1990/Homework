@@ -22,7 +22,7 @@ export default function CustomizedSnackbar({isOpen, alertText, severity}) {
 
     useEffect(() => {
         setOpen(isOpen);
-    }, [isOpen])
+    }, [isOpen]) 
 
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {

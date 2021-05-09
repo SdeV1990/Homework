@@ -230,7 +230,7 @@ export default function EnhancedTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, actionGetDocuments, actionCreateDocument, actionDeleteDocument } = props
+    const { documents, actionCreateDocument, actionDeleteDocument } = props
     const rows = documents.list
 
     const handleRequestSort = (event, property) => {
@@ -341,7 +341,7 @@ export default function EnhancedTable(props) {
                         <TableCell align="center">{`${new Date(row.changedAt).toLocaleTimeString()} ${new Date(row.changedAt).toLocaleDateString()}`}</TableCell>
                         <TableCell align="center">{`${new Date(row.createdAt).toLocaleTimeString()} ${new Date(row.createdAt).toLocaleDateString()}`}</TableCell>
                         <TableCell align="center">{
-                                row.rightsAccess.readAndCopy.length==0 ?
+                                row.rightsAccess.readAndCopy.length === 0 ?
                                 <LockIcon color="secondary"/> 
                                 :
                                 <Badge badgeContent={row.rightsAccess.readAndCopy.length} color="primary">
