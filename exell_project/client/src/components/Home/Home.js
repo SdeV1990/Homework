@@ -3,7 +3,7 @@ import CNavDocuments from '../NavDocuments/NavDocuments';
 
 const Home = () => {
     return (
-        <CNavDocuments />
+        <p style={{marginTop: "64px", fontSize: '32px'}}>Home</p> // Delete inline style!!!!!!!!!!!!!!!!!!
     );
 };
 
