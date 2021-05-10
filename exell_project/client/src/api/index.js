@@ -5,6 +5,8 @@ const API = axios.create({ baseURL: 'http://localhost:5000/' });
 
 // Interceptors (JWT)
 API.interceptors.request.use((req) => {
+
+    // Join authorization token to request
     if (localStorage.getItem('profile')) {
         req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
     }

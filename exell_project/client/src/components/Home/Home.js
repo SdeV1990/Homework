@@ -1,5 +1,4 @@
-import React from 'react';
-import CNavDocuments from '../NavDocuments/NavDocuments';
+import React from 'react'
 
 const Home = () => {
     return (
