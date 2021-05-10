@@ -28,7 +28,7 @@ import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 
-import CreateDocumentForm from './CreateDocumentForm/CreateDocumentForm.js';
+import CreateDocumentForm from '../../NavDocuments/CreateDocumentForm/CreateDocumentForm.js';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -222,7 +222,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function EnhancedTable(props) {
+export default function MyDocumentsTable(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('changedAt');

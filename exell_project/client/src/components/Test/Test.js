@@ -56,7 +56,7 @@ export default function AuthExample() {
             </PrivateRoute>
 
             <PrivateRoute path="/protected2">
-              <ProtectedPage2 />
+              <Redirect to={'/protected'} />
             </PrivateRoute>
 
           </Switch>

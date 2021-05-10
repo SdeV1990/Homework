@@ -1,10 +1,10 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Switch, Route } from 'react-router-dom'
-import { useHistory } from 'react-router-dom';
+import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import useStyles from './styles'
 
 // Material UI
-import { makeStyles, useTheme } from '@material-ui/core/styles'
+import { useTheme } from '@material-ui/core/styles'
 import Drawer from '@material-ui/core/Drawer'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -20,90 +20,49 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import InboxIcon from '@material-ui/icons/MoveToInbox'
 import MailIcon from '@material-ui/icons/Mail'
+import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
+import AssignmentIcon from '@material-ui/icons/Assignment'
+import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
+import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
+import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
+import DeleteIcon from '@material-ui/icons/Delete'
+
 // import Typography from '@material-ui/core/Typography'
 
 // Components
 import Navbar from './Navbar/Navbar.js'
-import CNavDocuments from './NavDocuments/NavDocuments.js'
+import CMyDocuments from './MyDocuments/CMyDocuments.js'
 import Home from './Home/Home'
 import Auth from './Auth/Auth'
 
-const drawerWidth = 240;
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        display: 'flex',
-    },
-    appBar: {
-        zIndex: theme.zIndex.drawer + 1,
-        transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-        }),
-    },
-    appBarShift: {
-        marginLeft: drawerWidth,
-        width: `calc(100% - ${drawerWidth}px)`,
-        transition: theme.transitions.create(['width', 'margin'], {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    menuButton: {
-        marginRight: 36,
-    },
-    hide: {
-        display: 'none',
-    },
-    drawer: {
-        width: drawerWidth,
-        flexShrink: 0,
-        whiteSpace: 'nowrap',
-    },
-    drawerOpen: {
-        width: drawerWidth,
-        transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.enteringScreen,
-        }),
-    },
-    drawerClose: {
-        transition: theme.transitions.create('width', {
-        easing: theme.transitions.easing.sharp,
-        duration: theme.transitions.duration.leavingScreen,
-        }),
-        overflowX: 'hidden',
-        width: theme.spacing(7) + 1,
-        [theme.breakpoints.up('sm')]: {
-        width: theme.spacing(9) + 1,
-        },
-    },
-    toolbar: {
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'flex-end',
-        padding: theme.spacing(0, 1),
-        // necessary for content to be below app bar
-        ...theme.mixins.toolbar,
-    },
-    content: {
-        flexGrow: 1,
-        padding: theme.spacing(1),
-    },
-}));
+// A wrapper for <Route> that redirects to the login
+// screen if you're not yet authenticated.
+// Origin https://reactrouter.com/web/example/auth-workflow
+function PrivateRoute({ children, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        // Rendering depends on auth.user state - render children if exist or redirect to login page if not
+        // https://ru.reactjs.org/docs/render-props.html
+        render={({ location }) =>
+          JSON.parse(localStorage.getItem('profile')) ? (
+            children
+          ) : (
+            <Redirect
+              to={{
+                pathname: "/auth",
+                state: { from: location }
+              }}
+            />
+          )
+        }
+      />
+    );
+  }
 
 export default function Main() {
     
-    // If not authorized
-    const history = useHistory()
-    // console.log('Profile')
-    // console.log(!JSON.parse(localStorage.getItem('profile')))
-    // console.log(history.location)
-    // if (!JSON.parse(localStorage.getItem('profile'))) {
-    //     console.log(history.location)
-    //     // history.push('/auth')
-    // }
-
     const classes = useStyles()
     const theme = useTheme()
     const [open, setOpen] = React.useState(false)
@@ -141,7 +100,7 @@ export default function Main() {
                             <MenuIcon />
                         </IconButton>
                     : 
-                        <div/>
+                        <></>
                     }
 
                     <Navbar/>
@@ -171,32 +130,73 @@ export default function Main() {
                     </div>
                     <Divider />
                     <List>
-                    {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                        <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+
+                        {/* My Documents */}
+                        <Link to={'/mydocuments'}>
+                            <ListItem button key={'MyDocuments'}>
+                                <ListItemIcon>
+                                    <AssignmentOutlinedIcon /> 
+                                    {/* <AssignmentIcon /> */}
+                                </ListItemIcon>
+                                <ListItemText primary={'My Documents'} />
+                            </ListItem>
+                        </Link>
+
+                        {/* Friends */}
+                        <Link to={'/friends'}>
+                            <ListItem button key={'Friends'}>
+                                <ListItemIcon>
+                                    <PeopleAltOutlinedIcon />
+                                    {/* <PeopleAltIcon /> */}
+                                </ListItemIcon>
+                                <ListItemText primary={'Friends'} />
+                            </ListItem>
+                        </Link>
+
+                        {/* Recycled */}
+                        <Link to={'/recycled'}>
+                            <ListItem button key={'Recycled'}>
+                                <ListItemIcon>
+                                    <DeleteOutlinedIcon />
+                                    {/* <DeleteIcon /> */}
+                                </ListItemIcon>
+                                <ListItemText primary={'Recycled'} />
+                            </ListItem>
+                        </Link>
+
+                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
+                            <ListItem button key={text}>
+                                <ListItemIcon>
+                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
                     </List>
                     <Divider />
                     <List>
-                    {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                        <ListItem button key={text}>
-                        <ListItemIcon>{index % 2 === 0 ? <InboxIcon /> : <MailIcon />}</ListItemIcon>
-                        <ListItemText primary={text} />
-                        </ListItem>
-                    ))}
+                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
+                            <ListItem button key={text}>
+                                <ListItemIcon>
+                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                </ListItemIcon>
+                                <ListItemText primary={text} />
+                            </ListItem>
+                        ))}
                     </List>
                 </Drawer>
             : 
-            <div/>}
+                <></>
+            }
                 
             {/* Content */}
             <div className={classes.content}>
                 <Switch>
-                    <Route path="/mydocuments" exact component={ JSON.parse(localStorage.getItem('profile')) ? CNavDocuments : Auth } />
-                    <Route path="/" exact component={ JSON.parse(localStorage.getItem('profile')) ? Home : Auth } />
-                    <Route path="/auth" exact component={ JSON.parse(localStorage.getItem('profile')) ? CNavDocuments : Auth } />
+                    <PrivateRoute path="/mydocuments">
+                        <CMyDocuments/>
+                    </PrivateRoute>
+                    <Route path="/auth" exact component={ JSON.parse(localStorage.getItem('profile')) ? CMyDocuments : Auth } />
+                    <Route path="/" component={ JSON.parse(localStorage.getItem('profile')) ? Home : Auth } />
                 </Switch>
             </div>
         </div>

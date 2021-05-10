@@ -1,5 +1,5 @@
 import React, { useLayoutEffect } from 'react'
-import EnhancedTable from './EnhancedTable.js'
+import MyDocumentsTable from './MyDocumentsTable/MyDocumentsTable.js'
 import { actionGetDocuments, actionCreateDocument, actionDeleteDocument } from '../../actions/documents.js'
 import * as actionType from '../../constants/actionTypes.js'
 import { connect } from 'react-redux'
@@ -7,7 +7,7 @@ import { connect } from 'react-redux'
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, actionDeleteDocument } ) => {
+const MyDocuments = ( { documents, actionGetDocuments, actionCreateDocument, actionDeleteDocument } ) => {
 
     useLayoutEffect( () => {
         actionGetDocuments()
@@ -55,7 +55,7 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
     
     return (
         <>
-            <EnhancedTable 
+            <MyDocumentsTable 
                 documents={documents}
                 actionCreateDocument={actionCreateDocument}
                 actionDeleteDocument={actionDeleteDocument}
@@ -66,6 +66,6 @@ const NavDocuments = ( { documents, actionGetDocuments, actionCreateDocument, ac
     )
 }
 
-const CNavDocuments = connect( state => ({ documents: state.documents }), { actionGetDocuments, actionCreateDocument, actionDeleteDocument } )(NavDocuments)
+const CMyDocuments = connect( state => ({ documents: state.documents }), { actionGetDocuments, actionCreateDocument, actionDeleteDocument } )(MyDocuments)
 
-export default CNavDocuments
+export default CMyDocuments

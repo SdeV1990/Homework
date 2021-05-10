@@ -14,7 +14,8 @@ const App = () => {
         <BrowserRouter>
             <Container maxWidth="lg">
                 <Switch>
-                    <AuthExample/>
+                    {/* <AuthExample/> */}
+                    <Main/>
                 </Switch>
             </Container>
         </BrowserRouter>
