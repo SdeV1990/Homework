@@ -18,22 +18,22 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
-import InboxIcon from '@material-ui/icons/MoveToInbox'
-import MailIcon from '@material-ui/icons/Mail'
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
 import AssignmentIcon from '@material-ui/icons/Assignment'
 import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import DeleteIcon from '@material-ui/icons/Delete'
-
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
+import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined';
 // import Typography from '@material-ui/core/Typography'
 
 // Components
-import Navbar from './Navbar/Navbar.js'
-import CMyDocuments from './MyDocuments/CMyDocuments.js'
+import Navbar from './Navbar/Navbar'
+import CMyDocuments from './MyDocuments/CMyDocuments'
 import Home from './Home/Home'
 import Auth from './Auth/Auth'
+import CRecycled from './Recycled/Recycled'
 
 
 // A wrapper for <Route> that redirects to the login
@@ -68,11 +68,11 @@ export default function Main() {
     const [open, setOpen] = React.useState(false)
 
     const handleDrawerOpen = () => {
-        setOpen(true);
+        setOpen(true)
     }
 
     const handleDrawerClose = () => {
-        setOpen(false);
+        setOpen(false)
     }
 
     return (
@@ -135,8 +135,7 @@ export default function Main() {
                         <Link to={'/mydocuments'}>
                             <ListItem button key={'MyDocuments'}>
                                 <ListItemIcon>
-                                    <AssignmentOutlinedIcon /> 
-                                    {/* <AssignmentIcon /> */}
+                                    { window.location.pathname === '/mydocuments' ? <AssignmentIcon /> : <AssignmentOutlinedIcon /> }
                                 </ListItemIcon>
                                 <ListItemText primary={'My Documents'} />
                             </ListItem>
@@ -146,8 +145,7 @@ export default function Main() {
                         <Link to={'/friends'}>
                             <ListItem button key={'Friends'}>
                                 <ListItemIcon>
-                                    <PeopleAltOutlinedIcon />
-                                    {/* <PeopleAltIcon /> */}
+                                    { window.location.pathname === '/friends' ? <PeopleAltIcon /> : <PeopleAltOutlinedIcon /> }
                                 </ListItemIcon>
                                 <ListItemText primary={'Friends'} />
                             </ListItem>
@@ -157,32 +155,26 @@ export default function Main() {
                         <Link to={'/recycled'}>
                             <ListItem button key={'Recycled'}>
                                 <ListItemIcon>
-                                    <DeleteOutlinedIcon />
-                                    {/* <DeleteIcon /> */}
+                                    { window.location.pathname === '/recycled' ? <DeleteIcon /> : <DeleteOutlinedIcon /> }
                                 </ListItemIcon>
                                 <ListItemText primary={'Recycled'} />
                             </ListItem>
                         </Link>
 
-                        {['Inbox', 'Starred', 'Send email', 'Drafts'].map((text, index) => (
-                            <ListItem button key={text}>
-                                <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-                                </ListItemIcon>
-                                <ListItemText primary={text} />
-                            </ListItem>
-                        ))}
                     </List>
                     <Divider />
                     <List>
-                        {['All mail', 'Trash', 'Spam'].map((text, index) => (
-                            <ListItem button key={text}>
+
+                        {/* Settings */}
+                        <Link to={'/settings'}>
+                            <ListItem button key={'Settings'}>
                                 <ListItemIcon>
-                                    {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
+                                    { window.location.pathname === '/settings' ? <SettingsApplicationsIcon /> : <SettingsApplicationsOutlinedIcon /> }
                                 </ListItemIcon>
-                                <ListItemText primary={text} />
+                                <ListItemText primary={'Settings'} />
                             </ListItem>
-                        ))}
+                        </Link>
+
                     </List>
                 </Drawer>
             : 
@@ -196,6 +188,7 @@ export default function Main() {
                         <CMyDocuments/>
                     </PrivateRoute>
                     <Route path="/auth" exact component={ JSON.parse(localStorage.getItem('profile')) ? CMyDocuments : Auth } />
+                    <Route path="/recycled" exact component={ JSON.parse(localStorage.getItem('profile')) ? CRecycled : Auth } />
                     <Route path="/" component={ JSON.parse(localStorage.getItem('profile')) ? Home : Auth } />
                 </Switch>
             </div>

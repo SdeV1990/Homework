@@ -1,20 +1,23 @@
 import React, { useEffect } from 'react'
-import MyDocumentsTable from './MyDocumentsTable/MyDocumentsTable.js'
-import { actionGetDocuments, actionCreateDocument, actionDeleteDocuments } from '../../actions/documents.js'
+import RecycledTable from './RecycledTable/RecycledTable'
+import { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments } from '../../actions/documents'
 import { connect } from 'react-redux'
 
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const MyDocuments = ( { documents, actionGetDocuments, actionCreateDocument, actionDeleteDocuments } ) => {
+const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments } ) => {
 
     useEffect( () => {
-        actionGetDocuments()
+        actionGetRecycledDocuments()
+        console.log(documents)
+
     }, [] )  // eslint-disable-line react-hooks/exhaustive-deps
     
+
     return (
         <>
-            <MyDocumentsTable 
+            <RecycledTable 
                 documents={documents}
                 actionCreateDocument={actionCreateDocument}
                 actionDeleteDocuments={actionDeleteDocuments}
@@ -25,6 +28,6 @@ const MyDocuments = ( { documents, actionGetDocuments, actionCreateDocument, act
     )
 }
 
-const CMyDocuments = connect( state => ({ documents: state.documents }), { actionGetDocuments, actionCreateDocument, actionDeleteDocuments } )(MyDocuments)
+const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments } )(Recycled)
 
-export default CMyDocuments
+export default CRecycled

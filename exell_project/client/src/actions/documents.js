@@ -4,7 +4,7 @@ import * as api from '../api/index.js';
 export const actionGetDocuments = () => async (dispatch) => {
     try {
         // Pending status
-        dispatch({type: actionType.FETCH_DOCUMENTS_PENDING});
+        dispatch({ type: actionType.FETCH_DOCUMENTS_PENDING});
 
         // Request to database
         const documents = await api.getDocuments();
@@ -19,7 +19,27 @@ export const actionGetDocuments = () => async (dispatch) => {
         console.log(error);
 
     }
-};
+}
+
+export const actionGetRecycledDocuments = () => async (dispatch) => {
+    try {
+        // Pending status
+        dispatch({ type: actionType.FETCH_RECYCLED_DOCUMENTS_PENDING});
+
+        // Request to database
+        const recycledDocuments = await api.getRecycledDocuments();
+
+        // Success status
+        dispatch({ type: actionType.FETCH_RECYCLED_DOCUMENTS_SUCCESS, payload: recycledDocuments });
+
+    } catch (error) {
+
+        // Rejected status
+        dispatch({ type: actionType.FETCH_RECYCLED_DOCUMENTS_REJECTED });
+        console.log(error);
+
+    }
+}
 
 export const actionCreateDocument = (newDocument) => async (dispatch) => {
     try {
@@ -40,9 +60,30 @@ export const actionCreateDocument = (newDocument) => async (dispatch) => {
         console.log(error); 
 
     }
-};
+}
 
-export const actionDeleteDocument = (documentsIDToDelete) => async (dispatch) => {
+// export const actionRecycleDocuments = (documentsIDToRecycle) => async (dispatch) => {
+//     try {
+        
+//         // Pending status
+//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_PENDING });
+
+//         // Request to database
+//         const userState  = await api.recycleDocuments(documentsIDToRecycle);
+        
+//         // Success status
+//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_SUCCESS, payload: userState });
+
+//     } catch (error) {
+
+//         // Rejected status
+//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_REJECTED });
+//         console.log(error); 
+
+//     }
+// };
+
+export const actionDeleteDocuments = (documentsIDToDelete) => async (dispatch) => {
     try {
         
         // Pending status
@@ -61,4 +102,4 @@ export const actionDeleteDocument = (documentsIDToDelete) => async (dispatch) =>
         console.log(error); 
 
     }
-};
+}

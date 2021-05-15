@@ -1,19 +1,36 @@
 import express from 'express';
-import mongoose from 'mongoose';
+// import mongoose from 'mongoose';
 
 import User from '../models/user.js';
 import Document from '../models/document.js';
 
-const router = express.Router();
+// const router = express.Router();
 
 export const getDocuments = async (req, res) => { 
     try {
 
         const userId = req.userId
-        const userDocuments = await Document.find({isRecycled: false, createdBy: userId })
+        const usersDocuments = await Document.find({ isRecycled: false, createdBy: userId })
                                             .populate('createdBy', 'name');
 
-        res.status(200).json(userDocuments);
+        res.status(200).json(usersDocuments);
+
+    } catch (error) {
+
+        res.status(404).json({ message: error.message });
+        console.log('Get documents error.');
+
+    }
+}
+
+export const getRecycledDocuments = async (req, res) => { 
+    try {
+
+        const userId = req.userId
+        const usersRecycledDocuments = await Document.find({ isRecycled: true, createdBy: userId })
+                                            .populate('createdBy', 'name');
+
+        res.status(200).json(usersRecycledDocuments);
 
     } catch (error) {
 
@@ -49,7 +66,30 @@ export const createDocument = async (req, res) => {
     }
 }
 
-export const deleteDocument = async (req, res) => { 
+export const recycleDocuments = async (req, res) => { 
+    try {
+        const userId = req.userId
+        const documentsIDToRecycle = req.body.selectedDocuments
+
+        const documentsToRecycle = await Document.find( { _id: { $in: documentsIDToRecycle } } );
+
+        // If user is autor
+        documentsToRecycle.map( (document) => {
+            if ( userId == document.createdBy ) {
+                document.isRecycled = true
+                document.recycledAt = new Date();
+                document.save()
+            }
+        })
+        Document.updateMany(documentsToRecycle);
+
+        res.status(200).json(documentsToRecycle)
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
+export const deleteDocuments = async (req, res) => { 
     try {
         const userId = req.userId
         const documentsIDToDelete = req.body.selectedDocuments

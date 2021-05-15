@@ -21,14 +21,13 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Badge from '@material-ui/core/Badge';
 
+
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
-import ShareIcon from '@material-ui/icons/Share';
+import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-
-import CreateDocumentForm from './CreateDocumentForm/CreateDocumentForm.js';
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -163,14 +162,14 @@ const EnhancedTableToolbar = (props) => {
 
         { numSelected > 0 ? (
             <>
+                <Tooltip title="Restore">
+                    <IconButton aria-label="Restore">
+                        <RestoreFromTrashIcon />
+                    </IconButton>
+                </Tooltip>
                 <Tooltip title="Open document">
                     <IconButton aria-label="Open document">
                         <OpenInNewIcon />
-                    </IconButton>
-                </Tooltip>
-                <Tooltip title="Share">
-                    <IconButton aria-label="Share">
-                        <ShareIcon />
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
@@ -181,7 +180,6 @@ const EnhancedTableToolbar = (props) => {
             </>
         ) : (
             <>
-                <CreateDocumentForm actionCreateDocument={actionCreateDocument} rows={rows} />
                 <Tooltip title="Filter list">
                     <IconButton aria-label="filter list">
                         <FilterListIcon />
@@ -222,7 +220,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-export default function MyDocumentsTable(props) {
+export default function RecycledTable(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
     const [orderBy, setOrderBy] = React.useState('changedAt');
@@ -232,7 +230,7 @@ export default function MyDocumentsTable(props) {
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
     const { documents, actionCreateDocument, actionDeleteDocuments } = props
-    const rows = documents.list
+    const rows = documents.recycledList
 
     const handleRequestSort = (event, property) => {
         const isAsc = orderBy === property && order === 'asc';
