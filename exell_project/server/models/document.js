@@ -9,6 +9,7 @@ const documentSchema = mongoose.Schema({
     isRecycled: { type: Boolean, required: true, default: false },
     recycledAt: {type: Date, required: false},
     isDeleted: { type: Boolean, required: true, default: false },
+    deletedAt: {type: Date, required: false},
     rightsAccess: {
         readAndCopy: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     },

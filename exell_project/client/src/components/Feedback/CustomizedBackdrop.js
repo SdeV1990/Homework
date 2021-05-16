@@ -17,7 +17,10 @@ export default function CustomizedBackdrop({status}) {
     // Check status for pending
     if (
         status === actionType.FETCH_DOCUMENTS_PENDING ||
+        status === actionType.FETCH_RECYCLED_DOCUMENTS_PENDING ||
         status === actionType.CREATE_DOCUMENT_PENDING ||
+        status === actionType.RECYCLE_DOCUMENTS_PENDING ||
+        status === actionType.RESTORE_DOCUMENTS_PENDING ||
         status === actionType.DELETE_DOCUMENTS_PENDING
     ) {
         isOpen = true

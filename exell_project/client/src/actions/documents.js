@@ -62,26 +62,47 @@ export const actionCreateDocument = (newDocument) => async (dispatch) => {
     }
 }
 
-// export const actionRecycleDocuments = (documentsIDToRecycle) => async (dispatch) => {
-//     try {
+export const actionRecycleDocuments = (documentsIDToRecycle) => async (dispatch) => {
+    try {
         
-//         // Pending status
-//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_PENDING });
+        // Pending status
+        dispatch({ type: actionType.RECYCLE_DOCUMENTS_PENDING });
 
-//         // Request to database
-//         const userState  = await api.recycleDocuments(documentsIDToRecycle);
+        // Request to database
+        const userState  = await api.recycleDocuments(documentsIDToRecycle);
         
-//         // Success status
-//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_SUCCESS, payload: userState });
+        // Success status
+        dispatch({ type: actionType.RECYCLE_DOCUMENTS_SUCCESS, payload: userState });
 
-//     } catch (error) {
+    } catch (error) {
 
-//         // Rejected status
-//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_REJECTED });
-//         console.log(error); 
+        // Rejected status
+        dispatch({ type: actionType.RECYCLE_DOCUMENTS_REJECTED });
+        console.log(error); 
 
-//     }
-// };
+    }
+};
+
+export const actionRestoreDocuments = (documentsIDToRestore) => async (dispatch) => {
+    try {
+        
+        // Pending status
+        dispatch({ type: actionType.RESTORE_DOCUMENTS_PENDING });
+
+        // Request to database
+        const userState  = await api.restoreDocuments(documentsIDToRestore);
+
+        // Success status
+        dispatch({ type: actionType.RESTORE_DOCUMENTS_SUCCESS, payload: userState });
+
+    } catch (error) {
+
+        // Rejected status
+        dispatch({ type: actionType.RESTORE_DOCUMENTS_REJECTED });
+        console.log(error); 
+
+    }
+};
 
 export const actionDeleteDocuments = (documentsIDToDelete) => async (dispatch) => {
     try {

@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react'
 import RecycledTable from './RecycledTable/RecycledTable'
-import { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments } from '../../actions/documents'
+import { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments, actionRestoreDocuments } from '../../actions/documents'
 import { connect } from 'react-redux'
 
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments } ) => {
+const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments, actionRestoreDocuments } ) => {
 
     useEffect( () => {
         actionGetRecycledDocuments()
-        console.log(documents)
-
     }, [] )  // eslint-disable-line react-hooks/exhaustive-deps
     
+    console.log(documents)
 
     return (
         <>
@@ -21,6 +20,7 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
                 documents={documents}
                 actionCreateDocument={actionCreateDocument}
                 actionDeleteDocuments={actionDeleteDocuments}
+                actionRestoreDocuments={actionRestoreDocuments}
             />
             <CustomizedBackdrop status={documents.status}/>
             <CustomizedSnackbar documents={documents}/> 
@@ -28,6 +28,6 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
     )
 }
 
-const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments } )(Recycled)
+const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments, actionRestoreDocuments } )(Recycled)
 
 export default CRecycled

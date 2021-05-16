@@ -57,6 +57,7 @@ function stableSort(array, comparator) {
 
 const headCells = [
   { id: 'name', disablePadding: true, label: 'Name' },
+  { id: 'recycledAt', disablePadding: true, label: 'Recycled at' },
   { id: 'changedAt', disablePadding: true, label: 'Changed at' },
   { id: 'createdAt', disablePadding: true, label: 'Created at' },
   { id: 'share', disablePadding: true, label: 'Share' },
@@ -137,10 +138,15 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionDeleteDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionRestoreDocuments, actionDeleteDocuments, setSelected } = props;
 
     const handleDeleteSelected = () => {
         actionDeleteDocuments({selectedDocuments: selectedDocuments});
+        setSelected([]);
+    }
+    
+    const handleRestoreSelected = () => {
+        actionRestoreDocuments({selectedDocuments: selectedDocuments});
         setSelected([]);
     }
 
@@ -156,14 +162,14 @@ const EnhancedTableToolbar = (props) => {
             </Typography>
         ) : (
             <Typography className={classes.title} variant="h6" id="tableTitle" component="div">
-            My Documents
+            Recycled documents
             </Typography>
         )}
 
         { numSelected > 0 ? (
             <>
                 <Tooltip title="Restore">
-                    <IconButton aria-label="Restore">
+                    <IconButton aria-label="Restore" onClick={handleRestoreSelected}>
                         <RestoreFromTrashIcon />
                     </IconButton>
                 </Tooltip>
@@ -223,13 +229,13 @@ const useStyles = makeStyles((theme) => ({
 export default function RecycledTable(props) {
     const classes = useStyles();
     const [order, setOrder] = React.useState('desc');
-    const [orderBy, setOrderBy] = React.useState('changedAt');
+    const [orderBy, setOrderBy] = React.useState('recycledAt');
     const [selected, setSelected] = React.useState([]);
     const [page, setPage] = React.useState(0);
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, actionCreateDocument, actionDeleteDocuments } = props
+    const { documents, actionRestoreDocuments, actionDeleteDocuments } = props
     const rows = documents.recycledList
 
     const handleRequestSort = (event, property) => {
@@ -291,7 +297,7 @@ export default function RecycledTable(props) {
                     numSelected={selected.length} 
                     rows={rows} 
                     selectedDocuments={selected}
-                    actionCreateDocument={actionCreateDocument}
+                    actionRestoreDocuments={actionRestoreDocuments}
                     actionDeleteDocuments={actionDeleteDocuments}
                     setSelected={setSelected}
                 />
@@ -337,6 +343,7 @@ export default function RecycledTable(props) {
                                     <TableCell component="th" id={labelId} scope="row" padding="none">
                                         {row.name}
                                     </TableCell>
+                                    <TableCell align="center">{`${new Date(row.recycledAt).toLocaleTimeString()} ${new Date(row.recycledAt).toLocaleDateString()}`}</TableCell>
                                     <TableCell align="center">{`${new Date(row.changedAt).toLocaleTimeString()} ${new Date(row.changedAt).toLocaleDateString()}`}</TableCell>
                                     <TableCell align="center">{`${new Date(row.createdAt).toLocaleTimeString()} ${new Date(row.createdAt).toLocaleDateString()}`}</TableCell>
                                     <TableCell align="center">{

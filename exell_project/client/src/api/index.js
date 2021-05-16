@@ -22,8 +22,9 @@ export const signUp = (formData) => API.post('/user/signup', formData);
 export const getDocuments = () => API.get('/documents');
 export const getRecycledDocuments = () => API.get('documents/recycle');
 export const createDocument = (newDocument) => API.post('/documents', newDocument);
-export const deleteDocuments = (documentsIDToDelete) => API.post(`/documents/delete`, documentsIDToDelete);
 export const recycleDocuments = (documentsIDToRecycle) => API.post(`/documents/recycle`, documentsIDToRecycle);
+export const restoreDocuments = (documentsIDToRestore) => API.post(`/documents/restore`, documentsIDToRestore);
+export const deleteDocuments = (documentsIDToDelete) => API.post(`/documents/delete`, documentsIDToDelete);
 
 // Document
 export const getDocument = (id) => API.get(`/document/${id}`);

@@ -1,4 +1,4 @@
-import express from 'express';
+// import express from 'express';
 // import mongoose from 'mongoose';
 
 import User from '../models/user.js';
@@ -10,7 +10,7 @@ export const getDocuments = async (req, res) => {
     try {
 
         const userId = req.userId
-        const usersDocuments = await Document.find({ isRecycled: false, createdBy: userId })
+        const usersDocuments = await Document.find({ isDeleted: false, isRecycled: false, createdBy: userId })
                                             .populate('createdBy', 'name');
 
         res.status(200).json(usersDocuments);
@@ -27,7 +27,7 @@ export const getRecycledDocuments = async (req, res) => {
     try {
 
         const userId = req.userId
-        const usersRecycledDocuments = await Document.find({ isRecycled: true, createdBy: userId })
+        const usersRecycledDocuments = await Document.find({ isDeleted: false, isRecycled: true, createdBy: userId })
                                             .populate('createdBy', 'name');
 
         res.status(200).json(usersRecycledDocuments);
@@ -89,6 +89,29 @@ export const recycleDocuments = async (req, res) => {
     }
 }
 
+export const restoreDocuments = async (req, res) => { 
+    try {
+        const userId = req.userId
+        const documentsIDToRestore = req.body.selectedDocuments
+
+        const documentsToRestore = await Document.find( { _id: { $in: documentsIDToRestore } } )
+        
+        // If user is autor
+        documentsToRestore.map( (document) => {
+            if ( userId == document.createdBy ) {
+                document.isRecycled = false
+                document.recycledAt = new Date();
+                document.save()
+            }
+        })
+        Document.updateMany(documentsToRestore);
+
+        res.status(200).json(documentsToRestore)
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
+
 export const deleteDocuments = async (req, res) => { 
     try {
         const userId = req.userId
@@ -99,8 +122,8 @@ export const deleteDocuments = async (req, res) => {
         // If user is autor
         documentsToDelete.map( (document) => {
             if ( userId == document.createdBy ) {
-                document.isRecycled = true
-                document.recycledAt = new Date();
+                document.isDeleted = true
+                document.deletedAt = new Date();
                 document.save(); 
             }
         })

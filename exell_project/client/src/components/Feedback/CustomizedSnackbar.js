@@ -35,6 +35,17 @@ export default function CustomizedSnackbar({ documents }) {
         severity = "error"
     }
 
+    // Fetch recycled documents statuses
+    else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_SUCCESS) {
+        isOpen = true
+        alertText = "Recycled documents are loaded!"
+        severity = "success"
+    } else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_REJECTED) {
+        isOpen = true
+        alertText = "ERROR: cann't load recycled documents!"
+        severity = "error"
+    }
+
     // Create document statuses
     else if (documents.status === actionType.CREATE_DOCUMENT_SUCCESS) {
         isOpen = true
@@ -44,9 +55,32 @@ export default function CustomizedSnackbar({ documents }) {
         isOpen = true
         alertText = "Error: document isn't created!"
         severity = "error"
+    }
+
+    // Recycle documents statuses
+    else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
+        isOpen = true
+        alertText = "Documents are recycled!"
+        severity = "success"
+    } else if (documents.status === actionType.RECYCLE_DOCUMENTS_REJECTED) {
+        isOpen = true
+        alertText = "Error: documents aren't recycled!"
+        severity = "error"
+    }
+
+    // Restore documents statuses
+    else if (documents.status === actionType.RESTORE_DOCUMENTS_SUCCESS) {
+        isOpen = true
+        alertText = "Documents are restored!"
+        severity = "success"
+    } else if (documents.status === actionType.RESTORE_DOCUMENTS_REJECTED) {
+        isOpen = true
+        alertText = "Error: documents aren't restored!"
+        severity = "error"
+    }
 
     // Delete documents statuses
-    } else if (documents.status === actionType.DELETE_DOCUMENTS_SUCCESS) {
+    else if (documents.status === actionType.DELETE_DOCUMENTS_SUCCESS) {
         isOpen = true
         alertText = "Documents are deleted!"
         severity = "success"

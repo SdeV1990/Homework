@@ -138,10 +138,10 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionDeleteDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionRecycleDocuments, setSelected } = props;
 
-    const handleDeleteSelected = () => {
-        actionDeleteDocuments({selectedDocuments: selectedDocuments});
+    const handleRecycleSelected = () => {
+        actionRecycleDocuments({selectedDocuments: selectedDocuments});
         setSelected([]);
     }
 
@@ -174,7 +174,7 @@ const EnhancedTableToolbar = (props) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                    <IconButton aria-label="Delete" onClick={handleDeleteSelected}>
+                    <IconButton aria-label="Delete" onClick={handleRecycleSelected}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -231,7 +231,7 @@ export default function MyDocumentsTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, actionCreateDocument, actionDeleteDocuments } = props
+    const { documents, actionCreateDocument, actionRecycleDocuments } = props
     const rows = documents.list
 
     const handleRequestSort = (event, property) => {
@@ -294,7 +294,7 @@ export default function MyDocumentsTable(props) {
                     rows={rows} 
                     selectedDocuments={selected}
                     actionCreateDocument={actionCreateDocument}
-                    actionDeleteDocuments={actionDeleteDocuments}
+                    actionRecycleDocuments={actionRecycleDocuments}
                     setSelected={setSelected}
                 />
                 <TableContainer>
