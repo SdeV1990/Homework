@@ -2,8 +2,30 @@ import * as actionType from '../constants/actionTypes';
 
 const document = (state = [], action) => {
   switch (action.type) {
-    case actionType.GET_DOCUMENT:
-        return action.payload.data.documents;
+
+    // Open document
+    // case actionType.OPEN_DOCUMENT_PENDING:
+    //     return action.payload.data;
+
+    case actionType.OPEN_DOCUMENT_SUCCESS:
+
+        console.log('action.payload')
+        console.log(action.payload)
+
+        return {
+            ...state, 
+            document: action.payload,
+            status: actionType.OPEN_DOCUMENT_SUCCESS
+        };
+
+    // case actionType.OPEN_DOCUMENT_REJECTED:
+    //     return action.payload.data.documents;
+
+
+
+
+
+
     // case actionType.CREATE_DOCUMENT:
     //     return action.payload.data.documents;
     // case actionType.DELETE_DOCUMENT:
@@ -17,4 +39,4 @@ const document = (state = [], action) => {
   }
 };
 
-export default documents;
+export default document;

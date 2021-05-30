@@ -46,7 +46,7 @@ export const actionCreateDocument = (newDocument) => async (dispatch) => {
 
         // Pending status
         dispatch({type: actionType.CREATE_DOCUMENT_PENDING});
-
+        
         // Request to database
         const createdDocument  = await api.createDocument(newDocument);
 
@@ -61,6 +61,27 @@ export const actionCreateDocument = (newDocument) => async (dispatch) => {
 
     }
 }
+
+export const actionOpenDocument = (documentsIDToOpen) => async (dispatch) => {
+    try {
+
+        // Pending status
+        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_PENDING });
+
+        // Open document in new tab
+        window.open(`http://localhost:3000/document/${documentsIDToOpen.selectedDocuments[0]}`)
+        
+        // Success status
+        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_SUCCESS });
+
+    } catch (error) {
+
+        // Rejected status
+        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_REJECTED });
+        console.log(error); 
+
+    }
+};
 
 export const actionRecycleDocuments = (documentsIDToRecycle) => async (dispatch) => {
     try {

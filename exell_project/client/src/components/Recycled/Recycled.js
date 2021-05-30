@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import RecycledTable from './RecycledTable/RecycledTable'
-import { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments, actionRestoreDocuments } from '../../actions/documents'
+import { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionDeleteDocuments, actionRestoreDocuments } from '../../actions/documents'
 import { connect } from 'react-redux'
 
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments, actionRestoreDocuments } ) => {
+const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionDeleteDocuments, actionRestoreDocuments } ) => {
 
     useEffect( () => {
         actionGetRecycledDocuments()
@@ -19,6 +19,7 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
             <RecycledTable 
                 documents={documents}
                 actionCreateDocument={actionCreateDocument}
+                actionOpenDocument={actionOpenDocument}
                 actionDeleteDocuments={actionDeleteDocuments}
                 actionRestoreDocuments={actionRestoreDocuments}
             />
@@ -28,6 +29,6 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
     )
 }
 
-const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionDeleteDocuments, actionRestoreDocuments } )(Recycled)
+const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionDeleteDocuments, actionRestoreDocuments } )(Recycled)
 
 export default CRecycled

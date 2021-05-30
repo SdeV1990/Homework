@@ -59,6 +59,7 @@ export default makeStyles((theme) => ({
         ...theme.mixins.toolbar,
     },
     content: {
+        marginTop: '64px',
         flexGrow: 1,
         padding: theme.spacing(1),
     },

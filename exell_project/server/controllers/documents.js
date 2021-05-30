@@ -1,10 +1,9 @@
 // import express from 'express';
 // import mongoose from 'mongoose';
+// const router = express.Router();
 
 import User from '../models/user.js';
 import Document from '../models/document.js';
-
-// const router = express.Router();
 
 export const getDocuments = async (req, res) => { 
     try {
@@ -50,8 +49,17 @@ export const createDocument = async (req, res) => {
             createdBy: user._id,
             createdAt: new Date(),
             changedAt: new Date(),
+            sheets: [{
+                id: '1',
+                name: 'Sheet 1',
+                rowQuantity: 100 ,
+                rowDefaultWidth: 40 ,
+                columnQuantity: 100,
+                columnDefaultWidth: 40 ,
+                cells: []
+            }]
         }
-        
+
         let newDoc = await Document.create(newDocument);
         newDoc = await newDoc.populate('createdBy', 'name').execPopulate();
         newDoc = newDoc.toObject();

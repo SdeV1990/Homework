@@ -6,7 +6,7 @@ import cors from 'cors';
 
 import postRoutes from './routes/posts.js';
 import documentsRounter from './routes/documents.js';
-// import documentRounter from './routes/document.js';
+import documentRounter from './routes/document.js';
 import userRouter from "./routes/user.js";
 
 const app = express();
@@ -18,8 +18,7 @@ app.use(cors());
 app.use('/posts', postRoutes);
 app.use("/user", userRouter);
 app.use("/documents", documentsRounter);
-// app.use("/document", documentRounter);
-
+app.use("/document", documentRounter);
 
 const CONNECTION_URL = 'mongodb://localhost:27017/exell';
 const PORT = process.env.PORT|| 5000;

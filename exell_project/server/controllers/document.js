@@ -1,26 +1,29 @@
-import express from 'express';
-import mongoose from 'mongoose';
-
-import User from '../models/user.js';
-
-const router = express.Router();
+import Document from '../models/document.js';
 
 export const getDocument = async (req, res) => { 
     try {
+
         const userId = req.userId
-        const userState = await User.findById(userId);
-        const { id } = req.params;
-        console.log(userId + '/' + id);
+        const documentId = req.body.documentId
 
-        const documents = user.documents;
+        // Get document
+        const document = await Document.findById(documentId)
 
-        console.log(userState)
-                
-        res.status(200).json(userState);
+        // If user is creator of document or have rights
+        let result
+        if (userId == document.createdBy || document.rightsAccess.readAndCopy.includes(userId)) {
+            result = document
+        }
+
+        res.status(200).json(result);
     } catch (error) {
-        res.status(404).json({ message: error.message });
+        res.status(404).json({ message: error.message })
     }
 }
+
+// Save document
+
+
 
 // export const createDocument = async (req, res) => { 
 //     try {

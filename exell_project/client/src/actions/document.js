@@ -1,13 +1,15 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
-export const getDocument = (docID) => async (dispatch) => {
+export const getDocument = (documentId) => async (dispatch) => {
     try {
-        const userState = await api.getDocument(docID);
 
-        // console.log(`User state: ${userState}`)
+        // Pending status
+        dispatch({type: actionType.OPEN_DOCUMENT_PENDING});
+
+        const response = await api.getDocument({documentId})
         
-        dispatch({ type: actionType.FETCH_DOCUMENTS, payload: userState });
+        dispatch({ type: actionType.OPEN_DOCUMENT_SUCCESS, payload: response.data });
     } catch (error) {
         console.log(error);
     }

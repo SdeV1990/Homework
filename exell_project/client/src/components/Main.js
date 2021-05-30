@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import LinkUI from '@material-ui/core/Link'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -24,8 +25,8 @@ import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
 import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import DeleteIcon from '@material-ui/icons/Delete'
-import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications';
-import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined';
+import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications'
+import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined'
 // import Typography from '@material-ui/core/Typography'
 
 // Components
@@ -34,32 +35,8 @@ import CMyDocuments from './MyDocuments/CMyDocuments'
 import Home from './Home/Home'
 import Auth from './Auth/Auth'
 import CRecycled from './Recycled/Recycled'
-
-
-// A wrapper for <Route> that redirects to the login
-// screen if you're not yet authenticated.
-// Origin https://reactrouter.com/web/example/auth-workflow
-function PrivateRoute({ children, ...rest }) {
-    return (
-      <Route
-        {...rest}
-        // Rendering depends on auth.user state - render children if exist or redirect to login page if not
-        // https://ru.reactjs.org/docs/render-props.html
-        render={({ location }) =>
-          JSON.parse(localStorage.getItem('profile')) ? (
-            children
-          ) : (
-            <Redirect
-              to={{
-                pathname: "/auth",
-                state: { from: location }
-              }}
-            />
-          )
-        }
-      />
-    );
-  }
+import CPrivateRoute from './CPrivateRoute'
+import Document from './Document/Document'
 
 export default function Main() {
     
@@ -76,7 +53,7 @@ export default function Main() {
     }
 
     return (
-        <div className={classes.root}>
+        <div className={classes.root} maxWidth={false}>
             <CssBaseline />
             <AppBar
                 position="fixed"
@@ -109,7 +86,9 @@ export default function Main() {
             </AppBar>
             
             {/* Drawer */}
-            {JSON.parse(localStorage.getItem('profile')) ?
+            {
+                JSON.parse(localStorage.getItem('profile')) 
+            ?
                 <Drawer
                     variant="permanent"
                     className={clsx(classes.drawer, {
@@ -137,7 +116,7 @@ export default function Main() {
                                 <ListItemIcon>
                                     { window.location.pathname === '/mydocuments' ? <AssignmentIcon /> : <AssignmentOutlinedIcon /> }
                                 </ListItemIcon>
-                                <ListItemText primary={'My Documents'} />
+                                <ListItemText primary={'My Documents'} primaryTypographyProps={{underline: 'none'}}/>
                             </ListItem>
                         </Link>
 
@@ -184,12 +163,21 @@ export default function Main() {
             {/* Content */}
             <div className={classes.content}>
                 <Switch>
-                    <PrivateRoute path="/mydocuments">
-                        <CMyDocuments/>
-                    </PrivateRoute>
                     <Route path="/auth" exact component={ JSON.parse(localStorage.getItem('profile')) ? CMyDocuments : Auth } />
-                    <Route path="/recycled" exact component={ JSON.parse(localStorage.getItem('profile')) ? CRecycled : Auth } />
-                    <Route path="/" component={ JSON.parse(localStorage.getItem('profile')) ? Home : Auth } />
+
+                    <CPrivateRoute exact path="/mydocuments" redirectTo ="/auth">
+                        <CMyDocuments/>
+                    </CPrivateRoute>
+
+                    <CPrivateRoute exact path="/recycled" redirectTo ="/auth">
+                        <CRecycled/>
+                    </CPrivateRoute>
+
+                    <CPrivateRoute path="/document" redirectTo ="/auth">
+                        <Document/>
+                    </CPrivateRoute>
+
+                    <Route path="/" exact component={ JSON.parse(localStorage.getItem('profile')) ? Home : Auth } />
                 </Switch>
             </div>
         </div>

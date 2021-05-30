@@ -21,7 +21,6 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Switch from '@material-ui/core/Switch';
 import Badge from '@material-ui/core/Badge';
 
-
 import DeleteIcon from '@material-ui/icons/Delete';
 import FilterListIcon from '@material-ui/icons/FilterList';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
@@ -138,10 +137,15 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionRestoreDocuments, actionDeleteDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionRestoreDocuments, actionOpenDocument, actionDeleteDocuments, setSelected } = props;
 
     const handleDeleteSelected = () => {
         actionDeleteDocuments({selectedDocuments: selectedDocuments});
+        setSelected([]);
+    }
+
+    const hendleOpenDocument = () => {
+        actionOpenDocument({selectedDocuments: selectedDocuments});
         setSelected([]);
     }
     
@@ -173,11 +177,19 @@ const EnhancedTableToolbar = (props) => {
                         <RestoreFromTrashIcon />
                     </IconButton>
                 </Tooltip>
-                <Tooltip title="Open document">
-                    <IconButton aria-label="Open document">
-                        <OpenInNewIcon />
-                    </IconButton>
-                </Tooltip>
+                {
+                    numSelected === 1
+                    ?
+                    <Tooltip title="Open document">
+                        <IconButton aria-label="Open document" onClick={hendleOpenDocument}>
+                            <OpenInNewIcon />
+                        </IconButton>
+                    </Tooltip>
+                    :
+                    <></>
+                }
+
+
                 <Tooltip title="Delete">
                     <IconButton aria-label="Delete" onClick={handleDeleteSelected}>
                         <DeleteIcon />
@@ -204,7 +216,6 @@ EnhancedTableToolbar.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    marginTop: '64px',
   },
   paper: {
     width: '100%',
@@ -235,7 +246,7 @@ export default function RecycledTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, actionRestoreDocuments, actionDeleteDocuments } = props
+    const { documents, actionRestoreDocuments, actionOpenDocument, actionDeleteDocuments } = props
     const rows = documents.recycledList
 
     const handleRequestSort = (event, property) => {
@@ -298,6 +309,7 @@ export default function RecycledTable(props) {
                     rows={rows} 
                     selectedDocuments={selected}
                     actionRestoreDocuments={actionRestoreDocuments}
+                    actionOpenDocument={actionOpenDocument}
                     actionDeleteDocuments={actionDeleteDocuments}
                     setSelected={setSelected}
                 />

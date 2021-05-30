@@ -138,11 +138,16 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionRecycleDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionOpenDocument, actionRecycleDocuments, setSelected } = props;
 
     const handleRecycleSelected = () => {
-        actionRecycleDocuments({selectedDocuments: selectedDocuments});
-        setSelected([]);
+        actionRecycleDocuments({selectedDocuments: selectedDocuments})
+        setSelected([])
+    }
+
+    const handleOpenSelected = () => {
+        actionOpenDocument({selectedDocuments: selectedDocuments})
+        setSelected([])
     }
 
     return (
@@ -161,13 +166,19 @@ const EnhancedTableToolbar = (props) => {
             </Typography>
         )}
 
+
+
         { numSelected > 0 ? (
             <>
-                <Tooltip title="Open document">
-                    <IconButton aria-label="Open document">
-                        <OpenInNewIcon />
-                    </IconButton>
-                </Tooltip>
+                { numSelected === 1 ? // Window.open can open only one document in new TAB (without extensions)
+                    <Tooltip title="Open document">
+                        <IconButton aria-label="Open document"  onClick={handleOpenSelected}>
+                            <OpenInNewIcon />
+                        </IconButton>
+                    </Tooltip>
+                    :
+                    <></>
+                }
                 <Tooltip title="Share">
                     <IconButton aria-label="Share">
                         <ShareIcon />
@@ -200,7 +211,6 @@ EnhancedTableToolbar.propTypes = {
 const useStyles = makeStyles((theme) => ({
   root: {
     width: '100%',
-    marginTop: '64px',
   },
   paper: {
     width: '100%',
@@ -231,7 +241,7 @@ export default function MyDocumentsTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, actionCreateDocument, actionRecycleDocuments } = props
+    const { documents, auth, actionCreateDocument, actionOpenDocument, actionRecycleDocuments } = props
     const rows = documents.list
 
     const handleRequestSort = (event, property) => {
@@ -294,6 +304,7 @@ export default function MyDocumentsTable(props) {
                     rows={rows} 
                     selectedDocuments={selected}
                     actionCreateDocument={actionCreateDocument}
+                    actionOpenDocument={actionOpenDocument}
                     actionRecycleDocuments={actionRecycleDocuments}
                     setSelected={setSelected}
                 />
