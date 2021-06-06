@@ -52,9 +52,9 @@ export const createDocument = async (req, res) => {
             sheets: [{
                 id: '1',
                 name: 'Sheet 1',
-                rowQuantity: 100 ,
+                rowQuantity: 10 ,
                 rowDefaultWidth: 40 ,
-                columnQuantity: 100,
+                columnQuantity: 10,
                 columnDefaultWidth: 40 ,
                 cells: []
             }]

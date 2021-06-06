@@ -17,16 +17,18 @@ const documentSchema = mongoose.Schema({
         id: { type: String },
         name: { type: String, required:  true },
         rowQuantity: { type: Number, required: true , default: 10 },
-        rowDefaultWidth: {type: Number, required: true, default: 40 },
-        columnQuantity: { type: Number, required: true , default: 100 },
-        columnDefaultWidth: {type: Number, required: true, default: 10 },
-        cells: [{
-            row: { type: Number, required:  true },
-            column: { type: Number, required: true },
-            address: { type: String, required: true },
-            value: { type: String, required: true },
-            formula: { type: String, required: true },
-        }]
+        rowDefaultHeight: {type: Number, required: true, default: 21 },
+        rowHeight: [{
+            index:  {type: Number, required: false},
+            height: {type: Number, required: false}
+        }],
+        columnQuantity: { type: Number, required: true , default: 10 },
+        columnDefaultWidth: {type: Number, required: true, default: 60 },
+        columnWidth: [{
+            index:  {type: Number, required: false},
+            width: {type: Number, required: false}
+        }],
+        cells: {},
     }]
 });
 
