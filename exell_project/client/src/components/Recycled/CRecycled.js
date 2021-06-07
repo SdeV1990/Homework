@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import RecycledTable from './RecycledTable/RecycledTable'
-import { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionDeleteDocuments, actionRestoreDocuments } from '../../actions/documents'
+import { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } from '../../actions/documents'
 import { connect } from 'react-redux'
 
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionDeleteDocuments, actionRestoreDocuments } ) => {
+const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } ) => {
 
     useEffect( () => {
         actionGetRecycledDocuments()
@@ -20,8 +20,7 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
                 documents={documents}
                 actionCreateDocument={actionCreateDocument}
                 actionOpenDocument={actionOpenDocument}
-                actionDeleteDocuments={actionDeleteDocuments}
-                actionRestoreDocuments={actionRestoreDocuments}
+                actionUpdateDocuments={actionUpdateDocuments}
             />
             <CustomizedBackdrop status={documents.status}/>
             <CustomizedSnackbar documents={documents}/> 
@@ -29,6 +28,6 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
     )
 }
 
-const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionDeleteDocuments, actionRestoreDocuments } )(Recycled)
+const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } )(Recycled)
 
 export default CRecycled

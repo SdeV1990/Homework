@@ -34,7 +34,7 @@ import Navbar from './Navbar/Navbar'
 import CMyDocuments from './MyDocuments/CMyDocuments'
 import Home from './Home/Home'
 import Auth from './Auth/Auth'
-import CRecycled from './Recycled/Recycled'
+import CRecycled from './Recycled/CRecycled'
 import CPrivateRoute from './CPrivateRoute'
 import Document from './Document/Document'
 

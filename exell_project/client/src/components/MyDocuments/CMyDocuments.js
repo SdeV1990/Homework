@@ -1,12 +1,12 @@
 import React, { useEffect } from 'react'
 import MyDocumentsTable from './MyDocumentsTable/MyDocumentsTable.js'
-import { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionRecycleDocuments } from '../../actions/documents.js'
+import { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } from '../../actions/documents.js'
 import { connect } from 'react-redux'
 
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocument, actionOpenDocument, actionRecycleDocuments } ) => {
+const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } ) => {
 
     useEffect( () => {
         actionGetDocuments()
@@ -19,7 +19,7 @@ const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocumen
                 auth={auth}
                 actionCreateDocument={actionCreateDocument}
                 actionOpenDocument={actionOpenDocument}
-                actionRecycleDocuments={actionRecycleDocuments}
+                actionUpdateDocuments = {actionUpdateDocuments}
             />
             <CustomizedBackdrop status={documents.status}/>
             <CustomizedSnackbar documents={documents}/> 
@@ -27,6 +27,6 @@ const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocumen
     )
 }
 
-const CMyDocuments = connect( state => ({ documents: state.documents, auth: state.auth }), { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionRecycleDocuments } )(MyDocuments)
+const CMyDocuments = connect( state => ({ documents: state.documents, auth: state.auth }), { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } )(MyDocuments)
 
 export default CMyDocuments

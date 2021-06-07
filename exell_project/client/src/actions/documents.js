@@ -83,65 +83,126 @@ export const actionOpenDocument = (documentsIDToOpen) => async (dispatch) => {
     }
 };
 
-export const actionRecycleDocuments = (documentsIDToRecycle) => async (dispatch) => {
+export const actionUpdateDocuments = (updateOptions) => async (dispatch) => {
     try {
         
         // Pending status
-        dispatch({ type: actionType.RECYCLE_DOCUMENTS_PENDING });
-
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_PENDING });
+        
         // Request to database
-        const userState  = await api.recycleDocuments(documentsIDToRecycle);
+        const userState  = await api.updateDocuments(updateOptions);
         
         // Success status
-        dispatch({ type: actionType.RECYCLE_DOCUMENTS_SUCCESS, payload: userState });
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_SUCCESS, payload: userState });
 
     } catch (error) {
-
-        // Rejected status
-        dispatch({ type: actionType.RECYCLE_DOCUMENTS_REJECTED });
-        console.log(error); 
-
-    }
-};
-
-export const actionRestoreDocuments = (documentsIDToRestore) => async (dispatch) => {
-    try {
         
-        // Pending status
-        dispatch({ type: actionType.RESTORE_DOCUMENTS_PENDING });
-
-        // Request to database
-        const userState  = await api.restoreDocuments(documentsIDToRestore);
-
-        // Success status
-        dispatch({ type: actionType.RESTORE_DOCUMENTS_SUCCESS, payload: userState });
-
-    } catch (error) {
-
         // Rejected status
-        dispatch({ type: actionType.RESTORE_DOCUMENTS_REJECTED });
-        console.log(error); 
-
-    }
-};
-
-export const actionDeleteDocuments = (documentsIDToDelete) => async (dispatch) => {
-    try {
-        
-        // Pending status
-        dispatch({ type: actionType.DELETE_DOCUMENTS_PENDING });
-
-        // Request to database
-        const userState  = await api.deleteDocuments(documentsIDToDelete);
-        
-        // Success status
-        dispatch({ type: actionType.DELETE_DOCUMENTS_SUCCESS, payload: userState });
-
-    } catch (error) {
-
-        // Rejected status
-        dispatch({ type: actionType.DELETE_DOCUMENTS_REJECTED });
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED });
         console.log(error); 
 
     }
 }
+
+export const actionReadDocuments = (readOptions) => async (dispatch) => {
+    try {
+        
+        // Pending status
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_PENDING });
+        
+        // Request to database
+        const userState  = await api.updateDocuments(readOptions);
+        
+        // Success status
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_SUCCESS, payload: userState });
+
+    } catch (error) {
+        
+        // Rejected status
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED });
+        console.log(error); 
+
+    }
+}
+
+
+// export const actionRecycleDocuments = (documentsIDToRecycle) => async (dispatch) => {
+//     try {
+        
+//         // Pending status
+//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_PENDING });
+
+//         //Set update
+//         const update = {
+//             selectedDocuments: [...documentsIDToRecycle.selectedDocuments], 
+//             updateType: "RECYCLE"
+//         }
+
+//         // Request to database
+//         const userState  = await api.updateDocuments(update);
+        
+//         // Success status
+//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_SUCCESS, payload: userState });
+
+//     } catch (error) {
+
+//         // Rejected status
+//         dispatch({ type: actionType.RECYCLE_DOCUMENTS_REJECTED });
+//         console.log(error); 
+
+//     }
+// };
+
+// export const actionRestoreDocuments = (documentsIDToRestore) => async (dispatch) => {
+//     try {
+        
+//         // Pending status
+//         dispatch({ type: actionType.RESTORE_DOCUMENTS_PENDING });
+
+//         //Set update
+//         const update = {
+//             selectedDocuments: [...documentsIDToRestore.selectedDocuments], 
+//             updateType: "RESTORE"
+//         }
+
+//         // Request to database
+//         const userState  = await api.updateDocuments(update);
+
+//         // Success status
+//         dispatch({ type: actionType.RESTORE_DOCUMENTS_SUCCESS, payload: userState });
+
+//     } catch (error) {
+
+//         // Rejected status
+//         dispatch({ type: actionType.RESTORE_DOCUMENTS_REJECTED });
+//         console.log(error); 
+
+//     }
+// };
+
+// export const actionDeleteDocuments = (documentsIDToDelete) => async (dispatch) => {
+//     try {
+        
+//         // Pending status
+//         dispatch({ type: actionType.DELETE_DOCUMENTS_PENDING });
+
+//         //Set update
+//         const update = {
+//             selectedDocuments: [...documentsIDToDelete.selectedDocuments], 
+//             updateType: "DELETE"
+//         }
+
+//         // Request to database
+//         const userState  = await api.updateDocuments(update);
+        
+//         // Success status
+//         dispatch({ type: actionType.DELETE_DOCUMENTS_SUCCESS, payload: userState });
+
+//     } catch (error) {
+
+//         // Rejected status
+//         dispatch({ type: actionType.DELETE_DOCUMENTS_REJECTED });
+//         console.log(error); 
+
+//     }
+// }

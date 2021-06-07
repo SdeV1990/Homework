@@ -137,20 +137,18 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionRestoreDocuments, actionOpenDocument, actionDeleteDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionOpenDocument, actionUpdateDocuments, setSelected } = props;
 
-    const handleDeleteSelected = () => {
-        actionDeleteDocuments({selectedDocuments: selectedDocuments});
+    const handleUpdateSelected = (updateType) => {
+      actionUpdateDocuments({
+            selectedDocuments: [...selectedDocuments],
+            updateType,
+        });
         setSelected([]);
     }
 
     const hendleOpenDocument = () => {
         actionOpenDocument({selectedDocuments: selectedDocuments});
-        setSelected([]);
-    }
-    
-    const handleRestoreSelected = () => {
-        actionRestoreDocuments({selectedDocuments: selectedDocuments});
         setSelected([]);
     }
 
@@ -173,7 +171,7 @@ const EnhancedTableToolbar = (props) => {
         { numSelected > 0 ? (
             <>
                 <Tooltip title="Restore">
-                    <IconButton aria-label="Restore" onClick={handleRestoreSelected}>
+                    <IconButton aria-label="Restore" onClick={()=>handleUpdateSelected("RESTORE")}>
                         <RestoreFromTrashIcon />
                     </IconButton>
                 </Tooltip>
@@ -188,10 +186,8 @@ const EnhancedTableToolbar = (props) => {
                     :
                     <></>
                 }
-
-
                 <Tooltip title="Delete">
-                    <IconButton aria-label="Delete" onClick={handleDeleteSelected}>
+                    <IconButton aria-label="Delete" onClick={()=>handleUpdateSelected("DELETE")}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -246,7 +242,7 @@ export default function RecycledTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, actionRestoreDocuments, actionOpenDocument, actionDeleteDocuments } = props
+    const { documents, actionOpenDocument, actionUpdateDocuments } = props
     const rows = documents.recycledList
 
     const handleRequestSort = (event, property) => {
@@ -308,9 +304,8 @@ export default function RecycledTable(props) {
                     numSelected={selected.length} 
                     rows={rows} 
                     selectedDocuments={selected}
-                    actionRestoreDocuments={actionRestoreDocuments}
                     actionOpenDocument={actionOpenDocument}
-                    actionDeleteDocuments={actionDeleteDocuments}
+                    actionUpdateDocuments={actionUpdateDocuments}
                     setSelected={setSelected}
                 />
                 <TableContainer>

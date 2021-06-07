@@ -57,7 +57,7 @@ export default function CustomizedSnackbar({ documents }) {
         severity = "error"
     }
 
-    // Recycle documents statuses
+    // Update documents statuses
     else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
         isOpen = true
         alertText = "Documents are recycled!"
@@ -68,29 +68,40 @@ export default function CustomizedSnackbar({ documents }) {
         severity = "error"
     }
 
-    // Restore documents statuses
-    else if (documents.status === actionType.RESTORE_DOCUMENTS_SUCCESS) {
-        isOpen = true
-        alertText = "Documents are restored!"
-        severity = "success"
-    } else if (documents.status === actionType.RESTORE_DOCUMENTS_REJECTED) {
-        isOpen = true
-        alertText = "Error: documents aren't restored!"
-        severity = "error"
-    }
+    // // Recycle documents statuses
+    // else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
+    //     isOpen = true
+    //     alertText = "Documents are recycled!"
+    //     severity = "success"
+    // } else if (documents.status === actionType.RECYCLE_DOCUMENTS_REJECTED) {
+    //     isOpen = true
+    //     alertText = "Error: documents aren't recycled!"
+    //     severity = "error"
+    // }
 
-    // Delete documents statuses
-    else if (documents.status === actionType.DELETE_DOCUMENTS_SUCCESS) {
-        isOpen = true
-        alertText = "Documents are deleted!"
-        severity = "success"
-    } else if (documents.status === actionType.DELETE_DOCUMENTS_REJECTED) {
-        isOpen = true
-        alertText = "Error: documents aren't deleted!"
-        severity = "error"
+    // // Restore documents statuses
+    // else if (documents.status === actionType.RESTORE_DOCUMENTS_SUCCESS) {
+    //     isOpen = true
+    //     alertText = "Documents are restored!"
+    //     severity = "success"
+    // } else if (documents.status === actionType.RESTORE_DOCUMENTS_REJECTED) {
+    //     isOpen = true
+    //     alertText = "Error: documents aren't restored!"
+    //     severity = "error"
+    // }
+
+    // // Delete documents statuses
+    // else if (documents.status === actionType.DELETE_DOCUMENTS_SUCCESS) {
+    //     isOpen = true
+    //     alertText = "Documents are deleted!"
+    //     severity = "success"
+    // } else if (documents.status === actionType.DELETE_DOCUMENTS_REJECTED) {
+    //     isOpen = true
+    //     alertText = "Error: documents aren't deleted!"
+    //     severity = "error"
 
     // Else statuses
-    } else {
+    else {
         isOpen = false
     }
 

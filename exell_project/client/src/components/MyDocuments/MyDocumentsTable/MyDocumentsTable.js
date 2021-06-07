@@ -138,10 +138,13 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionOpenDocument, actionRecycleDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionOpenDocument, actionRecycleDocuments, actionUpdateDocuments, setSelected } = props;
 
     const handleRecycleSelected = () => {
-        actionRecycleDocuments({selectedDocuments: selectedDocuments})
+        actionUpdateDocuments({
+            selectedDocuments: [...selectedDocuments],
+            updateType: "RECYCLE",
+        })
         setSelected([])
     }
 
@@ -241,7 +244,7 @@ export default function MyDocumentsTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, auth, actionCreateDocument, actionOpenDocument, actionRecycleDocuments } = props
+    const { documents, auth, actionCreateDocument, actionOpenDocument, actionRecycleDocuments, actionUpdateDocuments } = props
     const rows = documents.list
 
     const handleRequestSort = (event, property) => {
@@ -306,6 +309,7 @@ export default function MyDocumentsTable(props) {
                     actionCreateDocument={actionCreateDocument}
                     actionOpenDocument={actionOpenDocument}
                     actionRecycleDocuments={actionRecycleDocuments}
+                    actionUpdateDocuments={actionUpdateDocuments}
                     setSelected={setSelected}
                 />
                 <TableContainer>

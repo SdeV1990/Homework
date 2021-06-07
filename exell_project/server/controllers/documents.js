@@ -53,10 +53,10 @@ export const createDocument = async (req, res) => {
                 id: '1',
                 name: 'Sheet 1',
                 rowQuantity: 10 ,
-                rowDefaultWidth: 40 ,
+                rowDefaultHeight: 21 ,
                 columnQuantity: 10,
                 columnDefaultWidth: 40 ,
-                cells: []
+                cells: {}
             }]
         }
 
@@ -77,19 +77,23 @@ export const createDocument = async (req, res) => {
 export const recycleDocuments = async (req, res) => { 
     try {
         const userId = req.userId
+        console.log(req.body.selectedDocuments)
         const documentsIDToRecycle = req.body.selectedDocuments
 
-        const documentsToRecycle = await Document.find( { _id: { $in: documentsIDToRecycle } } );
+        // Get needed documenys if user is autor
+        const filter = { 
+            _id: { $in: documentsIDToRecycle }, 
+            createdBy: { $in: userId },
+        }
 
-        // If user is autor
-        documentsToRecycle.map( (document) => {
-            if ( userId == document.createdBy ) {
-                document.isRecycled = true
-                document.recycledAt = new Date();
-                document.save()
+        const update = { $set: {
+                isRecycled: true,
+                recycledAt: new Date(),
             }
-        })
-        Document.updateMany(documentsToRecycle);
+        }
+
+        const documentsToRecycle = await Document.updateMany(filter, update)
+        console.log(documentsToRecycle)
 
         res.status(200).json(documentsToRecycle)
     } catch (error) {
@@ -143,15 +147,55 @@ export const deleteDocuments = async (req, res) => {
     }
 }
 
-// export const updatePost = async (req, res) => {
-//     const { id } = req.params;
-//     const { title, message, creator, selectedFile, tags } = req.body;
-    
-//     if (!mongoose.Types.ObjectId.isValid(id)) return res.status(404).send(`No post with id: ${id}`);
+export const updateDocuments = async (req, res) => { 
+    try {
+        const userId = req.userId
+        console.log(req.body)
+        const updateType = req.body.updateType
+        const documentsIDToUpdate = req.body.selectedDocuments
 
-//     const updatedPost = { creator, title, message, tags, selectedFile, _id: id };
+        // Get needed documenys if user is autor
+        const filter = { 
+            _id: { $in: documentsIDToUpdate }, 
+            createdBy: { $in: userId },
+        }
 
-//     await PostMessage.findByIdAndUpdate(id, updatedPost, { new: true });
+        // Set update by type
+        const update = ((type) => {
 
-//     res.json(updatedPost);
-// }
+            // Recycle document
+            if (type === "RECYCLE") {
+                return { $set: {
+                        isRecycled: true,
+                        recycledAt: new Date(),
+                    }
+                }
+            }
+
+            // Restore document
+            if (type === "RESTORE") {
+                return { $set: {
+                        isRecycled: false,
+                        recycledAt: "",
+                    }
+                }
+            }
+
+            // Delete document
+            if (type === "DELETE") {
+                return { $set: {
+                        isDeleted: true,
+                        deletedAt: new Date(),
+                    }
+                }
+            }
+        })(updateType)
+
+        const documentsToUpdate = await Document.updateMany(filter, update)
+        console.log(documentsToUpdate)
+
+        res.status(200).json(documentsToUpdate)
+    } catch (error) {
+        res.status(404).json({ message: error.message })
+    }
+}
