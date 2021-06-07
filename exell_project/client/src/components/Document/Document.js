@@ -17,7 +17,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 // Converting adress to coordinates - column and row indexes
 function convertAdressToCoorginates(string) {
-  
+    
     let coordinates = {
       row: 0,
       column: 0
@@ -26,7 +26,7 @@ function convertAdressToCoorginates(string) {
     // Get columnt adress
     const regexColumn = /[A-Z]+/g
     const columnAdress = RegExp(regexColumn).exec(string)[0]
-  
+    
     // Get row aderess
     const regexRow = /[0-9]+/g
     const rowAdress = regexRow.exec(string)[0]
@@ -36,7 +36,7 @@ function convertAdressToCoorginates(string) {
     coordinates.column = columnAdress
     return coordinates
     
-  }
+}
 
 // *********** Maths ends ***********
 
@@ -47,7 +47,7 @@ const Document = ( { document, getDocument }) => {
     // getDocument
     useEffect( () => {
         getDocument(window.location.pathname.slice(10))
-    }, [])
+    }, [] )
 
     // Resize row and column
     const handleTextAreaResize = (event, cellID) => {
@@ -72,14 +72,14 @@ const Document = ( { document, getDocument }) => {
             
             // If there is no key in data object - create it
             data[cellID] === undefined ? setData ( {...data, [cellID]: {formula: event.target.value} } ): setData( {...data, [cellID] : {formula: event.target.value} } )
-        
+            
         }
 
     }
 
     // Convert decimal index into string [A-Z] index 
     function convertNumberIndexIngoStringIndex(number) {
-    
+        
         const CHAR_CODE_OFFSET = 65
         const CHAR_NUMBER_BASE = 26
         
@@ -94,7 +94,7 @@ const Document = ( { document, getDocument }) => {
             result.unshift(charIndex + CHAR_CODE_OFFSET)
             remainder = (remainder - 1 - charIndex) / CHAR_NUMBER_BASE
         } while (remainder > 0)
-    
+        
         // Convert char index array into char array
         result = result.map(char => String.fromCharCode(char) )
         return result.join("")
@@ -102,7 +102,7 @@ const Document = ( { document, getDocument }) => {
 
     // Calculate cells value
     const calculateCellsValue = (newData) => {
-            
+        
         // Check cells formula for formula or value
         let cellsWithFormula = {}
         for (let cell in newData) {
@@ -116,7 +116,7 @@ const Document = ( { document, getDocument }) => {
                 // Copy cell into array of cells with formulas
                 cellsWithFormula[cell] = {...newData[cell]}
 
-            } 
+            }
             
             // Save value if it isn't formula
             else if ( newData[cell].formula != "" ) {
@@ -165,10 +165,10 @@ const Document = ( { document, getDocument }) => {
             if (startNumberOfCellsToCalculate === 0) break
 
             for (let cell in cellsWithFormula) {
-            
+                
                 // Use regular expression to get array of adress of cells
                 let cellsAdress = cellsWithFormula[cell].formula.match(REGEX_ADDRESS)
-            
+                
                 // Get cell value if they are exists
                 let isNotNull = false
                 if (cellsAdress !== null) {
@@ -176,15 +176,15 @@ const Document = ( { document, getDocument }) => {
                     let cellValues = cellsAdress.map( cellAdress => {
                         return newData[cellAdress] === undefined ? "" : newData[cellAdress].value
                     })
-               
+                    
                     // Check cellsValue for not nul
                     cellValues.map(cellValue => isNotNull = (cellValue === null || isNotNull))
-               
+                    
                 }
-            
+                
                 // Calculate if all values are calculated
                 if (!isNotNull) {
-            
+                    
                     // Replace cell addres with cell value by formula
                     let formula = newData[cell].formula
 
@@ -194,10 +194,10 @@ const Document = ( { document, getDocument }) => {
                             formula = formula.replace(relatedCell, newData[relatedCell] === undefined ? 0 : newData[relatedCell].value)
                         })
                     }
-            
+                    
                     // Calculate by formula
                     try {
-                        newData[cell].value = (eval(formula.slice(1))).toFixed(10)
+                        newData[cell].value = eval((eval(formula.slice(1))).toFixed(10))
                     }
                     catch {
                         newData[cell].value = "ERROR"
@@ -219,7 +219,7 @@ const Document = ( { document, getDocument }) => {
         // Save data to useState
         setData({...newData})
 
-        // Save data to Redux
+        // Save data to Redux (summon Chaos demons)
         document.document.sheets[0].cells = {...data}
         console.log(document.document.sheets[0])
 
@@ -250,7 +250,7 @@ const Document = ( { document, getDocument }) => {
             {cells}
         </tr>
     )
-
+    
     // Fill rows
     for (var rowIndex = 1; rowIndex <= maxRows; rowIndex++){
 
