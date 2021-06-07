@@ -197,7 +197,7 @@ const Document = ( { document, getDocument }) => {
             
                     // Calculate by formula
                     try {
-                        newData[cell].value = Math.round(eval(formula.slice(1)), 10) 
+                        newData[cell].value = (eval(formula.slice(1))).toFixed(10)
                     }
                     catch {
                         newData[cell].value = "ERROR"
@@ -315,17 +315,8 @@ const Document = ( { document, getDocument }) => {
                 </div>
             </div>
         </div>
-
-    //     <>
-    //     </>
-        
-    //         // controls: save, input, adress
-
-    //         // sheets list
-            
-    //         // sheet
         :
-            <></>
+        <></>
     )
 }
 

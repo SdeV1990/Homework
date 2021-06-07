@@ -55,7 +55,7 @@ export const createDocument = async (req, res) => {
                 rowQuantity: 10 ,
                 rowDefaultHeight: 21 ,
                 columnQuantity: 10,
-                columnDefaultWidth: 40 ,
+                columnDefaultWidth: 60 ,
                 cells: {}
             }]
         }

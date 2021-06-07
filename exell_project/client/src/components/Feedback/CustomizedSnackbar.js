@@ -57,17 +57,17 @@ export default function CustomizedSnackbar({ documents }) {
         severity = "error"
     }
 
-    // Update documents statuses
-    else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
-        isOpen = true
-        alertText = "Documents are recycled!"
-        severity = "success"
-    } else if (documents.status === actionType.RECYCLE_DOCUMENTS_REJECTED) {
-        isOpen = true
-        alertText = "Error: documents aren't recycled!"
-        severity = "error"
-    }
-
+    // // Update documents statuses
+    // else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
+    //     isOpen = true
+    //     alertText = "Documents are recycled!"
+    //     severity = "success"
+    // } else if (documents.status === actionType.RECYCLE_DOCUMENTS_REJECTED) {
+    //     isOpen = true
+    //     alertText = "Error: documents aren't recycled!"
+    //     severity = "error"
+    // }
+    // 
     // // Recycle documents statuses
     // else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
     //     isOpen = true
