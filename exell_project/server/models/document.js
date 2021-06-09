@@ -23,7 +23,7 @@ const documentSchema = mongoose.Schema({
             height: {type: Number, required: false}
         }],
         columnQuantity: { type: Number, required: true , default: 10 },
-        columnDefaultWidth: {type: Number, required: true, default: 60 },
+        columnDefaultWidth: {type: Number, required: true, default: 80 },
         columnWidth: [{
             index:  {type: Number, required: false},
             width: {type: Number, required: false}

@@ -138,7 +138,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionOpenDocument, actionUpdateAndGetDocuments, actionCreateAndGetDocuments, setSelected } = props;
 
     const handleUpdateSelected = (updateType) => {
 
@@ -211,7 +211,10 @@ const EnhancedTableToolbar = (props) => {
             </>
         ) : (
             <>
-                <CreateDocumentForm actionCreateDocument={actionCreateDocument} rows={rows} />
+                <CreateDocumentForm 
+                    actionCreateAndGetDocuments={actionCreateAndGetDocuments}
+                    rows={rows}
+                />
                 <Tooltip title="Filter list">
                     <IconButton aria-label="filter list">
                         <FilterListIcon />
@@ -260,7 +263,7 @@ export default function MyDocumentsTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, auth, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } = props
+    const { documents, auth, actionOpenDocument, actionUpdateAndGetDocuments, actionCreateAndGetDocuments } = props
     const rows = documents.list
 
     const handleRequestSort = (event, property) => {
@@ -322,7 +325,7 @@ export default function MyDocumentsTable(props) {
                     numSelected={selected.length} 
                     rows={rows} 
                     selectedDocuments={selected}
-                    actionCreateDocument={actionCreateDocument}
+                    actionCreateAndGetDocuments={actionCreateAndGetDocuments}
                     actionOpenDocument={actionOpenDocument}
                     actionUpdateAndGetDocuments={actionUpdateAndGetDocuments}
                     setSelected={setSelected}

@@ -6,7 +6,7 @@ const router = express.Router()
 
 router.post('/',auth, getDocuments)
 router.get('/recycle', auth, getDocuments)
-router.post('/',auth, createDocument)
+router.post('/create',auth, createDocument)
 router.post('/update', auth, updateDocuments)
 
 export default router;

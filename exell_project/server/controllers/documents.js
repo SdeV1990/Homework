@@ -10,20 +10,29 @@ export const getDocuments = async (req, res) => {
 
         const userId = req.userId
         const isRecycled = req.body.isRecycled
-        const path = req.path
 
         // Get filter by type (path)
         const filter = {
-            isDeleted: false, 
+            createdBy: userId,
             isRecycled: isRecycled, 
-            createdBy: userId 
+            isDeleted: false, 
         }
 
-        const documents = await Document.find(filter)
+        // Return only needed props
+        const projection = {
+            name: 1,
+            createdAt: 1,
+            changedAt: 1, 
+            recycledAt: 1,
+            isRecycled: 1,
+            rightsAccess: 1,
+        }
+
+        //Get documents
+        const documents = await Document.find(filter, projection)
                                         .populate('createdBy', 'name');
 
-        console.log(documents)
-
+        // Response
         res.status(200).json(documents);
 
     } catch (error) {
@@ -40,8 +49,10 @@ export const createDocument = async (req, res) => {
         // If user is exist
         const user = await User.findById(req.userId);
 
+        // Get name of new document from request
         const newDocumentName = req.body.name
 
+        // Create document template
         const newDocument = {
             name: newDocumentName, 
             createdBy: user._id,
@@ -50,10 +61,6 @@ export const createDocument = async (req, res) => {
             sheets: [{
                 id: '1',
                 name: 'Sheet 1',
-                rowQuantity: 10 ,
-                rowDefaultHeight: 21 ,
-                columnQuantity: 10,
-                columnDefaultWidth: 80 ,
                 cells: {}
             }]
         }
@@ -61,11 +68,8 @@ export const createDocument = async (req, res) => {
         // Creating document in DB
         let newDoc = await Document.create(newDocument);
 
-        // Populate creator
-        newDoc = await newDoc.populate('createdBy', 'name').execPopulate();
-        newDoc = newDoc.toObject();
-
-        res.status(200).json(newDoc);
+        // Response
+        res.status(200).json({ message: 'Document is created.' });
 
     } catch (error) {
 
@@ -78,10 +82,9 @@ export const createDocument = async (req, res) => {
 export const updateDocuments = async (req, res) => { 
     try {
 
-        const userId = req.userId
-        const updateType = req.body.updateType
         const documentsIDToUpdate = req.body.selectedDocuments
-
+        const userId = req.userId
+        
         // Get needed documenys if user is autor
         const filter = { 
             _id: { $in: documentsIDToUpdate }, 
@@ -90,17 +93,17 @@ export const updateDocuments = async (req, res) => {
 
         // Set update by type
         const update = {
-            "RECYCLE": { $set: {
+            'RECYCLE': { $set: {
                     isRecycled: true,
                     recycledAt: new Date(),
                 },
             },
-            "RESTORE": { $set: {
+            'RESTORE': { $set: {
                     isRecycled: false,
-                    recycledAt: "",
+                    recycledAt: '',
                 },
             },
-            "DELETE": { $set: {
+            'DELETE': { $set: {
                     isDeleted: true,
                     deletedAt: new Date(),
                 },
@@ -108,10 +111,10 @@ export const updateDocuments = async (req, res) => {
         }
 
         // Update filtered documents
+        const updateType = req.body.updateType
         const documentsToUpdate = await Document.updateMany(filter, update[updateType])
-        console.log(documentsToUpdate)
 
-        res.status(200).json({ message: "SUCCESS" })
+        res.status(200).json({ message: updateType +': SUCCESS' })
     } catch (error) {
         res.status(404).json({ message: error.message })
     }

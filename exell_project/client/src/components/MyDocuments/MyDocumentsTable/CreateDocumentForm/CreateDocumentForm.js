@@ -11,10 +11,9 @@ import IconButton from '@material-ui/core/IconButton'
 import Tooltip from '@material-ui/core/Tooltip'
 import PostAddIcon from '@material-ui/icons/PostAdd'
 
-export default function CreateDocumentForm(props) {
+export default function CreateDocumentForm({rows, actionCreateAndGetDocuments}) {
 
     // Get documents name list for comparing for creating only unique value
-    const { rows } = props
     const nameList = rows.map(row => row.name)
 
     // Create new default document name
@@ -80,8 +79,18 @@ export default function CreateDocumentForm(props) {
     // Create new document
     const createNewDocument = (e) => {
 
-        const { actionCreateDocument } = props;
-        actionCreateDocument({ name: defaultDocumentName.current })
+        // Options of create document
+        const optionsOfCreate = { 
+            name: defaultDocumentName.current 
+        }
+
+        // Options of get documents
+        const optionsOfGet = {
+            isRecycled: false
+        }
+
+        // Create document and get not recycled documents
+        actionCreateAndGetDocuments(optionsOfCreate, optionsOfGet)
 
         // Close dialog form after creation
         handleClose()

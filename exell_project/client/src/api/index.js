@@ -21,7 +21,7 @@ export const signUp = (formData) => API.post('/user/signup', formData);
 // Documents
 export const getDocuments = (isRecycled) => API.post('documents', isRecycled);
 export const getRecycledDocuments = () => API.get('documents/recycle');
-export const createDocument = (newDocument) => API.post('/documents', newDocument);
+export const createDocument = (newDocument) => API.post('/documents/create', newDocument);
 export const updateDocuments = (update) => API.post(`documents/update`, update);
 
 // Document

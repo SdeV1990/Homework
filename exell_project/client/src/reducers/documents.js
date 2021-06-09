@@ -1,7 +1,8 @@
 import * as actionType from '../constants/actionTypes';
 
 const documents = (state = {status:'', list: [], recycledList: []}, action) => {
-    console.log(state)
+    // console.log('Reducer state: ' + state)
+    // console.log('Reducer action.payload: ' + action.payload)
   switch (action.type) {
     
     // Fetch documents
@@ -28,7 +29,6 @@ const documents = (state = {status:'', list: [], recycledList: []}, action) => {
         
     // Create document
     case actionType.CREATE_DOCUMENT_SUCCESS:
-        state.list.push(action.payload);
         return {
             ...state, 
             status: actionType.CREATE_DOCUMENT_SUCCESS
