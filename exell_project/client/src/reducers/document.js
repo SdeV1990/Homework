@@ -1,6 +1,6 @@
 import * as actionType from '../constants/actionTypes';
 
-const document = (state = [], action) => {
+const document = (state = {}, action) => {
   switch (action.type) {
 
     // Open document

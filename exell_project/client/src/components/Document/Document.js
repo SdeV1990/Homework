@@ -15,25 +15,25 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 // *********** Maths begins ***********
 
-// Converting adress to coordinates - column and row indexes
-function convertAdressToCoorginates(string) {
+// Converting address to coordinates - column and row indexes
+function convertAddressToCoorginates(string) {
     
     let coordinates = {
       row: 0,
       column: 0
     }
     
-    // Get columnt adress
+    // Get columnt address
     const regexColumn = /[A-Z]+/g
-    const columnAdress = RegExp(regexColumn).exec(string)[0]
+    const columnAddress = RegExp(regexColumn).exec(string)[0]
     
     // Get row aderess
     const regexRow = /[0-9]+/g
-    const rowAdress = regexRow.exec(string)[0]
+    const rowAddress = regexRow.exec(string)[0]
     
     // Show result
-    coordinates.row = +rowAdress
-    coordinates.column = columnAdress
+    coordinates.row = +rowAddress
+    coordinates.column = columnAddress
     return coordinates
     
 }
@@ -50,10 +50,53 @@ const Document = ( { document, getDocument }) => {
     }, [] )
 
     // Resize row and column
-    const handleTextAreaResize = (event, cellID) => {
-        console.log('resized: ' + cellID)
-        console.log(event.target.style.height)
-        console.log(convertAdressToCoorginates(cellID))
+    const handleTextAreaResize = (event) => {
+        // console.log('resized: ' + cellID)
+        // console.log(event.target.style.height)
+        // console.log(convertAddressToCoorginates(cellID))
+
+        // Get current element
+        // const element = event.target
+        
+        // // Get current cell size
+        // let width = element.style.width
+        // let height = element.style.height
+
+        // // Constants
+        // const MAX_ROWS = !!document.document ? document.document.sheets[0].rowQuantity : 1
+        // const MAX_COLUMNS = !!document.document ? document.document.sheets[0].columnQuantity : 1
+        
+        // // Get current cell id
+        // const currentCellID = element.id
+
+        // // Get current element coordinates
+        // const currenElementCoordinates = convertAddressToCoorginates(currentCellID)
+
+        // // Create array of rows address to resize
+        // let rowsArrayToResize = []
+        // for (let index = 1; index<=MAX_ROWS; index++) {
+        //     rowsArrayToResize.push( convertNumberIndexIngoStringIndex(index)  + currenElementCoordinates.row)
+        // }
+        
+        // // Resize rows height
+        // rowsArrayToResize.map( address => {
+        //     document.querySelector("."+address).style.height = height
+        // })
+
+        // console.log(rowsArrayToResize)
+        // debugger
+        
+        // // Create array of column address to resize
+        // let columnArrayToResize = []
+        // for (let index = 1; index<=MAX_COLUMNS; index++) {
+        //     columnArrayToResize.push( currenElementCoordinates.column + index)
+        // }
+        
+        // // Resize column width
+        // columnArrayToResize.map( address => {
+        //     document.getElementById(address).style.width = width
+        // })
+
     }
 
     // Handle cell blur
@@ -166,15 +209,15 @@ const Document = ( { document, getDocument }) => {
 
             for (let cell in cellsWithFormula) {
                 
-                // Use regular expression to get array of adress of cells
-                let cellsAdress = cellsWithFormula[cell].formula.match(REGEX_ADDRESS)
+                // Use regular expression to get array of address of cells
+                let cellsAddress = cellsWithFormula[cell].formula.match(REGEX_ADDRESS)
                 
                 // Get cell value if they are exists
                 let isNotNull = false
-                if (cellsAdress !== null) {
+                if (cellsAddress !== null) {
 
-                    let cellValues = cellsAdress.map( cellAdress => {
-                        return newData[cellAdress] === undefined ? "" : newData[cellAdress].value
+                    let cellValues = cellsAddress.map( cellAddress => {
+                        return newData[cellAddress] === undefined ? "" : newData[cellAddress].value
                     })
                     
                     // Check cellsValue for not nul
@@ -188,16 +231,34 @@ const Document = ( { document, getDocument }) => {
                     // Replace cell addres with cell value by formula
                     let formula = newData[cell].formula
 
-                    // If cells adresses are
-                    if (cellsAdress !== null) {
-                        cellsAdress.map( relatedCell => {
-                            formula = formula.replace(relatedCell, newData[relatedCell] === undefined ? 0 : newData[relatedCell].value)
+                    // If cells addresses exist
+                    if (cellsAddress !== null) {
+                        cellsAddress.map( relatedCell => {
+                            console.log(formula)
+                            console.log(newData[relatedCell])
+
+                            // 
+                            let replaceTo = ""
+
+
+                            formula = formula.replace(
+                                relatedCell, 
+                                newData[relatedCell] === undefined ? 0 : `newData.${relatedCell}.value`)
                         })
                     }
+
+                    console.log(formula)
                     
                     // Calculate by formula
                     try {
-                        newData[cell].value = eval((eval(formula.slice(1))).toFixed(10))
+
+                        // If result is number - fixed
+                        if (typeof(eval(formula.slice(1))) === "number") {
+                            newData[cell].value = +((eval(formula.slice(1))).toFixed(10))
+                        } else {
+                            newData[cell].value = eval(formula.slice(1))
+                        }
+
                     }
                     catch {
                         newData[cell].value = "ERROR"
@@ -266,9 +327,11 @@ const Document = ( { document, getDocument }) => {
             let cellID = `${convertNumberIndexIngoStringIndex(columnIndex)}${rowIndex}`
             cells.push(
                 <td 
-                    key={cellID} 
-                    id={cellID}>
-                        <textarea 
+                    key={`${cellID}_cell`} 
+                    id={`${cellID}_cell`}>
+                        <textarea
+                            key={cellID}
+                            id={cellID}
                             style={{ 
                                 width: columnDefaultWidths,
                                 height: rowDefaultHeight
@@ -278,7 +341,7 @@ const Document = ( { document, getDocument }) => {
                             onFocus={ (event) => event.target.value = data[cellID] !== undefined ? data[cellID].formula : "" }
                             onBlur={ (event) => handleCellBlur(event, cellID) }
                             onChange={ (event) => handleCellChange(event, cellID) }
-                            onMouseUp={ (event) => handleTextAreaResize(event, cellID) }
+                            onMouseUp={ (event) => handleTextAreaResize(event) }
                         />
                 </td>
             )
