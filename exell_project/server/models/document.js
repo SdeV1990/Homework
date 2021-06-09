@@ -16,13 +16,13 @@ const documentSchema = mongoose.Schema({
     sheets: [{
         id: { type: String },
         name: { type: String, required:  true },
-        rowQuantity: { type: Number, required: true , default: 10 },
+        rowQuantity: { type: Number, required: true , default: 30 },
         rowDefaultHeight: {type: Number, required: true, default: 21 },
         rowHeight: [{
             index:  {type: Number, required: false},
             height: {type: Number, required: false}
         }],
-        columnQuantity: { type: Number, required: true , default: 10 },
+        columnQuantity: { type: Number, required: true , default: 30 },
         columnDefaultWidth: {type: Number, required: true, default: 80 },
         columnWidth: [{
             index:  {type: Number, required: false},

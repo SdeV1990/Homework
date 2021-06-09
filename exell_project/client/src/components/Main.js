@@ -15,6 +15,7 @@ import IconButton from '@material-ui/core/IconButton'
 import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
+import Container from '@material-ui/core/Container'
 import LinkUI from '@material-ui/core/Link'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
@@ -166,11 +167,15 @@ export default function Main() {
                     <Route path="/auth" exact component={ JSON.parse(localStorage.getItem('profile')) ? CMyDocuments : Auth } />
 
                     <CPrivateRoute exact path="/mydocuments" redirectTo ="/auth">
-                        <CMyDocuments/>
+                        <Container maxWidth="lg">
+                            <CMyDocuments/>
+                        </Container>
                     </CPrivateRoute>
 
                     <CPrivateRoute exact path="/recycled" redirectTo ="/auth">
-                        <CRecycled/>
+                        <Container maxWidth="lg">
+                            <CRecycled/>
+                        </Container>
                     </CPrivateRoute>
 
                     <CPrivateRoute path="/document" redirectTo ="/auth">
