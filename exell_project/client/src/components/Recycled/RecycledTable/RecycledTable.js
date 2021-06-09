@@ -137,18 +137,35 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionOpenDocument, actionUpdateDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionOpenDocument, actionUpdateAndGetDocuments, setSelected } = props;
 
     const handleUpdateSelected = (updateType) => {
-      actionUpdateDocuments({
+
+        // Get recycled documents
+        const getOptions = {
+            isRecycled: true
+        }
+
+        // Update selected documents by updated type
+        const updateOptions = {
             selectedDocuments: [...selectedDocuments],
             updateType,
-        });
+        }
+
+        // Update and get recycled documents
+        actionUpdateAndGetDocuments(
+            updateOptions,
+            getOptions
+        );
+
+        // Clear selection
         setSelected([]);
     }
 
     const hendleOpenDocument = () => {
         actionOpenDocument({selectedDocuments: selectedDocuments});
+
+        // Clear selection
         setSelected([]);
     }
 
@@ -242,7 +259,7 @@ export default function RecycledTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, actionOpenDocument, actionUpdateDocuments } = props
+    const { documents, actionOpenDocument, actionUpdateAndGetDocuments } = props
     const rows = documents.recycledList
 
     const handleRequestSort = (event, property) => {
@@ -305,7 +322,7 @@ export default function RecycledTable(props) {
                     rows={rows} 
                     selectedDocuments={selected}
                     actionOpenDocument={actionOpenDocument}
-                    actionUpdateDocuments={actionUpdateDocuments}
+                    actionUpdateAndGetDocuments={actionUpdateAndGetDocuments}
                     setSelected={setSelected}
                 />
                 <TableContainer>

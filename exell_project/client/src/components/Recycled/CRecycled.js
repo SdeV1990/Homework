@@ -1,18 +1,18 @@
 import React, { useEffect } from 'react'
 import RecycledTable from './RecycledTable/RecycledTable'
-import { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } from '../../actions/documents'
+import { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } from '../../actions/documents'
 import { connect } from 'react-redux'
 
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } ) => {
+const Recycled = ( { documents, actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } ) => {
 
     useEffect( () => {
-        actionGetRecycledDocuments()
+        actionGetDocuments({isRecycled: true})
     }, [] )  // eslint-disable-line react-hooks/exhaustive-deps
     
-    console.log(documents)
+    // console.log(documents)
 
     return (
         <>
@@ -20,7 +20,7 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
                 documents={documents}
                 actionCreateDocument={actionCreateDocument}
                 actionOpenDocument={actionOpenDocument}
-                actionUpdateDocuments={actionUpdateDocuments}
+                actionUpdateAndGetDocuments={actionUpdateAndGetDocuments}
             />
             <CustomizedBackdrop status={documents.status}/>
             <CustomizedSnackbar documents={documents}/> 
@@ -28,6 +28,6 @@ const Recycled = ( { documents, actionGetRecycledDocuments, actionCreateDocument
     )
 }
 
-const CRecycled = connect( state => ({ documents: state.documents }), { actionGetRecycledDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } )(Recycled)
+const CRecycled = connect( state => ({ documents: state.documents }), { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } )(Recycled)
 
 export default CRecycled

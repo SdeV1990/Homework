@@ -19,18 +19,13 @@ export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData);
 
 // Documents
-export const getDocuments = () => API.get('documents');
+export const getDocuments = (isRecycled) => API.post('documents', isRecycled);
 export const getRecycledDocuments = () => API.get('documents/recycle');
 export const createDocument = (newDocument) => API.post('/documents', newDocument);
-// export const recycleDocuments = (documentsIDToRecycle) => API.post(`documents/recycle`, documentsIDToRecycle);
-export const restoreDocuments = (documentsIDToRestore) => API.post(`documents/restore`, documentsIDToRestore);
-export const deleteDocuments = (documentsIDToDelete) => API.post(`documents/delete`, documentsIDToDelete);
 export const updateDocuments = (update) => API.post(`documents/update`, update);
 
 // Document
 export const getDocument = (documentId) => API.post(`document`, documentId);
-
-
 
 
 // Template

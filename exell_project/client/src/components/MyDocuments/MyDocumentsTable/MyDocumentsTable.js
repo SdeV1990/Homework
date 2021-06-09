@@ -138,14 +138,30 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionOpenDocument, actionRecycleDocuments, actionUpdateDocuments, setSelected } = props;
+    const { numSelected, rows, selectedDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments, setSelected } = props;
 
-    const handleRecycleSelected = () => {
-        actionUpdateDocuments({
+    const handleUpdateSelected = (updateType) => {
+
+        // Get not recycled documents
+        const getOptions = {
+            isRecycled: false
+        }
+
+        // Update selected documents by updated type
+        const updateOptions = {
             selectedDocuments: [...selectedDocuments],
-            updateType: "RECYCLE",
-        })
-        setSelected([])
+            updateType,
+        }
+
+        // Update and get recycled documents
+        actionUpdateAndGetDocuments(
+            updateOptions,
+            getOptions
+        );
+
+        // Clear selection
+        setSelected([]);
+
     }
 
     const handleOpenSelected = () => {
@@ -188,7 +204,7 @@ const EnhancedTableToolbar = (props) => {
                     </IconButton>
                 </Tooltip>
                 <Tooltip title="Delete">
-                    <IconButton aria-label="Delete" onClick={handleRecycleSelected}>
+                    <IconButton aria-label="Delete" onClick={() => handleUpdateSelected('RECYCLE')}>
                         <DeleteIcon />
                     </IconButton>
                 </Tooltip>
@@ -244,7 +260,7 @@ export default function MyDocumentsTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, auth, actionCreateDocument, actionOpenDocument, actionRecycleDocuments, actionUpdateDocuments } = props
+    const { documents, auth, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } = props
     const rows = documents.list
 
     const handleRequestSort = (event, property) => {
@@ -308,8 +324,7 @@ export default function MyDocumentsTable(props) {
                     selectedDocuments={selected}
                     actionCreateDocument={actionCreateDocument}
                     actionOpenDocument={actionOpenDocument}
-                    actionRecycleDocuments={actionRecycleDocuments}
-                    actionUpdateDocuments={actionUpdateDocuments}
+                    actionUpdateAndGetDocuments={actionUpdateAndGetDocuments}
                     setSelected={setSelected}
                 />
                 <TableContainer>

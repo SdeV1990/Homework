@@ -1,15 +1,15 @@
 import React, { useEffect } from 'react'
 import MyDocumentsTable from './MyDocumentsTable/MyDocumentsTable.js'
-import { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } from '../../actions/documents.js'
+import { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } from '../../actions/documents.js'
 import { connect } from 'react-redux'
 
 import CustomizedSnackbar from '../Feedback/CustomizedSnackbar.js'
 import CustomizedBackdrop from '../Feedback/CustomizedBackdrop.js'
 
-const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } ) => {
+const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } ) => {
 
     useEffect( () => {
-        actionGetDocuments()
+        actionGetDocuments({isRecycled: false})
     }, [] )  // eslint-disable-line react-hooks/exhaustive-deps
     
     return (
@@ -19,7 +19,7 @@ const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocumen
                 auth={auth}
                 actionCreateDocument={actionCreateDocument}
                 actionOpenDocument={actionOpenDocument}
-                actionUpdateDocuments = {actionUpdateDocuments}
+                actionUpdateAndGetDocuments={actionUpdateAndGetDocuments}
             />
             <CustomizedBackdrop status={documents.status}/>
             <CustomizedSnackbar documents={documents}/> 
@@ -27,6 +27,6 @@ const MyDocuments = ( { documents, auth, actionGetDocuments, actionCreateDocumen
     )
 }
 
-const CMyDocuments = connect( state => ({ documents: state.documents, auth: state.auth }), { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateDocuments } )(MyDocuments)
+const CMyDocuments = connect( state => ({ documents: state.documents, auth: state.auth }), { actionGetDocuments, actionCreateDocument, actionOpenDocument, actionUpdateAndGetDocuments } )(MyDocuments)
 
 export default CMyDocuments

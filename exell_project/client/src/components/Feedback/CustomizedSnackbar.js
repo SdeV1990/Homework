@@ -35,16 +35,16 @@ export default function CustomizedSnackbar({ documents }) {
         severity = "error"
     }
 
-    // Fetch recycled documents statuses
-    else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_SUCCESS) {
-        isOpen = true
-        alertText = "Recycled documents are loaded!"
-        severity = "success"
-    } else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_REJECTED) {
-        isOpen = true
-        alertText = "ERROR: cann't load recycled documents!"
-        severity = "error"
-    }
+    // // Fetch recycled documents statuses
+    // else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_SUCCESS) {
+    //     isOpen = true
+    //     alertText = "Recycled documents are loaded!"
+    //     severity = "success"
+    // } else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_REJECTED) {
+    //     isOpen = true
+    //     alertText = "ERROR: cann't load recycled documents!"
+    //     severity = "error"
+    // }
 
     // Create document statuses
     else if (documents.status === actionType.CREATE_DOCUMENT_SUCCESS) {
@@ -56,6 +56,8 @@ export default function CustomizedSnackbar({ documents }) {
         alertText = "Error: document isn't created!"
         severity = "error"
     }
+
+    
 
     // // Update documents statuses
     // else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {

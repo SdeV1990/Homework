@@ -9,27 +9,22 @@ export const getDocuments = async (req, res) => {
     try {
 
         const userId = req.userId
-        const usersDocuments = await Document.find({ isDeleted: false, isRecycled: false, createdBy: userId })
-                                            .populate('createdBy', 'name');
+        const isRecycled = req.body.isRecycled
+        const path = req.path
 
-        res.status(200).json(usersDocuments);
+        // Get filter by type (path)
+        const filter = {
+            isDeleted: false, 
+            isRecycled: isRecycled, 
+            createdBy: userId 
+        }
 
-    } catch (error) {
+        const documents = await Document.find(filter)
+                                        .populate('createdBy', 'name');
 
-        res.status(404).json({ message: error.message });
-        console.log('Get documents error.');
+        console.log(documents)
 
-    }
-}
-
-export const getRecycledDocuments = async (req, res) => { 
-    try {
-
-        const userId = req.userId
-        const usersRecycledDocuments = await Document.find({ isDeleted: false, isRecycled: true, createdBy: userId })
-                                            .populate('createdBy', 'name');
-
-        res.status(200).json(usersRecycledDocuments);
+        res.status(200).json(documents);
 
     } catch (error) {
 
@@ -41,7 +36,10 @@ export const getRecycledDocuments = async (req, res) => {
 
 export const createDocument = async (req, res) => { 
     try {
+
+        // If user is exist
         const user = await User.findById(req.userId);
+
         const newDocumentName = req.body.name
 
         const newDocument = {
@@ -55,12 +53,15 @@ export const createDocument = async (req, res) => {
                 rowQuantity: 10 ,
                 rowDefaultHeight: 21 ,
                 columnQuantity: 10,
-                columnDefaultWidth: 60 ,
+                columnDefaultWidth: 80 ,
                 cells: {}
             }]
         }
 
+        // Creating document in DB
         let newDoc = await Document.create(newDocument);
+
+        // Populate creator
         newDoc = await newDoc.populate('createdBy', 'name').execPopulate();
         newDoc = newDoc.toObject();
 
@@ -74,83 +75,10 @@ export const createDocument = async (req, res) => {
     }
 }
 
-export const recycleDocuments = async (req, res) => { 
-    try {
-        const userId = req.userId
-        console.log(req.body.selectedDocuments)
-        const documentsIDToRecycle = req.body.selectedDocuments
-
-        // Get needed documenys if user is autor
-        const filter = { 
-            _id: { $in: documentsIDToRecycle }, 
-            createdBy: { $in: userId },
-        }
-
-        const update = { $set: {
-                isRecycled: true,
-                recycledAt: new Date(),
-            }
-        }
-
-        const documentsToRecycle = await Document.updateMany(filter, update)
-        console.log(documentsToRecycle)
-
-        res.status(200).json(documentsToRecycle)
-    } catch (error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
-export const restoreDocuments = async (req, res) => { 
-    try {
-        const userId = req.userId
-        const documentsIDToRestore = req.body.selectedDocuments
-
-        const documentsToRestore = await Document.find( { _id: { $in: documentsIDToRestore } } )
-        
-        // If user is autor
-        documentsToRestore.map( (document) => {
-            if ( userId == document.createdBy ) {
-                document.isRecycled = false
-                document.recycledAt = new Date();
-                document.save()
-            }
-        })
-        Document.updateMany(documentsToRestore);
-
-        res.status(200).json(documentsToRestore)
-    } catch (error) {
-        res.status(404).json({ message: error.message })
-    }
-}
-
-export const deleteDocuments = async (req, res) => { 
-    try {
-        const userId = req.userId
-        const documentsIDToDelete = req.body.selectedDocuments
-
-        const documentsToDelete = await Document.find( { _id: { $in: documentsIDToDelete } } );
-
-        // If user is autor
-        documentsToDelete.map( (document) => {
-            if ( userId == document.createdBy ) {
-                document.isDeleted = true
-                document.deletedAt = new Date();
-                document.save(); 
-            }
-        })
-        Document.updateMany(documentsToDelete);
-
-        res.status(200).json(documentsToDelete);
-    } catch (error) {
-        res.status(404).json({ message: error.message });
-    }
-}
-
 export const updateDocuments = async (req, res) => { 
     try {
+
         const userId = req.userId
-        console.log(req.body)
         const updateType = req.body.updateType
         const documentsIDToUpdate = req.body.selectedDocuments
 
@@ -161,40 +89,29 @@ export const updateDocuments = async (req, res) => {
         }
 
         // Set update by type
-        const update = ((type) => {
+        const update = {
+            "RECYCLE": { $set: {
+                    isRecycled: true,
+                    recycledAt: new Date(),
+                },
+            },
+            "RESTORE": { $set: {
+                    isRecycled: false,
+                    recycledAt: "",
+                },
+            },
+            "DELETE": { $set: {
+                    isDeleted: true,
+                    deletedAt: new Date(),
+                },
+            },
+        }
 
-            // Recycle document
-            if (type === "RECYCLE") {
-                return { $set: {
-                        isRecycled: true,
-                        recycledAt: new Date(),
-                    }
-                }
-            }
-
-            // Restore document
-            if (type === "RESTORE") {
-                return { $set: {
-                        isRecycled: false,
-                        recycledAt: "",
-                    }
-                }
-            }
-
-            // Delete document
-            if (type === "DELETE") {
-                return { $set: {
-                        isDeleted: true,
-                        deletedAt: new Date(),
-                    }
-                }
-            }
-        })(updateType)
-
-        const documentsToUpdate = await Document.updateMany(filter, update)
+        // Update filtered documents
+        const documentsToUpdate = await Document.updateMany(filter, update[updateType])
         console.log(documentsToUpdate)
 
-        res.status(200).json(documentsToUpdate)
+        res.status(200).json({ message: "SUCCESS" })
     } catch (error) {
         res.status(404).json({ message: error.message })
     }
