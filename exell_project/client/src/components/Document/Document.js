@@ -140,6 +140,7 @@ const Document = ( { document, getDocument }) => {
         
         // Convert char index array into char array
         result = result.map(char => String.fromCharCode(char) )
+
         return result.join("")
     }
 
@@ -163,6 +164,14 @@ const Document = ( { document, getDocument }) => {
             
             // Save value if it isn't formula
             else if ( newData[cell].formula != "" ) {
+
+                // Check is value is number
+                const isNumber = !isNaN(newData[cell].formula)
+
+                // If value is number - convert from string into number
+                if (isNumber) newData[cell].formula = +newData[cell].formula
+
+                // Save value from formula
                 newData[cell].value = newData[cell].formula
             }
             
@@ -228,31 +237,37 @@ const Document = ( { document, getDocument }) => {
                 // Calculate if all values are calculated
                 if (!isNotNull) {
                     
-                    // Replace cell addres with cell value by formula
+                    // Replace cell address with cell value by formula
                     let formula = newData[cell].formula
 
                     // If cells addresses exist
                     if (cellsAddress !== null) {
                         cellsAddress.map( relatedCell => {
-                            console.log(formula)
-                            console.log(newData[relatedCell])
 
-                            // 
-                            let replaceTo = ""
+                            // Is needed cell exists
+                            const isCellExist = newData[relatedCell] !== undefined
+                            if (isCellExist === true) {
 
+                                // Check is value is number
+                                const isNumber = !isNaN(newData[relatedCell].value)
 
+                                // If value is number - convert from string into number
+                                if (isNumber === true) newData[relatedCell].value = +newData[relatedCell].value
+
+                            }
+
+                            // Replace cell address to object (string link)
                             formula = formula.replace(
                                 relatedCell, 
-                                newData[relatedCell] === undefined ? 0 : `newData.${relatedCell}.value`)
+                                isCellExist === true ? `newData.${relatedCell}.value` : 0 
+                            )
                         })
                     }
-
-                    console.log(formula)
                     
                     // Calculate by formula
                     try {
 
-                        // If result is number - fixed
+                        // If result is number - fixed result
                         if (typeof(eval(formula.slice(1))) === "number") {
                             newData[cell].value = +((eval(formula.slice(1))).toFixed(10))
                         } else {
@@ -269,7 +284,7 @@ const Document = ( { document, getDocument }) => {
                 
             }
             
-        // Repeat untill  there is decreasing of number of cells to calculate
+        // Repeat untill there is decreasing of number of cells to calculate and there ara at least cells to calculate
         } while (startNumberOfCellsToCalculate != countCellsToCalculate(newData) && countCellsToCalculate(newData) != 0)
         
         // If cells value is null it is mean, that there are cycled refferences
