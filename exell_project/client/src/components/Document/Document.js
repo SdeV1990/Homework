@@ -13,6 +13,8 @@ import TextareaAutosize from '@material-ui/core/TextareaAutosize'
 // Material UI icons
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
+import CCell from './CCell/CCell'
+
 // *********** Maths begins ***********
 
 // Converting address to coordinates - column and row indexes
@@ -48,56 +50,6 @@ const Document = ( { document, getDocument }) => {
     useEffect( () => {
         getDocument(window.location.pathname.slice(10))
     }, [] )
-
-    // Resize row and column
-    const handleTextAreaResize = (event) => {
-        // console.log('resized: ' + cellID)
-        // console.log(event.target.style.height)
-        // console.log(convertAddressToCoorginates(cellID))
-
-        // Get current element
-        // const element = event.target
-        
-        // // Get current cell size
-        // let width = element.style.width
-        // let height = element.style.height
-
-        // // Constants
-        // const MAX_ROWS = !!document.document ? document.document.sheets[0].rowQuantity : 1
-        // const MAX_COLUMNS = !!document.document ? document.document.sheets[0].columnQuantity : 1
-        
-        // // Get current cell id
-        // const currentCellID = element.id
-
-        // // Get current element coordinates
-        // const currenElementCoordinates = convertAddressToCoorginates(currentCellID)
-
-        // // Create array of rows address to resize
-        // let rowsArrayToResize = []
-        // for (let index = 1; index<=MAX_ROWS; index++) {
-        //     rowsArrayToResize.push( convertNumberIndexIngoStringIndex(index)  + currenElementCoordinates.row)
-        // }
-        
-        // // Resize rows height
-        // rowsArrayToResize.map( address => {
-        //     document.querySelector("."+address).style.height = height
-        // })
-
-        // console.log(rowsArrayToResize)
-        // debugger
-        
-        // // Create array of column address to resize
-        // let columnArrayToResize = []
-        // for (let index = 1; index<=MAX_COLUMNS; index++) {
-        //     columnArrayToResize.push( currenElementCoordinates.column + index)
-        // }
-        
-        // // Resize column width
-        // columnArrayToResize.map( address => {
-        //     document.getElementById(address).style.width = width
-        // })
-
-    }
 
     // Handle cell blur
     const handleCellBlur = (event, cellID) => {
@@ -307,8 +259,8 @@ const Document = ( { document, getDocument }) => {
     // let data = !!document.document ? document.document.sheets[0].cells : {}
     let maxRows = !!document.document ? document.document.sheets[0].rowQuantity : 1
     let maxColumns = !!document.document ? document.document.sheets[0].columnQuantity : 1
-    let columnDefaultWidths = (!!document.document && !!document.document.sheets[0]) ? document.document.sheets[0].columnDefaultWidth : 60
-    let rowDefaultHeight = (!!document.document && !!document.document.sheets[0]) ? document.document.sheets[0].rowDefaultHeight : 30
+    let columnDefaultWidths = (!!document.document && !!document.document.sheets[0]) ? document.document.sheets[0].columnDefaultWidth : 80
+    let rowDefaultHeight = (!!document.document && !!document.document.sheets[0]) ? document.document.sheets[0].rowDefaultHeight : 21
 
     // Fill columns head
     for (let columnIndex = 0; columnIndex <= maxColumns; columnIndex++){
@@ -326,6 +278,9 @@ const Document = ( { document, getDocument }) => {
             {cells}
         </tr>
     )
+
+    console.log('Rows')
+    console.log(rows)
     
     // Fill rows
     for (var rowIndex = 1; rowIndex <= maxRows; rowIndex++){
@@ -358,11 +313,78 @@ const Document = ( { document, getDocument }) => {
                             onChange={ (event) => handleCellChange(event, cellID) }
                             onMouseUp={ (event) => handleTextAreaResize(event) }
                         />
+                        <CCell 
+                            text={cellID}
+                            style={{ 
+                                width: columnDefaultWidths,
+                                height: rowDefaultHeight
+                            }}
+                        >
+
+                        </CCell>
                 </td>
             )
         }
         rows.push(<tr key={rowIndex} id={rowID}>{cells}</tr>)
     }
+
+
+        // Resize row and column
+        const handleTextAreaResize = (event) => {
+            // console.log('resized: ' + cellID)
+            // console.log(event.target.style.height)
+            // console.log(convertAddressToCoorginates(cellID))
+    
+            //Get current element
+            const element = event.target
+            
+            // Get current cell size
+            let width = element.style.width
+            let height = element.style.height
+    
+            // Constants
+            const MAX_ROWS = !!document.document ? document.document.sheets[0].rowQuantity : 1
+            const MAX_COLUMNS = !!document.document ? document.document.sheets[0].columnQuantity : 1
+            
+            // Get current cell id
+            const currentCellID = element.id
+    
+            // Get current element coordinates
+            const currenElementCoordinates = convertAddressToCoorginates(currentCellID)
+    
+            // Create array of rows address to resize
+            let rowsArrayToResize = []
+            for (let index = 1; index<=MAX_ROWS; index++) {
+                rowsArrayToResize.push( convertNumberIndexIngoStringIndex(index)  + currenElementCoordinates.row)
+            }
+            
+            
+            console.log("Height")
+            console.log(+height.slice(0, -2))
+            
+            // Resize rows height
+            console.log('Resize')
+            console.log(rows[1].props.children[1].props.children[0].props.style.height)
+            rows[1].props.children[1].props.children[0].props.style.height = 60
+            // rowsArrayToResize.map( address => {
+            //     rows[1].props.children[1].props.children[0].props.style.height = height
+            // })
+    
+            // console.log(rowsArrayToResize)
+            // debugger
+            
+            // // Create array of column address to resize
+            // let columnArrayToResize = []
+            // for (let index = 1; index<=MAX_COLUMNS; index++) {
+            //     columnArrayToResize.push( currenElementCoordinates.column + index)
+            // }
+            
+            // // Resize column width
+            // columnArrayToResize.map( address => {
+            //     document.getElementById(address).style.width = width
+            // })
+    
+        }
 
     return (
         !!document.document 

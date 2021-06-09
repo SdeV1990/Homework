@@ -80,9 +80,7 @@ export default function Main() {
                     : 
                         <></>
                     }
-
                     <Navbar/>
-
                 </Toolbar>
             </AppBar>
             
