@@ -28,8 +28,13 @@ export const OPEN_DOCUMENT_SUCCESS = 'OPEN_DOCUMENTS_SUCCESS';
 export const OPEN_DOCUMENT_PENDING = 'OPEN_DOCUMENTS_PENDING';
 export const OPEN_DOCUMENT_REJECTED = 'OPEN_DOCUMENTS_REJECTED';
 
+// Calculate cells value by formulas
+export const CALCULATE_CELLS_VALUE = 'CALCULATE_CELLS_VALUE';
+export const CHANGE_CELLS_VALUE = 'CHANGE_CELLS_VALUE';
 
-export const GET_DOCUMENT = 'DELETE_DOCUMENT';
+
+
+// export const GET_DOCUMENT = 'DELETE_DOCUMENT';
 
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
