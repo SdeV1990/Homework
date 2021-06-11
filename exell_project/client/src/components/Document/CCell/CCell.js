@@ -32,9 +32,9 @@ function convertStringIndexIntoNumber(string) {
   
     let result = 0
     
-    // Convertation
+    // Quantity of iteraiton is the length of string
     for (let charIndex = string.length; charIndex > 0; charIndex-- ) {
-      result += Math.pow(26, string.length-charIndex)*(string[charIndex-1].charCodeAt()-64)
+        result += Math.pow(26, string.length-charIndex)*(string[charIndex-1].charCodeAt()-64)
     }
 
     return result
@@ -44,16 +44,17 @@ function convertStringIndexIntoNumber(string) {
 
 
 
-
 const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChangeCellValue }) => {
 
+    const [focusTest, setFocusTest] = useState(false) 
+
     // Get height from state
-    let height = ( !!document.rowHeight ?? document.rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
+    let height = ( !!document.rowHeight && document.rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
         ? document.rowHeight[+convertAddressToCoorginates(cellID).row] 
         :  document.rowDefaultHeight
 
     // Get width from state
-    let width = (!!document.columnWidth ?? document.columnWidth[+convertStringIndexIntoNumber(convertAddressToCoorginates(cellID).column)] !== undefined )
+    let width = (!!document.columnWidth && document.columnWidth[+convertStringIndexIntoNumber(convertAddressToCoorginates(cellID).column)] !== undefined )
         ? document.columnWidth[+convertStringIndexIntoNumber(convertAddressToCoorginates(cellID).column)] 
         :  document.columnDefaultWidth
 
@@ -63,9 +64,9 @@ const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChange
     // Get value from state
     const [value, setValue] = useState( !!cells && cells[cellID] !== undefined ? cells[cellID].value : null )
     
+    // Set cell value then cells are changed
     useEffect( () => {
         setValue(!!cells && cells[cellID] !== undefined ? cells[cellID].value : null)
-        // actionCalculateCellsValue()
     }, [cells])
 
     // Action on blur - calculate cells value by formulas
@@ -74,59 +75,68 @@ const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChange
         // Clear value
         event.target.value = ""
 
-        // console.log('onBlure')
-
+        // Calculate cells value
         actionCalculateCellsValue()
 
-        // console.log('Cells value after calculation')
-        // console.log(document.cells[cellID] !== undefined ? document.cells[cellID].value : null)
-        setValue(cells[cellID] !== undefined ? cells[cellID].value : null)
-        // console.log(value)
+        // Hide text area
+        handleHideInput()
+
     }
 
     
     
     // Action on mouseUp - save new sizes of rows and columns
     
-    
-    // Action on change - save new value
     // Handle cell changes
     const handleCellChange = (event, cellID) => {
-
-        // console.log('onCellChange')
-
         actionChangeCellValue(event, cellID);
-
-
     }
 
+    const handleHideInput = () => {
+        setFocusTest(false)
+    }
     
-    // console.log('Cell')
-    // console.log(cellID)
-    // console.log(value)
+    
+    console.log('Cell')
+    console.log(cellID)
+    console.log(focusTest)
+
         
     return (
         <>
-            {/* <div style={{
-                height: +height,
-                width: +width,
-            }}>
-                {`${cellID} = ${formula} = ${value}`}
-            </div> */}
-            <textarea
-                key={cellID+"test"}
-                id={cellID+"test"}
-                style={{ 
-                    width: +width,
-                    height: +height
-                }}
-                aria-label="empty textarea"
-                placeholder={ value }
-                onFocus={ (event) => event.target.value = cells[cellID] !== undefined ? cells[cellID].formula : "" }
-                onBlur={ (event) => handleCellBlur(event, cellID) }
-                onChange={ (event) => handleCellChange(event, cellID) }
-                // onMouseUp={ (event) => handleTextAreaResize(event) }
-            />
+            {focusTest ?
+                <textarea
+                    autoFocus
+                    key={cellID+"test"}
+                    id={cellID+"test"}
+                    style={{ 
+                        width: +width,
+                        height: +height
+                    }}
+                    aria-label="empty textarea"
+                    // placeholder={ value }
+                    onFocus={ (event) => event.target.value = cells[cellID] !== undefined ? cells[cellID].formula : "" }
+                    onBlur={ (event) => handleCellBlur(event, cellID) }
+                    onChange={ (event) => handleCellChange(event, cellID) }
+                    // onMouseUp={ (event) => handleTextAreaResize(event) }
+                />
+                : 
+                <div
+                    style={{
+                        height: +height,
+                        width: +width,
+                    }}
+                    onClick={
+                        () => {
+                            console.log('click')
+                            setFocusTest(true)
+                            console.log(focusTest)
+                        }
+                    }
+                >
+                    {value}
+                </div>
+            }
         </>
     )
 }
@@ -134,3 +144,4 @@ const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChange
 const CCell = connect( state => ({ document: state.document.document.sheets[0], cells: state.document.document.sheets[0].cells  }), { actionChangeCellValue })(Cell)
 
 export default CCell
+

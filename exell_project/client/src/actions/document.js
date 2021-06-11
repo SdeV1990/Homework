@@ -7,11 +7,14 @@ export const getDocument = (documentId) => async (dispatch) => {
         // Pending status
         dispatch({type: actionType.OPEN_DOCUMENT_PENDING});
 
+        // Get document data
         const response = await api.getDocument({documentId})
         
+        // Success status
         dispatch({ type: actionType.OPEN_DOCUMENT_SUCCESS, payload: response.data });
 
     } catch (error) {
+
         console.log(error);
     }
 };
@@ -37,7 +40,6 @@ export const actionChangeCellValue = (event, cellID) => async (dispatch) => {
             cellID
         });
         
-        // dispatch({ type: actionType.OPEN_DOCUMENT_SUCCESS, payload: response.data });
     } catch (error) {
         console.log(error);
     }

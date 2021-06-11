@@ -1,10 +1,5 @@
-
-
 // Calculate cells value
 export const calculateCellsValue = (newData) => {
-
-    console.log('New data')
-    console.log(newData)
         
     // Check cells formula for formula or value
     let cellsWithFormula = {}
@@ -26,12 +21,6 @@ export const calculateCellsValue = (newData) => {
 
             // Check is value is number
             const isNumber = !isNaN(newData[cell].formula)
-
-            
-            console.log('Not formula')
-            console.log(cell)
-            console.log(newData[cell])
-            console.log(newData[cell].formula)
 
             // If value is number - convert from string into number
             if (isNumber) newData[cell].formula = +newData[cell].formula
@@ -159,13 +148,7 @@ export const calculateCellsValue = (newData) => {
         if (newData[cell].value === null) newData[cell].value = 'CYCLED REFFERENCES'
     }
 
-    console.log(newData)
-
     // Save data to useState
     return {...newData}
-
-    // // Save data to Redux (summon Chaos demons)
-    // document.document.sheets[0].cells = {...data}
-    // console.log(document.document.sheets[0])
 
 };

@@ -325,6 +325,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
                             
                         /> */}
                         <CCell 
+                            onClick={(() => console.log('Cell click'))}
                             cellID={cellID}
                             actionCalculateCellsValue={actionCalculateCellsValue}
                         >
