@@ -1,6 +1,7 @@
 import * as actionType from '../constants/actionTypes';
 import * as api from '../api/index.js';
 
+// Load document from server
 export const getDocument = (documentId) => async (dispatch) => {
     try {
 
@@ -19,6 +20,7 @@ export const getDocument = (documentId) => async (dispatch) => {
     }
 };
 
+// Calculate cells value
 export const actionCalculateCellsValue = () => async (dispatch) => {
     try {
 
@@ -30,6 +32,7 @@ export const actionCalculateCellsValue = () => async (dispatch) => {
     }
 };
 
+// Change value of selected cell
 export const actionChangeCellValue = (event, cellID) => async (dispatch) => {
     try {
 
@@ -45,26 +48,18 @@ export const actionChangeCellValue = (event, cellID) => async (dispatch) => {
     }
 };
 
+// Change cells size
+export const actionChangeCellsSize = (event, cellID) => async (dispatch) => {
+    try {
 
+        // Resizing
+        await dispatch({
+            type: actionType.CHANGE_CELLS_SIZE,
+            event,
+            cellID
+        });
 
-
-export const actionResizeCells = (cellID) => async (dispatch) => {
-    // try {
-
-
-
-
-
-
-
-
-    //     // Pending status
-    //     dispatch({type: actionType.OPEN_DOCUMENT_PENDING});
-
-    //     const response = await api.getDocument({documentId})
-        
-    //     dispatch({ type: actionType.OPEN_DOCUMENT_SUCCESS, payload: response.data });
-    // } catch (error) {
-    //     console.log(error);
-    // }
+    } catch (error) {
+        console.log(error);
+    }
 };

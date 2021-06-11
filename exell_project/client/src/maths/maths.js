@@ -152,3 +152,90 @@ export const calculateCellsValue = (newData) => {
     return {...newData}
 
 };
+
+// Convert decimal index into string [A-Z] index 
+export const convertNumberIndexIngoStringIndex = (number) => {
+    
+    const CHAR_CODE_OFFSET = 65
+    const CHAR_NUMBER_BASE = 26
+    
+    // Get number
+    let result = []
+    let remainder = number
+    let charIndex = 0
+    
+    // Convert into char index array
+    do {
+        charIndex = (remainder - 1) % CHAR_NUMBER_BASE
+        result.unshift(charIndex + CHAR_CODE_OFFSET)
+        remainder = (remainder - 1 - charIndex) / CHAR_NUMBER_BASE
+    } while (remainder > 0)
+    
+    // Convert char index array into char array
+    result = result.map(char => String.fromCharCode(char) )
+
+    // Concatenate all items
+    result = result.join("")
+
+    return result
+
+}
+
+// Converting address to coordinates - column and row indexes
+export const convertAddressToCoorginates = (string) => {
+    
+    let coordinates = {
+      row: 0,
+      column: 0
+    }
+    
+    // Get columnt address
+    const regexColumn = /[A-Z]+/g
+    const columnAddress = RegExp(regexColumn).exec(string)[0]
+    
+    // Get row aderess
+    const regexRow = /[0-9]+/g
+    const rowAddress = regexRow.exec(string)[0]
+    
+    // Show result
+    coordinates.row = +rowAddress
+    coordinates.column = columnAddress
+    return coordinates
+    
+}
+
+// Convert string [A-Z] index into decimal index
+export const convertStringIndexIntoNumber = (string) => {
+  
+    let result = 0
+    
+    // Quantity of iteraiton is the length of string
+    for (let charIndex = string.length; charIndex > 0; charIndex-- ) {
+        result += Math.pow(26, string.length-charIndex)*(string[charIndex-1].charCodeAt()-64)
+    }
+
+    return result
+}
+
+// Function recieved:
+//   * adress of resized cell;
+//   * size (width, height) of resized cell;
+//   * quantity of rows;
+//   * quantity of columns.
+//   * old arrays of sizes (array of columns width and array of rows heigth)
+// Funciton returns new arrays of sizes
+export const resizeCells = () => {
+
+
+
+
+
+
+
+
+
+
+
+
+
+}

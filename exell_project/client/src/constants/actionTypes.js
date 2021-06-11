@@ -31,6 +31,7 @@ export const OPEN_DOCUMENT_REJECTED = 'OPEN_DOCUMENTS_REJECTED';
 // Calculate cells value by formulas
 export const CALCULATE_CELLS_VALUE = 'CALCULATE_CELLS_VALUE';
 export const CHANGE_CELLS_VALUE = 'CHANGE_CELLS_VALUE';
+export const CHANGE_CELLS_SIZE = 'CHANGE_CELLS_SIZE';
 
 
 
