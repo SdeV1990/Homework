@@ -11,23 +11,45 @@ import {convertAddressToCoorginates, convertStringIndexIntoNumber} from '../../.
 
 
 
-const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
+const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
 
-    const [focusTest, setFocusTest] = useState(false) 
+    // Focus state to call text area
+    const [focusTest, setFocusTest] = useState(false)
 
-    // Get height from state
-    let height = ( !!document.rowHeight && document.rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
-        ? document.rowHeight[+convertAddressToCoorginates(cellID).row] 
-        :  document.rowDefaultHeight
 
-    // Get width from state
-    let width = (!!document.columnWidth && document.columnWidth[+convertStringIndexIntoNumber(convertAddressToCoorginates(cellID).column)] !== undefined )
-        ? document.columnWidth[+convertStringIndexIntoNumber(convertAddressToCoorginates(cellID).column)] 
+    // Get row height from state
+    const [height, setHeight] = useState(( !!rowHeight && rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
+        ? rowHeight[+convertAddressToCoorginates(cellID).row] 
+        : document.rowDefaultHeight 
+    )
+
+    // Set row height then cells are changed
+    useEffect( () => {
+        setHeight(
+            ( !!rowHeight && rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
+            ? rowHeight[+convertAddressToCoorginates(cellID).row] 
+            : document.rowDefaultHeight )
+    }, [rowHeight])
+
+
+
+    // Get column width from state
+    const [width, setWidth] = useState(( !!columnWidth && columnWidth[convertAddressToCoorginates(cellID).column] !== undefined )
+        ? columnWidth[(convertAddressToCoorginates(cellID).column)] 
         :  document.columnDefaultWidth
+    )
 
-    // Get formula from state
-    // let formula = cells && cells[cellID] !== undefined ? cells[cellID].formula : null
+    // Set column width then cells are changed
+    useEffect( () => {
+        setWidth(
+            ( !!columnWidth && columnWidth[convertAddressToCoorginates(cellID).column] !== undefined )
+            ? columnWidth[convertAddressToCoorginates(cellID).column] 
+            : document.columnDefaultWidth 
+        )
+    }, [columnWidth])
     
+
+
     // Get value from state
     const [value, setValue] = useState( !!cells && cells[cellID] !== undefined ? cells[cellID].value : null )
     
@@ -35,6 +57,11 @@ const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChange
     useEffect( () => {
         setValue(!!cells && cells[cellID] !== undefined ? cells[cellID].value : null)
     }, [cells])
+
+
+
+
+
 
     // Action on blur - calculate cells value by formulas
     const handleCellBlur = (event, cellID) => {
@@ -56,17 +83,10 @@ const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChange
     }
     
     // Action on mouseUp - save new sizes of rows and columns
-    const handleTextAreaResize = (event, cellID) => {
-        actionChangeCellsSize(event, cellID)
+    const handleTextAreaResize = (resizedElement, cellID) => {
+        actionChangeCellsSize(resizedElement, cellID)
     }
 
-    
-    
-    // console.log('Cell')
-    // console.log(cellID)
-    // console.log(focusTest)
-
-        
     return (
         <>
             {focusTest ?
@@ -79,11 +99,10 @@ const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChange
                         height: +height
                     }}
                     aria-label="empty textarea"
-                    // placeholder={ value }
                     onFocus={ (event) => event.target.value = cells[cellID] !== undefined ? cells[cellID].formula : "" }
                     onBlur={ (event) => handleCellBlur(event, cellID) }
                     onChange={ (event) => handleCellChange(event, cellID) }
-                    onMouseUp={ (event) => handleTextAreaResize(event, cellID) }
+                    onMouseUp={ (event) => handleTextAreaResize(event.target, cellID) }
                 />
                 : 
                 <div
@@ -106,7 +125,14 @@ const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChange
     )
 }
 
-const CCell = connect( state => ({ document: state.document.document.sheets[0], cells: state.document.document.sheets[0].cells  }), { actionChangeCellValue, actionChangeCellsSize })(Cell)
+const CCell = connect( state => ({ 
+    document: state.document.document.sheets[0], 
+    cells: state.document.document.sheets[0].cells,
+    rowHeight: state.document.document.sheets[0].rowHeight,
+    columnWidth: state.document.document.sheets[0].columnWidth,
+}), { 
+    actionChangeCellValue, actionChangeCellsSize 
+})
+(Cell)
 
 export default CCell
-

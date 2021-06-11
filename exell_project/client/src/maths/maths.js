@@ -1,6 +1,6 @@
 // Calculate cells value
 export const calculateCellsValue = (newData) => {
-        
+    
     // Check cells formula for formula or value
     let cellsWithFormula = {}
     for (let cell in newData) {
@@ -81,6 +81,7 @@ export const calculateCellsValue = (newData) => {
             let isNotNull = false
             if (cellsAddress !== null) {
 
+                // 
                 let cellValues = cellsAddress.map( cellAddress => {
                     return newData[cellAddress] === undefined ? "" : newData[cellAddress].value
                 })
@@ -217,25 +218,66 @@ export const convertStringIndexIntoNumber = (string) => {
     return result
 }
 
+
+// Resizing cells
 // Function recieved:
 //   * adress of resized cell;
 //   * size (width, height) of resized cell;
-//   * quantity of rows;
-//   * quantity of columns.
-//   * old arrays of sizes (array of columns width and array of rows heigth)
-// Funciton returns new arrays of sizes
-export const resizeCells = () => {
+//   * default sizes (width, height);
+//   * old arrays of sizes (array of columns width and array of rows heigth);
+// Funciton returns new arrays of sizes.
+export const resizeCells = (parameters) => {
+
+    // Get parameters
+    console.log('Resizing math starts.')
+    console.log(parameters)
+    const {
+
+        // Adress of resized cell
+        cellID,
+
+        // Size (height, width) of resized cell
+        newHeight, newWidth,
+
+        // Default sizes (height, width)
+        rowDefaultHeight, columnDefaultWidth,
+
+        // Old arrays of sizes
+        rowHeight, columnWidth,
+
+    } = parameters
+    
+
+    // Get current element coordinates
+    const currenElementCoordinates = convertAddressToCoorginates(cellID)
+
+    // Create array of rows height
+
+    // If new row height isn't equal to default value - save it
+    if ( +newHeight.slice(0, -2) !== +rowDefaultHeight ) {
+        rowHeight[currenElementCoordinates.row] = +newHeight.slice(0, -2)
+
+    // If new row height is equal to default value and old row height is already exist - old delete row height
+    } else if ( rowHeight[currenElementCoordinates.row] !== undefined ) {
+        delete rowHeight[currenElementCoordinates.row]
+    }
 
 
+    // Create array of columns width
 
+    // If new column width isn't equal to default value - save it
+    if ( +newWidth.slice(0, -2) !== +columnDefaultWidth ) {
+        columnWidth[currenElementCoordinates.column] = +newWidth.slice(0, -2)
 
-
-
-
-
-
-
-
-
+    // If new column width is equal to default value and old column width is already exist - delete old column width
+    } else if ( columnWidth[currenElementCoordinates.column] !== undefined ) {
+        delete columnWidth[currenElementCoordinates.column]
+    }
+    
+    // Create result
+    return {
+        newRowHeight: {...rowHeight},
+        newColumnWidth: {...columnWidth},
+    }
 
 }

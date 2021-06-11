@@ -49,13 +49,13 @@ export const actionChangeCellValue = (event, cellID) => async (dispatch) => {
 };
 
 // Change cells size
-export const actionChangeCellsSize = (event, cellID) => async (dispatch) => {
+export const actionChangeCellsSize = (resizedElement, cellID) => async (dispatch) => {
     try {
 
         // Resizing
         await dispatch({
             type: actionType.CHANGE_CELLS_SIZE,
-            event,
+            resizedElement,
             cellID
         });
 
