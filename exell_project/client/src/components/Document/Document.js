@@ -48,12 +48,17 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
     const [data, setData] = useState(!!document.document ? document.document.sheets[0].cells : {})
 
     // getDocument
-    useEffect( () => {
-        getDocument(window.location.pathname.slice(10))
+    useEffect( async () => {
+
+        await getDocument(window.location.pathname.slice(10))
+
+        actionCalculateCellsValue()
+
     }, [] )
 
     // Handle cell blur
     const handleCellBlur = (event) => {
+        
         event.target.value = ""
         // calculateCellsValue(data)
     }

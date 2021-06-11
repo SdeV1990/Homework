@@ -22,7 +22,6 @@ export const actionCalculateCellsValue = () => async (dispatch) => {
         // Calculate
         await dispatch({type: actionType.CALCULATE_CELLS_VALUE});
         
-        // dispatch({ type: actionType.OPEN_DOCUMENT_SUCCESS, payload: response.data });
     } catch (error) {
         console.log(error);
     }

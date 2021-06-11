@@ -3,13 +3,8 @@ import { calculateCellsValue } from '../maths/maths'
 
 const document = (state = {}, action) => {
 
-    // console.log('Dispatch')
-    // console.log(action.type)
-
+    // Open document
     if (action.type === actionType.OPEN_DOCUMENT_SUCCESS) {
-
-        console.log('action.payload')
-        console.log(action.payload)
 
         return {
             ...state, 
@@ -19,27 +14,25 @@ const document = (state = {}, action) => {
 
     }
 
+    // Calculate cells value
     if (action.type === actionType.CALCULATE_CELLS_VALUE) {
-
+        
+        // Using math to calculate cells value
         let newCells = calculateCellsValue(state.document.sheets[0].cells)
-
+        
+        // Creat new state
         let newState = {...state}
         newState.document.sheets[0].cells = {...newCells}
 
-        return {
-            ...newState, 
-        };
+        return {...newState}
 
     }
 
     if (action.type === actionType.CHANGE_CELLS_VALUE) {
 
-        const event = action.event
-        const cellID = action.cellID
+        const {event, cellID} = action
 
         let newCells = state.document.sheets[0].cells
-
-        console.log(newCells)
 
         // If value is empty - delete key
         if (event.target.value === "") {
@@ -48,19 +41,25 @@ const document = (state = {}, action) => {
             
             // If there is no key in data object - create it
             if (newCells[cellID] === undefined ) {
-                newCells[cellID] = {...newCells, [cellID]: {formula: event.target.value} }
+
+                // Create cell
+                newCells[cellID] = {
+                    formula: event.target.value,
+                    value: null
+                }
+
+            // If cell is exist - just save value into formula
             } else {
                 newCells[cellID].formula = event.target.value
             }
             
         }
 
+        // Create new state
         let newState = {...state}
         newState.document.sheets[0].cells = newCells
 
-        return {
-            ...newState, 
-        };
+        return { ...newState };
 
     }
 

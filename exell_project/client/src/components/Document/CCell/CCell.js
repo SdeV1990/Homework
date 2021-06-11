@@ -45,7 +45,7 @@ function convertStringIndexIntoNumber(string) {
 
 
 
-const Cell = ({ document, cellID, actionCalculateCellsValue, actionChangeCellValue }) => {
+const Cell = ({ document, cellID, cells, actionCalculateCellsValue, actionChangeCellValue }) => {
 
     // Get height from state
     let height = ( !!document.rowHeight ?? document.rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
@@ -58,14 +58,15 @@ const Cell = ({ document, cellID, actionCalculateCellsValue, actionChangeCellVal
         :  document.columnDefaultWidth
 
     // Get formula from state
-    let formula = !!document.cells && document.cells[cellID] !== undefined ? document.cells[cellID].formula : null
+    let formula = cells && cells[cellID] !== undefined ? cells[cellID].formula : null
     
     // Get value from state
-    const [value, setValue] = useState( !!document.cells && document.cells[cellID] !== undefined ? document.cells[cellID].value : null )
+    const [value, setValue] = useState( !!cells && cells[cellID] !== undefined ? cells[cellID].value : null )
     
     useEffect( () => {
-        setValue(!!document.cells && document.cells[cellID] !== undefined ? document.cells[cellID].value : null)
-    }, [document])
+        setValue(!!cells && cells[cellID] !== undefined ? cells[cellID].value : null)
+        // actionCalculateCellsValue()
+    }, [cells])
 
     // Action on blur - calculate cells value by formulas
     const handleCellBlur = (event, cellID) => {
@@ -79,7 +80,7 @@ const Cell = ({ document, cellID, actionCalculateCellsValue, actionChangeCellVal
 
         // console.log('Cells value after calculation')
         // console.log(document.cells[cellID] !== undefined ? document.cells[cellID].value : null)
-        setValue(document.cells[cellID] !== undefined ? document.cells[cellID].value : null)
+        setValue(cells[cellID] !== undefined ? cells[cellID].value : null)
         // console.log(value)
     }
 
@@ -121,7 +122,7 @@ const Cell = ({ document, cellID, actionCalculateCellsValue, actionChangeCellVal
                 }}
                 aria-label="empty textarea"
                 placeholder={ value }
-                onFocus={ (event) => event.target.value = document.cells[cellID] !== undefined ? document.cells[cellID].formula : "" }
+                onFocus={ (event) => event.target.value = cells[cellID] !== undefined ? cells[cellID].formula : "" }
                 onBlur={ (event) => handleCellBlur(event, cellID) }
                 onChange={ (event) => handleCellChange(event, cellID) }
                 // onMouseUp={ (event) => handleTextAreaResize(event) }
@@ -130,6 +131,6 @@ const Cell = ({ document, cellID, actionCalculateCellsValue, actionChangeCellVal
     )
 }
 
-const CCell = connect( state => ({ document: state.document.document.sheets[0] }), { actionChangeCellValue })(Cell)
+const CCell = connect( state => ({ document: state.document.document.sheets[0], cells: state.document.document.sheets[0].cells  }), { actionChangeCellValue })(Cell)
 
 export default CCell
