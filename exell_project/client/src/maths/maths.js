@@ -1,5 +1,5 @@
 // Calculate cells value
-export const calculateCellsValue = (newData) => {
+export const calculateCellsValue = (newData, cellsForRender) => {
     
     // Check cells formula for formula or value
     let cellsWithFormula = {}
@@ -25,9 +25,9 @@ export const calculateCellsValue = (newData) => {
             // If value is number - convert from string into number
             if (isNumber) newData[cell].formula = +newData[cell].formula
 
-            // Save value from formula
+            // Save value from formula for cells and cells for render
             newData[cell].value = newData[cell].formula
-            // newData[cell] = {formula: newData[cell].formula, value: newData[cell].formula}
+            cellsForRender[cell] = newData[cell].formula
 
         }
         
@@ -99,6 +99,8 @@ export const calculateCellsValue = (newData) => {
 
                 // If cells addresses exist
                 if (cellsAddress !== null) {
+
+                    // For each related cell
                     cellsAddress.map( relatedCell => {
 
                         // Is needed cell exists
@@ -126,17 +128,32 @@ export const calculateCellsValue = (newData) => {
                 // Calculate by formula
                 try {
 
+                    // If result is NaN - throw error
+                    if (isNaN(eval(formula.slice(1)))) {
+                        throw new Error('Result is not a number.')
+                    } 
+
                     // If result is number - fixed result
-                    if (typeof(eval(formula.slice(1))) === "number") {
+                    else if (typeof(eval(formula.slice(1))) === "number" ) {
+
                         newData[cell].value = +((eval(formula.slice(1))).toFixed(10))
+                        cellsForRender[cell] = +((eval(formula.slice(1))).toFixed(10))
+
+                    // If reuslt is not a number or NaN
                     } else {
-                        newData[cell].value = eval(formula.slice(1))
+
+                        newData[cell].value = String(eval(formula.slice(1)))
+                        cellsForRender[cell] = String(eval(formula.slice(1)))
+
                     }
 
                 }
                 catch {
+
                     newData[cell].value = "ERROR"
+                    cellsForRender[cell] = "ERROR"
                     continue
+
                 }
                 
             }
@@ -148,7 +165,10 @@ export const calculateCellsValue = (newData) => {
     
     // If cells value is null it is mean, that there are cycled refferences
     for (let cell in newData) {
-        if (newData[cell].value === null) newData[cell].value = 'CYCLED REFFERENCES'
+        if (newData[cell].value === null) {
+            newData[cell].value = 'CYCLED'
+            cellsForRender[cell] = 'CYCLED'
+        }
     }
 
     // Save data to useState
@@ -283,4 +303,47 @@ export const resizeCells = (parameters) => {
         newColumnWidth: {...columnWidth},
     }
 
+}
+
+// Create cells array for render
+export const createCellsForRender = (parameters) => {
+
+    // Get patameters
+    const {cells, rowQuantity, columnQuantity} = parameters
+
+    console.log('parameters')
+    console.log(parameters)
+
+    // Create array of rows address to resize
+    let cellsForRender = {}
+
+    // Brute force by columns
+    for (let columnIndex = 1; columnIndex<=columnQuantity; columnIndex++) {
+
+        // Brute force by rows
+        for (let rowIndex = 1; rowIndex<=rowQuantity; rowIndex++) {
+
+            // Create curena cellID
+            const cellID = convertNumberIndexIngoStringIndex(columnIndex) + rowIndex
+
+            // Create cell
+            for (let cell in cells ) {
+
+                // If id is equal
+                if (cellID === cell) {
+                    cellsForRender[cellID] = cells[cell].value
+
+                // Why it is works without it?
+                } else { 
+                    cellsForRender[cellID] = null
+                }
+
+            }
+
+        }
+
+    }
+
+    return cellsForRender
+        
 }

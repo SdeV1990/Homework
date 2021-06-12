@@ -61,7 +61,6 @@ export const createDocument = async (req, res) => {
             sheets: [{
                 id: '1',
                 name: 'Sheet 1',
-                cells: {}
             }]
         }
 

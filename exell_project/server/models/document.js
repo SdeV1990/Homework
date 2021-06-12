@@ -18,12 +18,14 @@ const documentSchema = mongoose.Schema({
         name: { type: String, required:  true },
         rowQuantity: { type: Number, required: true , default: 30 },
         rowDefaultHeight: {type: Number, required: true, default: 21 },
-        rowHeight: {},
+        rowHeight: { type: Object, required: true, default: {} },
         columnQuantity: { type: Number, required: true , default: 30 },
         columnDefaultWidth: {type: Number, required: true, default: 80 },
-        columnWidth: {},
-        cells: {},
+        columnWidth: { type: Object, required: true, default: {} },
+        cells: { type: Object, required: true, default: {} },
     }]
-});
+},
+{ minimize: false }
+);
 
 export default mongoose.model("Document", documentSchema);

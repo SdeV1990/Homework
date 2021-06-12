@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { actionChangeCellValue, actionChangeCellsSize } from '../../../actions/document'
 import { convertAddressToCoorginates } from '../../../maths/maths'
 
-const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
+const Cell = ({ document, cellID, cells, cellsForRender, rowHeight, columnWidth, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
 
     // Is selected state to call text area
     const [isSelected, setIsSelected] = useState(false)
@@ -40,23 +40,37 @@ const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculate
         )
     }, [columnWidth])
     
-
-
     // Get value from state
-    const [value, setValue] = useState( !!cells && cells[cellID] !== undefined ? cells[cellID].value : null )
+    const [value, setValue] = useState( !!cellsForRender && !!cellsForRender[cellID] ? cellsForRender[cellID] : null )
     
     // Set cell value then cells are changed
     useEffect( () => {
-        setValue(!!cells && cells[cellID] !== undefined ? cells[cellID].value : null)
-    }, [cells])
+        console.log('Render cell - ' + cellID)
+        setValue(cellsForRender !== undefined || !!cellsForRender[cellID] !== null ? cellsForRender[cellID] : null)
+    }, [cellsForRender[cellID]])
 
 
     // Action on blur - calculate cells value by formulas
     const handleCellBlur = (event, cellID) => {
 
         // Check changes
-        // If current value is null and text area value (event.target.value) is empty AND curent value not equal to text area value (event.target.value)
-        if ( !(value === null && event.target.value === "") && value !== event.target.value) {
+        // console.log('On blure')
+        // console.log(document)
+        // console.log(cellID)
+
+        // Is curent formula is empty
+        const isCurrentValueNull = (!!cells[cellID] && !!cells[cellID].formula) === false
+        
+        // Is text area value is empty
+        const isTextAreaValueEmpty = event.target.value === ""
+        
+        // Is curent formula equal to text area value
+        const isCurrentValueEqualToTextAreaValue = !!cells[cellID] && !!cells[cellID].formula ? cells[cellID].formula == event.target.value : false
+
+        // If current value is null and text area value is empty AND curent value not equal to text area value
+        if ( !(isCurrentValueNull && isTextAreaValueEmpty) && !isCurrentValueEqualToTextAreaValue ) {
+
+            // console.log('Calculation and saving entered value!')
 
             //Save value
             actionChangeCellValue(event, cellID);
@@ -65,6 +79,7 @@ const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculate
             actionCalculateCellsValue()
 
         }
+
         // Hide text area
         setIsSelected(false)
 
@@ -116,6 +131,7 @@ const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculate
 const CCell = connect( state => ({ 
     document: state.document.document.sheets[0], 
     cells: state.document.document.sheets[0].cells,
+    cellsForRender: state.document.document.sheets[0].cellsForRender,
     rowHeight: state.document.document.sheets[0].rowHeight,
     columnWidth: state.document.document.sheets[0].columnWidth,
 }), { 
