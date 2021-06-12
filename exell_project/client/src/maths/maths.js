@@ -128,13 +128,14 @@ export const calculateCellsValue = (newData, cellsForRender) => {
                 // Calculate by formula
                 try {
 
-                    // If result is NaN - throw error
-                    if (isNaN(eval(formula.slice(1)))) {
-                        throw new Error('Result is not a number.')
-                    } 
 
                     // If result is number - fixed result
-                    else if (typeof(eval(formula.slice(1))) === "number" ) {
+                    if (typeof(eval(formula.slice(1))) === "number" ) {
+
+                        // If result is NaN - throw error
+                        if (isNaN(eval(formula.slice(1)))) {
+                            throw new Error('Result is not a number.')
+                        }
 
                         newData[cell].value = +((eval(formula.slice(1))).toFixed(10))
                         cellsForRender[cell] = +((eval(formula.slice(1))).toFixed(10))
@@ -148,8 +149,9 @@ export const calculateCellsValue = (newData, cellsForRender) => {
                     }
 
                 }
-                catch {
+                catch(error) {
 
+                    console.log(error)
                     newData[cell].value = "ERROR"
                     cellsForRender[cell] = "ERROR"
                     continue
