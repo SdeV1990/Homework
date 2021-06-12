@@ -1,5 +1,5 @@
 import * as actionType from '../constants/actionTypes';
-import { calculateCellsValue, convertNumberIndexIngoStringIndex, convertAddressToCoorginates, resizeCells } from '../maths/maths'
+import { calculateCellsValue, resizeCells } from '../maths/maths'
 
 const document = (state = {}, action) => {
 
@@ -72,11 +72,6 @@ const document = (state = {}, action) => {
 
         const {resizedElement, cellID} = action
 
-        console.log('reducer resizing')
-        console.log('resized: ' + cellID)
-        console.log(resizedElement.style.height)
-        console.log(convertAddressToCoorginates(cellID))
-
         // Get current sheet status
         const currentSheet = state.document.sheets[0]
 
@@ -106,14 +101,12 @@ const document = (state = {}, action) => {
         //   * default sizes (width, height);
         //   * old arrays of sizes (array of columns width and array of rows heigth);
         // Funciton returns new arrays of sizes.
-        const { newRowHeight , newColumnWidth } = resizeCells(parameters)
+        const { newRowHeight, newColumnWidth } = resizeCells(parameters)
         
         // Create new state
         let newState = {...state}
         newState.document.sheets[0].rowHeight = {...newRowHeight}
         newState.document.sheets[0].columnWidth = {...newColumnWidth}
-
-        console.log(newState)
 
         return { ...newState };
 

@@ -40,7 +40,7 @@ export const actionCreateDocument = (optionsOfCreate) => async (dispatch) => {
             dispatch({ type: actionType.CREATE_DOCUMENT_SUCCESS });
 
         } else {
-            throw 'CREATE NOT SUCCESSFUL'
+            throw new Error('CREATE NOT SUCCESSFUL')
         }
 
     } catch (error) {
@@ -93,7 +93,7 @@ export const actionUpdateDocuments = (optionsOfUpdate) => async (dispatch) => {
             dispatch({ type: actionType.UPDATE_DOCUMENTS_SUCCESS});
 
         } else {
-            throw 'UPDATE NOT SUCCESSFUL'
+            throw new Error('UPDATE NOT SUCCESSFUL')
         }
         
     } catch (error) {

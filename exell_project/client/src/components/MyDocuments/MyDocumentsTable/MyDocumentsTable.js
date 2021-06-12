@@ -263,7 +263,7 @@ export default function MyDocumentsTable(props) {
     const [dense, setDense] = React.useState(false);
     const [rowsPerPage, setRowsPerPage] = React.useState(5);
 
-    const { documents, auth, actionOpenDocument, actionUpdateAndGetDocuments, actionCreateAndGetDocuments } = props
+    const { documents, actionOpenDocument, actionUpdateAndGetDocuments, actionCreateAndGetDocuments } = props
     const rows = documents.list
 
     const handleRequestSort = (event, property) => {

@@ -137,7 +137,7 @@ const useToolbarStyles = makeStyles((theme) => ({
 
 const EnhancedTableToolbar = (props) => {
     const classes = useToolbarStyles();
-    const { numSelected, rows, selectedDocuments, actionOpenDocument, actionUpdateAndGetDocuments, setSelected } = props;
+    const { numSelected, selectedDocuments, actionOpenDocument, actionUpdateAndGetDocuments, setSelected } = props;
 
     const handleUpdateSelected = (updateType) => {
 

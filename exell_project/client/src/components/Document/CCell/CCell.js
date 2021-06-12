@@ -1,20 +1,12 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
 import { actionChangeCellValue, actionChangeCellsSize } from '../../../actions/document'
-import {convertAddressToCoorginates, convertStringIndexIntoNumber} from '../../../maths/maths'
-
-// *********** Maths begins ***********
-
-
-
-// *********** Maths ends ***********
-
-
+import { convertAddressToCoorginates } from '../../../maths/maths'
 
 const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
 
-    // Focus state to call text area
-    const [focusTest, setFocusTest] = useState(false)
+    // Is selected state to call text area
+    const [isSelected, setIsSelected] = useState(false)
 
 
     // Get row height from state
@@ -59,49 +51,50 @@ const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculate
     }, [cells])
 
 
-
-
-
-
     // Action on blur - calculate cells value by formulas
     const handleCellBlur = (event, cellID) => {
 
-        // Clear value
-        event.target.value = ""
+        // Check changes
+        // If current value is null and text area value (event.target.value) is empty AND curent value not equal to text area value (event.target.value)
+        if ( !(value === null && event.target.value === "") && value !== event.target.value) {
 
-        // Calculate cells value
-        actionCalculateCellsValue()
+            //Save value
+            actionChangeCellValue(event, cellID);
 
+            // Calculate cells value
+            actionCalculateCellsValue()
+
+        }
         // Hide text area
-        setFocusTest(false)
+        setIsSelected(false)
 
-    }
-
-    // Handle cell changes
-    const handleCellChange = (event, cellID) => {
-        actionChangeCellValue(event, cellID);
     }
     
     // Action on mouseUp - save new sizes of rows and columns
     const handleTextAreaResize = (resizedElement, cellID) => {
-        actionChangeCellsSize(resizedElement, cellID)
+
+        // Check if element has new sizes
+        if ( width !== +(resizedElement.style.width).slice(0, -2) || height !== +(resizedElement.style.height).slice(0, -2) ) {
+            actionChangeCellsSize(resizedElement, cellID)            
+        }
+
     }
 
     return (
         <>
-            {focusTest ?
+            {isSelected ?
                 <textarea
                     autoFocus
                     key={cellID+"test"}
                     id={cellID+"test"}
                     style={{ 
                         width: +width,
-                        height: +height
+                        height: +height,
+                        display: 'block',
                     }}
                     aria-label="empty textarea"
                     onFocus={ (event) => event.target.value = cells[cellID] !== undefined ? cells[cellID].formula : "" }
                     onBlur={ (event) => handleCellBlur(event, cellID) }
-                    onChange={ (event) => handleCellChange(event, cellID) }
                     onMouseUp={ (event) => handleTextAreaResize(event.target, cellID) }
                 />
                 : 
@@ -109,14 +102,9 @@ const Cell = ({ document, cellID, cells, rowHeight, columnWidth, actionCalculate
                     style={{
                         height: +height,
                         width: +width,
+                        overflow: 'hidden',
                     }}
-                    onClick={
-                        () => {
-                            console.log('click')
-                            setFocusTest(true)
-                            console.log(focusTest)
-                        }
-                    }
+                    onClick={ () => setIsSelected(true) }
                 >
                     {value}
                 </div>
@@ -131,7 +119,8 @@ const CCell = connect( state => ({
     rowHeight: state.document.document.sheets[0].rowHeight,
     columnWidth: state.document.document.sheets[0].columnWidth,
 }), { 
-    actionChangeCellValue, actionChangeCellsSize 
+    actionChangeCellValue, 
+    actionChangeCellsSize,
 })
 (Cell)
 

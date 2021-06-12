@@ -17,7 +17,7 @@ export const calculateCellsValue = (newData) => {
         }
         
         // Save value if it isn't formula
-        else if ( newData[cell].formula != "" ) {
+        else if ( newData[cell].formula !== "" ) {
 
             // Check is value is number
             const isNumber = !isNaN(newData[cell].formula)
@@ -118,6 +118,8 @@ export const calculateCellsValue = (newData) => {
                             relatedCell, 
                             isCellExist === true ? `newData.${relatedCell}.value` : 0 
                         )
+
+                        return formula
                     })
                 }
                 
@@ -142,7 +144,7 @@ export const calculateCellsValue = (newData) => {
         }
         
     // Repeat untill there is decreasing of number of cells to calculate and there ara at least cells to calculate
-    } while (startNumberOfCellsToCalculate != countCellsToCalculate(newData) && countCellsToCalculate(newData) != 0)
+    } while (startNumberOfCellsToCalculate !== countCellsToCalculate(newData) && countCellsToCalculate(newData) !== 0)
     
     // If cells value is null it is mean, that there are cycled refferences
     for (let cell in newData) {
@@ -251,6 +253,7 @@ export const resizeCells = (parameters) => {
     // Get current element coordinates
     const currenElementCoordinates = convertAddressToCoorginates(cellID)
 
+    
     // Create array of rows height
 
     // If new row height isn't equal to default value - save it

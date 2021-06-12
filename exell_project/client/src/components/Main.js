@@ -1,6 +1,6 @@
 import React from 'react'
 import clsx from 'clsx'
-import { Switch, Route, Redirect, Link } from 'react-router-dom'
+import { Switch, Route, Link } from 'react-router-dom' //Redirect
 import useStyles from './styles'
 
 // Material UI
@@ -16,7 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft'
 import ChevronRightIcon from '@material-ui/icons/ChevronRight'
 import Container from '@material-ui/core/Container'
-import LinkUI from '@material-ui/core/Link'
+// import LinkUI from '@material-ui/core/Link'
 import ListItem from '@material-ui/core/ListItem'
 import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
@@ -54,7 +54,7 @@ export default function Main() {
     }
 
     return (
-        <div className={classes.root} maxWidth={false}>
+        <div className={classes.root} >
             <CssBaseline />
             <AppBar
                 position="fixed"

@@ -6,7 +6,7 @@ import { Container } from '@material-ui/core'// DO NOT DELETE: this component so
 
 // Components
 import Main from './components/Main.js'
-import AuthExample from './components/Test/Test.js'
+// import AuthExample from './components/Test/Test.js'
 
 const App = () => {
 
