@@ -34,6 +34,7 @@ export const calculateCellsValue = (newData, cellsForRender) => {
         // Delete cell if formula is empty
         else {
             delete newData[cell]
+            delete cellsForRender[cell]
         } 
     }
 
@@ -251,10 +252,11 @@ export const convertStringIndexIntoNumber = (string) => {
 //   * old arrays of sizes (array of columns width and array of rows heigth);
 // Funciton returns new arrays of sizes.
 export const resizeCells = (parameters) => {
-
+    
+    // console.log('Resizing math starts.')
+    // console.log(parameters)
+    
     // Get parameters
-    console.log('Resizing math starts.')
-    console.log(parameters)
     const {
 
         // Adress of resized cell
@@ -305,47 +307,4 @@ export const resizeCells = (parameters) => {
         newColumnWidth: {...columnWidth},
     }
 
-}
-
-// Create cells array for render
-export const createCellsForRender = (parameters) => {
-
-    // Get patameters
-    const {cells, rowQuantity, columnQuantity} = parameters
-
-    console.log('parameters')
-    console.log(parameters)
-
-    // Create array of rows address to resize
-    let cellsForRender = {}
-
-    // Brute force by columns
-    for (let columnIndex = 1; columnIndex<=columnQuantity; columnIndex++) {
-
-        // Brute force by rows
-        for (let rowIndex = 1; rowIndex<=rowQuantity; rowIndex++) {
-
-            // Create curena cellID
-            const cellID = convertNumberIndexIngoStringIndex(columnIndex) + rowIndex
-
-            // Create cell
-            for (let cell in cells ) {
-
-                // If id is equal
-                if (cellID === cell) {
-                    cellsForRender[cellID] = cells[cell].value
-
-                // Why it is works without it?
-                } else { 
-                    cellsForRender[cellID] = null
-                }
-
-            }
-
-        }
-
-    }
-
-    return cellsForRender
-        
 }

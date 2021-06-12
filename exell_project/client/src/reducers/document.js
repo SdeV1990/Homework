@@ -1,11 +1,12 @@
 import * as actionType from '../constants/actionTypes';
-import { calculateCellsValue, resizeCells, createCellsForRender } from '../maths/maths'
+import { calculateCellsValue, resizeCells } from '../maths/maths'
 
 const document = (state = {}, action) => {
 
-    console.log('Reducer action payload:')
-    console.log(action.payload)
+    console.log('Reducer action:')
+    // console.log(action.payload)
     console.log(action.type)
+    console.log(state)
 
     // Open document
     if (action.type === actionType.OPEN_DOCUMENT_SUCCESS) {
@@ -16,16 +17,9 @@ const document = (state = {}, action) => {
             document: action.payload,
             status: actionType.OPEN_DOCUMENT_SUCCESS
         }
-
-        // Create cells for render
-        const cellsForRender = createCellsForRender({
-            cells: {...newState.document.sheets[0].cells},
-            rowQuantity: newState.document.sheets[0].rowQuantity, 
-            columnQuantity: newState.document.sheets[0].columnQuantity,
-        })
         
         // Set cells for render in new state
-        newState.document.sheets[0].cellsForRender = { ...cellsForRender}
+        newState.document.sheets[0].cellsForRender = {}
         
         return newState;
 
@@ -62,8 +56,8 @@ const document = (state = {}, action) => {
             // Delete ket in new cells
             delete newCells[cellID]
 
-            // Clear value in cells for render
-            state.document.sheets[0].cellsForRender[cellID] = null
+            // Delete value in cells for render
+            delete state.document.sheets[0].cellsForRender[cellID]
 
         // If value isn't empty
         } else {
@@ -91,7 +85,6 @@ const document = (state = {}, action) => {
         // Set cells with changed value in new state
         let newState = {...state}
         newState.document.sheets[0].cells = {...newCells}
-
 
         console.log('newState')
         console.log({...newState.document.sheets[0]})

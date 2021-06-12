@@ -75,9 +75,14 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
         let columnId = columnIndex === 0 ? `begin` : `column-${convertNumberIndexIngoStringIndex(columnIndex)}`
         cells.push(
             <th key={columnId} id={columnId}>
-                <Box bgcolor="text.disabled" color="background.paper" width="100%" >
+                <div style={{
+                    width: "100%", 
+                    height: "100%", 
+                    backgroundColor: "grey", 
+                    color: "white"
+                }} >
                     {columnIndex === 0 ? ` ` : convertNumberIndexIngoStringIndex(columnIndex) }
-                </Box>
+                </div>
             </th>
         )
     }
@@ -99,17 +104,17 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
             <th 
                 key={rowHeadID} 
                 id={rowHeadID}
+                style={{
+                    display: "block",
+                    padding: "0 5px",
+                    backgroundColor: "grey",
+                    color: "white",
+                    border: "solid black 1px",
+                    borderCollapse: "collapse",
+                    height: "100%",
+                }}
             >
-                <Box 
-                    padding="0 5px"
-                    bgcolor="text.disabled" 
-                    color="background.paper" 
-                    width="auto" 
-                    height="100%"
-
-                >
-                    {rowIndex}
-                </Box>
+                {rowIndex}
             </th>
         )
         
@@ -137,7 +142,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
             )
         }
         rows.push(
-            <tr border={'1px solid black'}
+            <tr
                 key={rowIndex} 
                 id={rowID}
             >
@@ -165,7 +170,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
             </Grid>
             <div className="row">
                 <div>
-                    <table style={{borderCollapse: "collapse"}}>
+                    <table style={{borderCollapse: "collapse", borderWidth: "1px"}}>
                         <tbody>
                             {rows}
                         </tbody>

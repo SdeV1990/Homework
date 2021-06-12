@@ -3,7 +3,7 @@ import { connect } from 'react-redux'
 import { actionChangeCellValue, actionChangeCellsSize } from '../../../actions/document'
 import { convertAddressToCoorginates } from '../../../maths/maths'
 
-const Cell = ({ document, cellID, cells, cellsForRender, rowHeight, columnWidth, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
+const Cell = ({ rowDefaultHeight, columnDefaultWidth, cellID, cells, cellsForRender, rowHeight, columnWidth, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
 
     // Is selected state to call text area
     const [isSelected, setIsSelected] = useState(false)
@@ -12,40 +12,42 @@ const Cell = ({ document, cellID, cells, cellsForRender, rowHeight, columnWidth,
     // Get row height from state
     const [height, setHeight] = useState(( !!rowHeight && rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
         ? rowHeight[+convertAddressToCoorginates(cellID).row] 
-        : document.rowDefaultHeight 
+        : rowDefaultHeight 
     )
 
     // Set row height then cells are changed
     useEffect( () => {
+        // console.log('Use effect cell height - ' + cellID)
         setHeight(
             ( !!rowHeight && rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
             ? rowHeight[+convertAddressToCoorginates(cellID).row] 
-            : document.rowDefaultHeight )
-    }, [rowHeight])
+            : rowDefaultHeight )
+    }, [rowHeight[+convertAddressToCoorginates(cellID).row]])
 
 
 
     // Get column width from state
     const [width, setWidth] = useState(( !!columnWidth && columnWidth[convertAddressToCoorginates(cellID).column] !== undefined )
         ? columnWidth[(convertAddressToCoorginates(cellID).column)] 
-        :  document.columnDefaultWidth
+        : columnDefaultWidth
     )
 
     // Set column width then cells are changed
     useEffect( () => {
+        // console.log('Use effect cell width - ' + cellID)
         setWidth(
             ( !!columnWidth && columnWidth[convertAddressToCoorginates(cellID).column] !== undefined )
             ? columnWidth[convertAddressToCoorginates(cellID).column] 
-            : document.columnDefaultWidth 
+            : columnDefaultWidth
         )
-    }, [columnWidth])
+    }, [columnWidth[convertAddressToCoorginates(cellID).column]])
     
     // Get value from state
     const [value, setValue] = useState( !!cellsForRender && !!cellsForRender[cellID] ? cellsForRender[cellID] : null )
     
     // Set cell value then cells are changed
     useEffect( () => {
-        console.log('Render cell - ' + cellID)
+        // console.log('Render cell - ' + cellID)
         setValue(cellsForRender !== undefined || !!cellsForRender[cellID] !== null ? cellsForRender[cellID] : null)
     }, [cellsForRender[cellID]])
 
@@ -129,7 +131,9 @@ const Cell = ({ document, cellID, cells, cellsForRender, rowHeight, columnWidth,
 }
 
 const CCell = connect( state => ({ 
-    document: state.document.document.sheets[0], 
+    // document: state.document.document.sheets[0], 
+    rowDefaultHeight: state.document.document.sheets[0].rowDefaultHeight, 
+    columnDefaultWidth: state.document.document.sheets[0].columnDefaultWidth, 
     cells: state.document.document.sheets[0].cells,
     cellsForRender: state.document.document.sheets[0].cellsForRender,
     rowHeight: state.document.document.sheets[0].rowHeight,
