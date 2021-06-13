@@ -59,8 +59,6 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
                 key={columnId} 
                 id={columnId}
                 style={{
-                    width: "100%", 
-                    height: "100%", 
                     backgroundColor: "grey", 
                     color: "white",
                     borderRight: "1px lightGrey dotted",

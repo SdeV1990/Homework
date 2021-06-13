@@ -9,7 +9,6 @@ import Main from './components/Main.js'
 // import AuthExample from './components/Test/Test.js'
 
 const App = () => {
-
     return(
         <BrowserRouter>
             <Switch>

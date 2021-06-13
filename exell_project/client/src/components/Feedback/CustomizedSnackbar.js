@@ -17,108 +17,55 @@ const useStyles = makeStyles((theme) => ({
     },
 }));
 
-export default function CustomizedSnackbar({ documents }) {
-    const classes = useStyles();
+export default function CustomizedSnackbar({ status }) {
+    const classes = useStyles()
 
     let isOpen
     let alertText
-    let severity // values: error, warning, info, success 
-
-    // Fetch documents statuses
-    if (documents.status === actionType.FETCH_DOCUMENTS_SUCCESS) {
-        isOpen = true
-        alertText = "Documents are loaded!"
-        severity = "success"
-    } else if (documents.status === actionType.FETCH_DOCUMENTS_REJECTED) {
-        isOpen = true
-        alertText = "ERROR: cann't load documents!"
-        severity = "error"
-    }
-
-    // // Fetch recycled documents statuses
-    // else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_SUCCESS) {
-    //     isOpen = true
-    //     alertText = "Recycled documents are loaded!"
-    //     severity = "success"
-    // } else if (documents.status === actionType.FETCH_RECYCLED_DOCUMENTS_REJECTED) {
-    //     isOpen = true
-    //     alertText = "ERROR: cann't load recycled documents!"
-    //     severity = "error"
-    // }
+    let severity // values: error, warning, info, success - for component styling 
 
     // Create document statuses
-    else if (documents.status === actionType.CREATE_DOCUMENT_SUCCESS) {
+    if (status === actionType.CREATE_DOCUMENT_SUCCESS) {
         isOpen = true
         alertText = "Document is created!"
         severity = "success"
-    } else if (documents.status === actionType.CREATE_DOCUMENT_REJECTED) {
+    } else if (status === actionType.CREATE_DOCUMENT_REJECTED) {
         isOpen = true
         alertText = "Error: document isn't created!"
         severity = "error"
     }
 
-    
-
-    // // Update documents statuses
-    // else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
-    //     isOpen = true
-    //     alertText = "Documents are recycled!"
-    //     severity = "success"
-    // } else if (documents.status === actionType.RECYCLE_DOCUMENTS_REJECTED) {
-    //     isOpen = true
-    //     alertText = "Error: documents aren't recycled!"
-    //     severity = "error"
-    // }
-    // 
-    // // Recycle documents statuses
-    // else if (documents.status === actionType.RECYCLE_DOCUMENTS_SUCCESS) {
-    //     isOpen = true
-    //     alertText = "Documents are recycled!"
-    //     severity = "success"
-    // } else if (documents.status === actionType.RECYCLE_DOCUMENTS_REJECTED) {
-    //     isOpen = true
-    //     alertText = "Error: documents aren't recycled!"
-    //     severity = "error"
-    // }
-
-    // // Restore documents statuses
-    // else if (documents.status === actionType.RESTORE_DOCUMENTS_SUCCESS) {
-    //     isOpen = true
-    //     alertText = "Documents are restored!"
-    //     severity = "success"
-    // } else if (documents.status === actionType.RESTORE_DOCUMENTS_REJECTED) {
-    //     isOpen = true
-    //     alertText = "Error: documents aren't restored!"
-    //     severity = "error"
-    // }
-
-    // // Delete documents statuses
-    // else if (documents.status === actionType.DELETE_DOCUMENTS_SUCCESS) {
-    //     isOpen = true
-    //     alertText = "Documents are deleted!"
-    //     severity = "success"
-    // } else if (documents.status === actionType.DELETE_DOCUMENTS_REJECTED) {
-    //     isOpen = true
-    //     alertText = "Error: documents aren't deleted!"
-    //     severity = "error"
-
-    // Else statuses
-    else {
-        isOpen = false
+    // Update documents statuses
+    else if (status === actionType.UPDATE_DOCUMENTS_SUCCESS) {
+        isOpen = true
+        alertText = "Document is updated!"
+        severity = "success"
+    } else if (status === actionType.UPDATE_DOCUMENTS_REJECTED) {
+        isOpen = true
+        alertText = "Error: documents isn't updated!"
+        severity = "error"
     }
 
+    // // Else statuses
+    // else {
+    //     isOpen = false
+    // }
+
+    // Open status
     const [open, setOpen] = useState(isOpen);
 
+    // For rendering
     useEffect(() => {
-        setOpen(isOpen);
-    }, [isOpen]) 
+        setOpen(isOpen)
+    }, [status]) 
 
+    // If there is click away
     const handleClose = (event, reason) => {
         if (reason === 'clickaway') {
             return;
         }
-        setOpen(false);
-    };
+        setOpen(false)
+    }
 
     return (
         <div className={classes.root}>
@@ -128,5 +75,5 @@ export default function CustomizedSnackbar({ documents }) {
                 </Alert>
             </Snackbar>
         </div>
-    );
+    )
 }

@@ -20,17 +20,14 @@ export default function CustomizedBackdrop({status}) {
         status === actionType.FETCH_DOCUMENTS_PENDING ||
         status === actionType.CREATE_DOCUMENT_PENDING ||
         status === actionType.UPDATE_DOCUMENTS_PENDING
-        // status === actionType.FETCH_RECYCLED_DOCUMENTS_PENDING ||
-        // status === actionType.RECYCLE_DOCUMENTS_PENDING ||
-        // status === actionType.RESTORE_DOCUMENTS_PENDING ||
-        // status === actionType.DELETE_DOCUMENTS_PENDING
     ) {
         isOpen = true
     } else {
-        isOpen =false
+        isOpen = false
     }
 
-    const classes = useStyles();
+    const classes = useStyles()
+    
     return (
         <Backdrop className={classes.backdrop} open={isOpen} >
             <CircularProgress color="inherit" />

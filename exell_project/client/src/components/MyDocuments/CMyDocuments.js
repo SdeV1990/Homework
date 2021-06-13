@@ -22,7 +22,7 @@ const MyDocuments = ( { documents, auth, actionGetDocuments, actionOpenDocument,
                 actionUpdateAndGetDocuments={actionUpdateAndGetDocuments}
             />
             <CustomizedBackdrop status={documents.status}/>
-            <CustomizedSnackbar documents={documents}/> 
+            <CustomizedSnackbar status={documents.status}/> 
         </>
     )
 }
