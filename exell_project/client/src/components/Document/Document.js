@@ -1,67 +1,45 @@
-import React, { useEffect } from 'react'
-import { getDocument } from '../../actions/document'
+import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { actionCalculateCellsValue, actionSaveDocument } from '../../actions/document'
+import { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue } from '../../actions/document'
 import { convertNumberIndexIngoStringIndex } from '../../maths/maths'
 
 // Material UI
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
-import Box from '@material-ui/core/Box'
 import Grid from '@material-ui/core/Grid'
 
 // Material UI icons
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
+// Components
 import CCell from './CCell/CCell'
 
-const Document = ( { document, getDocument, actionCalculateCellsValue, actionSaveDocument }) => {
+const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue }) => {
 
+    console.log('Document action!')
+    // const [maxRows, setMaxRows] = useState(!!document.document ? document.document.sheets[0].rowQuantity : 1)
+    // const [rowHeight, setRowHeight] = useState(!!document.document ? document.document.sheets[0].rowHeight : {})
+    // console.log(rowHeight)
+    // console.log(!!document.document ? document.document.sheets[0].rowHeight : {})
 
-
-
-
-
-
-
-
-
-
-
-    // WRITE ACTION !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-    // Get document and calculate cells value
+    // Get document and calculate cells value on start
     useEffect( () => {
 
-        // Warning: An effect function must not return anything besides a function, which is used for clean-up.
-        getDocumentAndCalculate()
-        async function getDocumentAndCalculate() {
-
-            // Load document from server
-            await getDocument(window.location.pathname.slice(10))
-
-            // Calculate cell value after load
-            actionCalculateCellsValue()
-            
-        }
+        (async () => {
+            await actionGetDocumentAndCalculateCellsValue(window.location.pathname.slice(10))
+        })()
 
     }, [] )
 
+    // // Set max quantity of rows
+    // useEffect( () => {
+    //     setMaxRows(!!document.document ? document.document.sheets[0].rowQuantity : 1)
+    // }, [!!document.document ? document.document.sheets[0].rowQuantity : 1] )
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    // // Set row height
+    // useEffect( () => {
+    //     setRowHeight(!!document.document ? document.document.sheets[0].rowHeight : {})
+    // }, [!!document.document ? document.document.sheets[0].rowHeight : {}] )
 
 
     // Prepare table data
@@ -71,6 +49,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue, actionSav
     let maxColumns = !!document.document ? document.document.sheets[0].columnQuantity : 1
     let rowHeight = !!document.document ? document.document.sheets[0].rowHeight : {}
     let rowDefaultHeight = !!document.document ? document.document.sheets[0].rowDefaultHeight : 21
+
 
     // Fill columns head
     for (let columnIndex = 0; columnIndex <= maxColumns; columnIndex++){
@@ -84,7 +63,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue, actionSav
                     height: "100%", 
                     backgroundColor: "grey", 
                     color: "white",
-                    border: "solid lightGrey 1px",
+                    borderRight: "1px lightGrey dotted",
                 }}
             >
                 {columnIndex === 0 ? ` ` : convertNumberIndexIngoStringIndex(columnIndex) }
@@ -92,7 +71,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue, actionSav
         )
     }
     rows.push(
-        <tr key={0} id={"head"} >
+        <tr key={0} id={"head"}>
             {cells}
         </tr>
     )
@@ -114,8 +93,9 @@ const Document = ( { document, getDocument, actionCalculateCellsValue, actionSav
                     padding: "0 5px",
                     backgroundColor: "grey",
                     color: "white",
-                    border: "solid lightGrey 1px",
+                    // border: "solid lightGrey 1px",
                     borderCollapse: "collapse",
+                    height: rowHeight[rowIndex] ? rowHeight[rowIndex] : rowDefaultHeight
                 }}
             >
                 {rowIndex}
@@ -129,7 +109,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue, actionSav
                 <td 
                     style={{
                         padding: 0,
-                        border: "1px grey dotted",
+                        border: "1px lightGrey dotted",
                         backgroundColor: "white",
                     }}
                     key={`${cellID}_cell`} 
@@ -147,6 +127,7 @@ const Document = ( { document, getDocument, actionCalculateCellsValue, actionSav
             <tr
                 key={rowIndex} 
                 id={rowID}
+                style={{backgroundColor: 'grey', borderTop: "1px lightGrey dotted", borderBottom: "1px lightGrey dotted"}}
             >
                 {cells}
             </tr>
@@ -190,6 +171,8 @@ const Document = ( { document, getDocument, actionCalculateCellsValue, actionSav
     )
 }
 
-const CDocument = connect(state => ({ document: state.document }), { getDocument, actionCalculateCellsValue, actionSaveDocument } )(Document)
+const CDocument = connect(state => ({ 
+    document: state.document,
+}), { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue } )(Document)
 
 export default CDocument;

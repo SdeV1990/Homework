@@ -38,6 +38,12 @@ export const calculateCellsValue = (newData, cellsForRender) => {
         } 
     }
 
+    // Clear all values in cells with formulas to calculate lately
+    for (let cell in cellsWithFormula) {
+        cellsWithFormula[cell].value = null
+        newData[cell].value = null
+    }
+
     // Count cells which is needed to calculate
     const countCellsToCalculate = (cells) => {
         let numberCellsToCalculate = 0
@@ -54,12 +60,6 @@ export const calculateCellsValue = (newData, cellsForRender) => {
         }
 
         return numberCellsToCalculate
-    }
-
-    // Clear all values in cells with formulas to calculate lately
-    for (let cell in cellsWithFormula) {
-        cellsWithFormula[cell].value = null
-        newData[cell].value = null
     }
 
     // Calculate cells value
@@ -179,6 +179,10 @@ export const calculateCellsValue = (newData, cellsForRender) => {
 
 };
 
+
+
+
+
 // Convert decimal index into string [A-Z] index 
 export const convertNumberIndexIngoStringIndex = (number) => {
     
@@ -206,6 +210,10 @@ export const convertNumberIndexIngoStringIndex = (number) => {
     return result
 
 }
+
+
+
+
 
 // Converting address to coordinates - column and row indexes
 export const convertAddressToCoorginates = (string) => {
@@ -244,6 +252,9 @@ export const convertStringIndexIntoNumber = (string) => {
 }
 
 
+
+
+
 // Resizing cells
 // Function recieved:
 //   * adress of resized cell;
@@ -273,6 +284,9 @@ export const resizeCells = (parameters) => {
 
     } = parameters
     
+
+
+
 
     // Get current element coordinates
     const currenElementCoordinates = convertAddressToCoorginates(cellID)

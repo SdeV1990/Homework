@@ -8,6 +8,7 @@ const Cell = ({ rowDefaultHeight, columnDefaultWidth, cellID, cells, cellsForRen
     // Is selected state to call text area
     const [isSelected, setIsSelected] = useState(false)
 
+    console.log('Cell action.')
 
     // Get row height from state
     const [height, setHeight] = useState(( !!rowHeight && rowHeight[+convertAddressToCoorginates(cellID).row] !== undefined )
@@ -23,7 +24,6 @@ const Cell = ({ rowDefaultHeight, columnDefaultWidth, cellID, cells, cellsForRen
             ? rowHeight[+convertAddressToCoorginates(cellID).row] 
             : rowDefaultHeight )
     }, [rowHeight[+convertAddressToCoorginates(cellID).row]])
-
 
 
     // Get column width from state
@@ -105,6 +105,9 @@ const Cell = ({ rowDefaultHeight, columnDefaultWidth, cellID, cells, cellsForRen
                     key={cellID+"test"}
                     id={cellID+"test"}
                     style={{ 
+                        top: 0,
+                        left: 0,
+                        position: 'relative',
                         width: +width,
                         height: +height,
                         display: 'block',
@@ -131,7 +134,6 @@ const Cell = ({ rowDefaultHeight, columnDefaultWidth, cellID, cells, cellsForRen
 }
 
 const CCell = connect( state => ({ 
-    // document: state.document.document.sheets[0], 
     rowDefaultHeight: state.document.document.sheets[0].rowDefaultHeight, 
     columnDefaultWidth: state.document.document.sheets[0].columnDefaultWidth, 
     cells: state.document.document.sheets[0].cells,

@@ -11,6 +11,7 @@ import LockOutlinedIcon from '@material-ui/icons/LockOutlined'
 // Components
 import Input from './Input'
 
+// State of form on the begining
 const initialState = { firstName: '', lastName: '', email: '', password: '', confirmPassword: '' }
 
 const SignUp = () => {
@@ -24,6 +25,7 @@ const SignUp = () => {
     const history = useHistory()
     const classes = useStyles()
     
+    // Switch pasport view
     const handleShowPassword = () => setShowPassword(!showPassword)
 
     // Switching between signUp and SignIn modes
@@ -79,7 +81,7 @@ const SignUp = () => {
             </form>
         </Paper>
         </Container>
-    );
-};
+    )
+}
 
 export default SignUp;

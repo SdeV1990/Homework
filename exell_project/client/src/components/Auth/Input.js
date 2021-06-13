@@ -26,6 +26,6 @@ const Input = ({ name, handleChange, label, half, autoFocus, type, handleShowPas
       } : null}
     />
   </Grid>
-);
+)
 
 export default Input;

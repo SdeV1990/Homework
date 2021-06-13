@@ -2,7 +2,7 @@ import React from 'react'
 import { BrowserRouter, Switch } from 'react-router-dom' // 
 
 // Material UI
-import { Container } from '@material-ui/core'// DO NOT DELETE: this component somehow provides compressing of nested tables
+import { Container } from '@material-ui/core'// DO NOT DELETE: this component here somehow provides compressing of nested tables im MyDocuments and Recycled components...
 
 // Components
 import Main from './components/Main.js'

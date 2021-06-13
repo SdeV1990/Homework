@@ -1,29 +1,48 @@
-import jwt from "jsonwebtoken";
+import jwt from "jsonwebtoken"
 
-const secret = 'QHhpZGlvCg==';
+// Secret key
+const secret = 'QHhpZGlvCg=='
 
 const auth = async (req, res, next) => {
     try {
 
-        const token = req && req.headers && req.headers.authorization ? req.headers.authorization.split(" ")[1] : false;
-        const isCustomAuth = token.length < 500;
+        // Read token from request
+        const token = req && req.headers && req.headers.authorization ? req.headers.authorization.split(" ")[1] : false
+
+        // Check token for length (to chek if it is custom or from google auth)
+        // const isCustomAuth = token.length < 500
 
         let decodedData;
 
-        if (token && isCustomAuth) {      
-            decodedData = jwt.verify(token, secret);
+        // If token is read and has length less then 500 characters (custom)
+        // if (token && isCustomAuth) {
+        if (token) {
 
-            req.userId =  !!decodedData ? decodedData.id : undefined; //decodedData?.id;
-        } else {
-            decodedData = jwt.decode(token); // return null on token === false
+            // Returns the decoded payload with verifying if the signature is valid
+            decodedData = jwt.verify(token, secret)
 
-            req.userId = !!decodedData ? decodedData.sub : undefined;// decodedData?.sub;
-        }    
+            // Join user id to request
+            // Join user id to request
+            req.userId =  !!decodedData ? decodedData.id : undefined //decodedData?.id;
 
-        next();
+        } 
+        
+        // // If token isn't read and has length more then 500 characters (for google auth)
+        // else {
+
+        //     // Returns the decoded payload without verifying if the signature is valid
+        //     decodedData = jwt.decode(token); // return null on token === false
+
+        //     
+        //     // Join user id to request
+        //     req.userId = !!decodedData ? decodedData.sub : undefined;// decodedData?.sub;
+        //     //sub - identificator for google
+        // }    
+
+        next()
     } catch (error) {
-        console.log(error);
+        console.log(error)
     }
 };
 
-export default auth;
+export default auth

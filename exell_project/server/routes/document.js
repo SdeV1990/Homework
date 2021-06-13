@@ -7,4 +7,4 @@ const router = express.Router()
 router.post('/', auth, getDocument)
 router.post('/save', auth, saveDocument)
 
-export default router;
+export default router

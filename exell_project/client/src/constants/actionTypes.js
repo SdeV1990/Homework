@@ -39,8 +39,6 @@ export const CHANGE_CELLS_VALUE = 'CHANGE_CELLS_VALUE'
 export const CHANGE_CELLS_SIZE = 'CHANGE_CELLS_SIZE'
 
 
-
-// export const GET_DOCUMENT = 'DELETE_DOCUMENT';
-
+// Authorization
 export const AUTH = 'AUTH'
 export const LOGOUT = 'LOGOUT'

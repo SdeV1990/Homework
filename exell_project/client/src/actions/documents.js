@@ -1,7 +1,7 @@
 import * as actionType from '../constants/actionTypes'
 import * as api from '../api/index.js'
 
-// ********** Single  **********
+// ********** Single actions **********
 
 export const actionGetDocuments = (optionsOfGet) => async (dispatch) => {
     try {
@@ -105,7 +105,7 @@ export const actionUpdateDocuments = (optionsOfUpdate) => async (dispatch) => {
     }
 }
 
-// ********** Do and get documents  **********
+// ********** Double actions  **********
 
 export const actionUpdateAndGetDocuments = (optionsOfUpdate , optionsOfGet) => async (dispatch) => {
     

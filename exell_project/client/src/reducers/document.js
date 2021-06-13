@@ -3,10 +3,8 @@ import { calculateCellsValue, resizeCells } from '../maths/maths'
 
 const document = (state = {}, action) => {
 
-    console.log('Reducer action:')
-    // console.log(action.payload)
-    console.log(action.type)
-    console.log(state)
+    // console.log('Reducer document state: ' + state)
+    // console.log('Reducer document action.payload: ' + action.payload)
 
     // Open document
     if (action.type === actionType.OPEN_DOCUMENT_SUCCESS) {

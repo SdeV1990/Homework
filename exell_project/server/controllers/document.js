@@ -28,10 +28,10 @@ export const saveDocument = async (req, res) => {
     try {
 
         const userId = req.userId
-        const documenToSave = req.body.documenToSave.document
+        const documenToSave = req.body.documentToSave.document
         const documentID = documenToSave._id
         const creatorID = documenToSave.createdBy
-
+        
         // If user is creator of document
         if (userId == creatorID ) {
 

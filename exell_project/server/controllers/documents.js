@@ -1,9 +1,5 @@
-// import express from 'express';
-// import mongoose from 'mongoose';
-// const router = express.Router();
-
-import User from '../models/user.js';
-import Document from '../models/document.js';
+import User from '../models/user.js'
+import Document from '../models/document.js'
 
 export const getDocuments = async (req, res) => { 
     try {
@@ -30,15 +26,15 @@ export const getDocuments = async (req, res) => {
 
         //Get documents
         const documents = await Document.find(filter, projection)
-                                        .populate('createdBy', 'name');
+                                        .populate('createdBy', 'name')
 
         // Response
         res.status(200).json(documents);
 
     } catch (error) {
 
-        res.status(404).json({ message: error.message });
-        console.log('Get documents error.');
+        res.status(404).json({ message: error.message })
+        console.log('Get documents error.')
 
     }
 }
@@ -47,7 +43,7 @@ export const createDocument = async (req, res) => {
     try {
 
         // If user is exist
-        const user = await User.findById(req.userId);
+        const user = await User.findById(req.userId)
 
         // Get name of new document from request
         const newDocumentName = req.body.name
@@ -65,15 +61,15 @@ export const createDocument = async (req, res) => {
         }
 
         // Creating document in DB
-        let newDoc = await Document.create(newDocument);
+        let newDoc = await Document.create(newDocument)
 
         // Response
-        res.status(200).json({ message: 'Document is created.' });
+        res.status(200).json({ message: 'Document is created.' })
 
     } catch (error) {
 
-        res.status(404).json( { message: error.message } );
-        console.log('Create documents error.');
+        res.status(404).json( { message: error.message } )
+        console.log('Create documents error.')
 
     }
 }
