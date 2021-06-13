@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react'
 import { getDocument } from '../../actions/document'
 import { connect } from 'react-redux'
-import { actionCalculateCellsValue } from '../../actions/document'
+import { actionCalculateCellsValue, actionSaveDocument } from '../../actions/document'
 import { convertNumberIndexIngoStringIndex } from '../../maths/maths'
 
 // Material UI
@@ -15,7 +15,7 @@ import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 import CCell from './CCell/CCell'
 
-const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
+const Document = ( { document, getDocument, actionCalculateCellsValue, actionSaveDocument }) => {
 
 
 
@@ -69,25 +69,30 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
     let cells = []
     let maxRows = !!document.document ? document.document.sheets[0].rowQuantity : 1
     let maxColumns = !!document.document ? document.document.sheets[0].columnQuantity : 1
+    let rowHeight = !!document.document ? document.document.sheets[0].rowHeight : {}
+    let rowDefaultHeight = !!document.document ? document.document.sheets[0].rowDefaultHeight : 21
 
     // Fill columns head
     for (let columnIndex = 0; columnIndex <= maxColumns; columnIndex++){
-        let columnId = columnIndex === 0 ? `begin` : `column-${convertNumberIndexIngoStringIndex(columnIndex)}`
+        let columnId = columnIndex === 0 ? 'begin' : `column-${convertNumberIndexIngoStringIndex(columnIndex)}`
         cells.push(
-            <th key={columnId} id={columnId}>
-                <div style={{
+            <th 
+                key={columnId} 
+                id={columnId}
+                style={{
                     width: "100%", 
                     height: "100%", 
                     backgroundColor: "grey", 
-                    color: "white"
-                }} >
-                    {columnIndex === 0 ? ` ` : convertNumberIndexIngoStringIndex(columnIndex) }
-                </div>
+                    color: "white",
+                    border: "solid lightGrey 1px",
+                }}
+            >
+                {columnIndex === 0 ? ` ` : convertNumberIndexIngoStringIndex(columnIndex) }
             </th>
         )
     }
     rows.push(
-        <tr key={0} id={"head"}>
+        <tr key={0} id={"head"} >
             {cells}
         </tr>
     )
@@ -109,9 +114,8 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
                     padding: "0 5px",
                     backgroundColor: "grey",
                     color: "white",
-                    border: "solid black 1px",
+                    border: "solid lightGrey 1px",
                     borderCollapse: "collapse",
-                    height: "100%",
                 }}
             >
                 {rowIndex}
@@ -125,19 +129,17 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
                 <td 
                     style={{
                         padding: 0,
-                        border: "1px grey",
-                        borderStyle: "dotted",
+                        border: "1px grey dotted",
                         backgroundColor: "white",
                     }}
-                    border={'1px dotted black'}
                     key={`${cellID}_cell`} 
-                    id={`${cellID}_cell`}>
-                        <CCell 
-                            onClick={(() => console.log('Cell click'))}
-                            cellID={cellID}
-                            actionCalculateCellsValue={actionCalculateCellsValue}
-                        >
-                        </CCell>
+                    id={`${cellID}_cell`}
+                >
+                    <CCell 
+                        onClick={(() => console.log('Cell click'))}
+                        cellID={cellID}
+                        actionCalculateCellsValue={actionCalculateCellsValue}
+                    />
                 </td>
             )
         }
@@ -165,7 +167,12 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
                     </Button>
                 </Grid>
                 <Grid item>
-                    <Button color="primary" variant="contained" type="submit" >Save</Button>
+                    <Button 
+                        color="primary" 
+                        variant="contained" 
+                        type="submit"
+                        onClick={ () => actionSaveDocument(document) }
+                    > Save </Button>
                 </Grid>
             </Grid>
             <div className="row">
@@ -183,6 +190,6 @@ const Document = ( { document, getDocument, actionCalculateCellsValue }) => {
     )
 }
 
-const CDocument = connect(state => ({ document: state.document }), { getDocument, actionCalculateCellsValue } )(Document)
+const CDocument = connect(state => ({ document: state.document }), { getDocument, actionCalculateCellsValue, actionSaveDocument } )(Document)
 
 export default CDocument;

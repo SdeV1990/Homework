@@ -1,5 +1,5 @@
-import * as actionType from '../constants/actionTypes';
-import * as api from '../api/index.js';
+import * as actionType from '../constants/actionTypes'
+import * as api from '../api/index.js'
 
 // ********** Single  **********
 
@@ -7,19 +7,19 @@ export const actionGetDocuments = (optionsOfGet) => async (dispatch) => {
     try {
         
         // Pending status
-        dispatch({ type: actionType.FETCH_DOCUMENTS_PENDING});
+        dispatch({ type: actionType.FETCH_DOCUMENTS_PENDING})
 
         // Request to database
-        const documents = await api.getDocuments(optionsOfGet);
+        const documents = await api.getDocuments(optionsOfGet)
 
         // Success status
-        dispatch({ type: actionType.FETCH_DOCUMENTS_SUCCESS, payload: documents });
+        dispatch({ type: actionType.FETCH_DOCUMENTS_SUCCESS, payload: documents })
 
     } catch (error) {
 
         // Rejected status
-        dispatch({ type: actionType.FETCH_DOCUMENTS_REJECTED });
-        console.log(error);
+        dispatch({ type: actionType.FETCH_DOCUMENTS_REJECTED })
+        console.log(error)
 
     }
 }
@@ -28,16 +28,16 @@ export const actionCreateDocument = (optionsOfCreate) => async (dispatch) => {
     try {
 
         // Pending status
-        dispatch({type: actionType.CREATE_DOCUMENT_PENDING});
+        dispatch({type: actionType.CREATE_DOCUMENT_PENDING})
         
         // Request to database
-        const response  = await api.createDocument(optionsOfCreate);
+        const response  = await api.createDocument(optionsOfCreate)
 
         // If creating is successful
         if (response.data.message === 'SUCCESS') {
 
             // Success status
-            dispatch({ type: actionType.CREATE_DOCUMENT_SUCCESS });
+            dispatch({ type: actionType.CREATE_DOCUMENT_SUCCESS })
 
         } else {
             throw new Error('CREATE NOT SUCCESSFUL')
@@ -46,7 +46,7 @@ export const actionCreateDocument = (optionsOfCreate) => async (dispatch) => {
     } catch (error) {
 
         // Rejected status
-        dispatch({ type: actionType.CREATE_DOCUMENT_REJECTED });
+        dispatch({ type: actionType.CREATE_DOCUMENT_REJECTED })
         console.log(error); 
 
     }
@@ -56,31 +56,31 @@ export const actionOpenDocument = (documentsIDToOpen) => async (dispatch) => {
     try {
 
         // Pending status
-        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_PENDING });
+        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_PENDING })
 
         // Open document in new tab
         window.open(`http://localhost:3000/document/${documentsIDToOpen.selectedDocuments[0]}`)
         
         // Success status
-        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_SUCCESS });
+        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_SUCCESS })
 
     } catch (error) {
 
         // Rejected status
-        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_REJECTED });
-        console.log(error); 
+        dispatch({ type: actionType.OPEN_DOCUMENTS_NEW_TAB_REJECTED })
+        console.log(error)
 
     }
-};
+}
 
 export const actionUpdateDocuments = (optionsOfUpdate) => async (dispatch) => {
     try {
         
         // Pending status
-        dispatch({ type: actionType.UPDATE_DOCUMENTS_PENDING });
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_PENDING })
         
         // Request to database
-        const response  = await api.updateDocuments(optionsOfUpdate);
+        const response  = await api.updateDocuments(optionsOfUpdate)
 
         // If updating is successful
         if (
@@ -90,7 +90,7 @@ export const actionUpdateDocuments = (optionsOfUpdate) => async (dispatch) => {
         ) {
 
             // Success status
-            dispatch({ type: actionType.UPDATE_DOCUMENTS_SUCCESS});
+            dispatch({ type: actionType.UPDATE_DOCUMENTS_SUCCESS})
 
         } else {
             throw new Error('UPDATE NOT SUCCESSFUL')
@@ -99,8 +99,8 @@ export const actionUpdateDocuments = (optionsOfUpdate) => async (dispatch) => {
     } catch (error) {
         
         // Rejected status
-        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED });
-        console.log(error); 
+        console.log(error)
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED })
 
     }
 }
@@ -111,24 +111,24 @@ export const actionUpdateAndGetDocuments = (optionsOfUpdate , optionsOfGet) => a
     
     // Update documents
     try {
-        await dispatch(actionUpdateDocuments(optionsOfUpdate));
+        await dispatch(actionUpdateDocuments(optionsOfUpdate))
 
     } catch (error) {
         
         // Rejected status
-        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED });
-        console.log(error); 
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED })
+        console.log(error)
     }
 
     // Get documents
     try {
-        await dispatch(actionGetDocuments(optionsOfGet));
+        await dispatch(actionGetDocuments(optionsOfGet))
 
     } catch (error) {
         
         // Rejected status
-        dispatch({ type: actionType.FETCH_DOCUMENTS_REJECTED });
-        console.log(error);
+        dispatch({ type: actionType.FETCH_DOCUMENTS_REJECTED })
+        console.log(error)
     }
 }
 
@@ -136,23 +136,23 @@ export const actionCreateAndGetDocuments = (optionsOfCreate , optionsOfGet) => a
     
     // Create document
     try {
-        await dispatch(actionCreateDocument(optionsOfCreate));
+        await dispatch(actionCreateDocument(optionsOfCreate))
 
     } catch (error) {
         
         // Rejected status
-        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED });
-        console.log(error); 
+        dispatch({ type: actionType.UPDATE_DOCUMENTS_REJECTED })
+        console.log(error)
     }
 
     // Get documents
     try {
-        await dispatch(actionGetDocuments(optionsOfGet));
+        await dispatch(actionGetDocuments(optionsOfGet))
 
     } catch (error) {
         
         // Rejected status
-        dispatch({ type: actionType.FETCH_DOCUMENTS_REJECTED });
-        console.log(error);
+        dispatch({ type: actionType.FETCH_DOCUMENTS_REJECTED })
+        console.log(error)
     }
 }

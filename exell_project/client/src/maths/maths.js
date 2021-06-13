@@ -153,8 +153,8 @@ export const calculateCellsValue = (newData, cellsForRender) => {
                 catch(error) {
 
                     console.log(error)
-                    newData[cell].value = "ERROR"
-                    cellsForRender[cell] = "ERROR"
+                    newData[cell].value = "#ERROR"
+                    cellsForRender[cell] = "#ERROR"
                     continue
 
                 }
@@ -169,8 +169,8 @@ export const calculateCellsValue = (newData, cellsForRender) => {
     // If cells value is null it is mean, that there are cycled refferences
     for (let cell in newData) {
         if (newData[cell].value === null) {
-            newData[cell].value = 'CYCLED'
-            cellsForRender[cell] = 'CYCLED'
+            newData[cell].value = '#CYCLED'
+            cellsForRender[cell] = '#CYCLED'
         }
     }
 
