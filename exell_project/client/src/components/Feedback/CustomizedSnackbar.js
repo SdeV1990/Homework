@@ -46,10 +46,10 @@ export default function CustomizedSnackbar({ status }) {
         severity = "error"
     }
 
-    // // Else statuses
-    // else {
-    //     isOpen = false
-    // }
+    // Else statuses
+    else {
+        isOpen = false
+    }
 
     // Open status
     const [open, setOpen] = useState(isOpen);

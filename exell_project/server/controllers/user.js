@@ -1,8 +1,12 @@
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
 import UserModel from "../models/user.js"
+import dotenv from 'dotenv'
 
-const secret = 'QHhpZGlvCg=='
+dotenv.config()
+
+// Secret key
+const secret = process.env.secret || 'QHhpZGlvCg=='
 
 // Sigh in
 export const signin = async (req, res) => {

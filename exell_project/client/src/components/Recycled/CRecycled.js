@@ -23,7 +23,7 @@ const Recycled = ( { documents, actionGetDocuments, actionCreateDocument, action
                 actionUpdateAndGetDocuments={actionUpdateAndGetDocuments}
             />
             <CustomizedBackdrop status={documents.status}/>
-            <CustomizedSnackbar documents={documents.status}/> 
+            <CustomizedSnackbar status={documents.status}/> 
         </>
     )
 }
