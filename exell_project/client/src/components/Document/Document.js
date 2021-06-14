@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useEffect } from 'react' // useState
 import { connect } from 'react-redux'
 import { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue } from '../../actions/document'
 import { convertNumberIndexIngoStringIndex } from '../../maths/maths'
@@ -9,12 +9,12 @@ import Button from '@material-ui/core/Button'
 import Grid from '@material-ui/core/Grid'
 
 // Material UI icons
-import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
+// import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 // Components
 import CCell from './CCell/CCell'
 
-const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue }) => {
+const Document = ( { document, actionSaveDocument, actionGetDocumentAndCalculateCellsValue }) => { //actionCalculateCellsValue
 
     console.log('Document action!')
     // const [maxRows, setMaxRows] = useState(!!document.document ? document.document.sheets[0].rowQuantity : 1)
@@ -24,11 +24,7 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
 
     // Get document and calculate cells value on start
     useEffect( () => {
-
-        (async () => {
-            await actionGetDocumentAndCalculateCellsValue(window.location.pathname.slice(10))
-        })()
-
+        actionGetDocumentAndCalculateCellsValue(window.location.pathname.slice(10))
     }, [] )
 
     // // Set max quantity of rows
@@ -114,9 +110,9 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
                     id={`${cellID}_cell`}
                 >
                     <CCell 
-                        onClick={(() => console.log('Cell click'))}
+                        // onClick={(() => console.log('Cell click'))}
                         cellID={cellID}
-                        actionCalculateCellsValue={actionCalculateCellsValue}
+                        // actionCalculateCellsValue={actionCalculateCellsValue}
                     />
                 </td>
             )
@@ -136,15 +132,15 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
         !!document.document 
         ?
         <div className="container">
-            <Grid container direction="row" alignItems="center">
+            <Grid container direction="row" alignItems="center" spacing={2}>
                 <Grid item>
                     <Typography variant='h4' >{document.document.name}</Typography>
                 </Grid>
-                <Grid item>
+                {/* <Grid item>
                     <Button color="primary" type="submit" >
                         <EditOutlinedIcon/>
                     </Button>
-                </Grid>
+                </Grid> */}
                 <Grid item>
                     <Button 
                         color="primary" 

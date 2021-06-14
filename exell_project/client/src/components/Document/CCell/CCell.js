@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { actionChangeCellValue, actionChangeCellsSize } from '../../../actions/document'
+import { actionChangeCellValue, actionChangeCellsSize, actionCalculateCellsValue } from '../../../actions/document'
 import { convertAddressToCoorginates } from '../../../maths/maths'
 
 const Cell = ({ rowDefaultHeight, columnDefaultWidth, cellID, cells, cellsForRender, rowHeight, columnWidth, actionCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize }) => {
@@ -143,6 +143,7 @@ const CCell = connect( state => ({
 }), { 
     actionChangeCellValue, 
     actionChangeCellsSize,
+    actionCalculateCellsValue
 })
 (Cell)
 
