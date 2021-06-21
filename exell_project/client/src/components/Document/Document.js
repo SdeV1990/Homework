@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { connect } from 'react-redux'
-import { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue } from '../../actions/document'
+import { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize } from '../../actions/document'
 import { convertNumberIndexIngoStringIndex } from '../../maths/maths'
 
 // Material UI
@@ -12,9 +12,9 @@ import Grid from '@material-ui/core/Grid'
 import EditOutlinedIcon from '@material-ui/icons/EditOutlined'
 
 // Components
-import CCell from './CCell/CCell'
+import Cell from './Cell/Cell'
 
-const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue }) => {
+const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue,  actionChangeCellValue, actionChangeCellsSize }) => {
 
     console.log('Document action!')
     // const [maxRows, setMaxRows] = useState(!!document.document ? document.document.sheets[0].rowQuantity : 1)
@@ -43,13 +43,28 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
 
 
     // Prepare table data
+
+    // Irems arrays
     let rows = []
     let cells = []
-    let maxRows = !!document.document ? document.document.sheets[0].rowQuantity : 1
-    let maxColumns = !!document.document ? document.document.sheets[0].columnQuantity : 1
+
+    // Table size 
+    let maxRows = !!document.document ? document.document.sheets[0].rowQuantity : 10
+    let maxColumns = !!document.document ? document.document.sheets[0].columnQuantity : 10
+
+    // Row height
     let rowHeight = !!document.document ? document.document.sheets[0].rowHeight : {}
     let rowDefaultHeight = !!document.document ? document.document.sheets[0].rowDefaultHeight : 21
 
+    // Column width
+    let columnWidth = !!document.document ? document.document.sheets[0].columnWidth : {}
+    let columnDefaultWidth = !!document.document ? document.document.sheets[0].columnDefaultWidth : 21
+
+    // Cells for render
+    let cellsForRender = !!document.document ? document.document.sheets[0].cellsForRender : {}
+
+    // Cells object
+    let cellsObject = !!document.document ? document.document.sheets[0].cells : {}
 
     // Fill columns head
     for (let columnIndex = 0; columnIndex <= maxColumns; columnIndex++){
@@ -102,7 +117,8 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
         
         // Create cells
         for (var columnIndex = 1; columnIndex <= maxColumns; columnIndex++){
-            let cellID = `${convertNumberIndexIngoStringIndex(columnIndex)}${rowIndex}`
+            const columnStringIndex = convertNumberIndexIngoStringIndex(columnIndex)
+            let cellID = `${columnStringIndex}${rowIndex}`
             cells.push(
                 <td 
                     style={{
@@ -113,10 +129,16 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
                     key={`${cellID}_cell`} 
                     id={`${cellID}_cell`}
                 >
-                    <CCell 
-                        onClick={(() => console.log('Cell click'))}
-                        cellID={cellID}
-                        actionCalculateCellsValue={actionCalculateCellsValue}
+                    <Cell 
+                        valueForRender = { cellsForRender[cellID] ? cellsForRender[cellID] : null }
+                        cellFormula = { cellsObject[cellID] ? cellsObject[cellID].formula : null }
+                        cellHeight = { rowHeight[rowIndex] ? rowHeight[rowIndex] : rowDefaultHeight }
+                        cellWidth = { columnWidth[columnStringIndex] ? columnWidth[columnStringIndex] : columnDefaultWidth }
+                        // onClick = { (() => console.log('Cell click'))}
+                        cellID = { cellID }
+                        actionCalculateCellsValue = { actionCalculateCellsValue }
+                        actionChangeCellValue = { actionChangeCellValue }
+                        actionChangeCellsSize = { actionChangeCellsSize }
                     />
                 </td>
             )
@@ -171,6 +193,6 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
 
 const CDocument = connect(state => ({ 
     document: state.document,
-}), { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue } )(Document)
+}), { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize } )(Document)
 
 export default CDocument;
