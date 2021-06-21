@@ -22,7 +22,7 @@ import Switch from '@material-ui/core/Switch';
 import Badge from '@material-ui/core/Badge';
 
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
+// import FilterListIcon from '@material-ui/icons/FilterList';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import LockIcon from '@material-ui/icons/Lock';
@@ -211,11 +211,11 @@ const EnhancedTableToolbar = (props) => {
             </>
         ) : (
             <>
-                <Tooltip title="Filter list">
+                {/* <Tooltip title="Filter list">
                     <IconButton aria-label="filter list">
                         <FilterListIcon />
                     </IconButton>
-                </Tooltip>
+                </Tooltip> */}
             </>
         )}
     </Toolbar>

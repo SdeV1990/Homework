@@ -22,12 +22,12 @@ import ListItemIcon from '@material-ui/core/ListItemIcon'
 import ListItemText from '@material-ui/core/ListItemText'
 import AssignmentOutlinedIcon from '@material-ui/icons/AssignmentOutlined'
 import AssignmentIcon from '@material-ui/icons/Assignment'
-import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
-import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
+// import PeopleAltOutlinedIcon from '@material-ui/icons/PeopleAltOutlined'
+// import PeopleAltIcon from '@material-ui/icons/PeopleAlt'
 import DeleteOutlinedIcon from '@material-ui/icons/DeleteOutlined'
 import DeleteIcon from '@material-ui/icons/Delete'
-import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications'
-import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined'
+// import SettingsApplicationsIcon from '@material-ui/icons/SettingsApplications'
+// import SettingsApplicationsOutlinedIcon from '@material-ui/icons/SettingsApplicationsOutlined'
 // import Typography from '@material-ui/core/Typography'
 
 // Components
@@ -120,14 +120,14 @@ export default function Main() {
                         </Link>
 
                         {/* Friends */}
-                        <Link to={'/friends'}>
+                        {/* <Link to={'/friends'}>
                             <ListItem button key={'Friends'}>
                                 <ListItemIcon>
                                     { window.location.pathname === '/friends' ? <PeopleAltIcon /> : <PeopleAltOutlinedIcon /> }
                                 </ListItemIcon>
                                 <ListItemText primary={'Friends'} />
                             </ListItem>
-                        </Link>
+                        </Link> */}
 
                         {/* Recycled */}
                         <Link to={'/recycled'}>
@@ -140,10 +140,10 @@ export default function Main() {
                         </Link>
 
                     </List>
-                    <Divider />
+                    {/* <Divider />
                     <List>
 
-                        {/* Settings */}
+                        * Settings *
                         <Link to={'/settings'}>
                             <ListItem button key={'Settings'}>
                                 <ListItemIcon>
@@ -153,7 +153,7 @@ export default function Main() {
                             </ListItem>
                         </Link>
 
-                    </List>
+                    </List> */}
                 </Drawer>
             : 
                 <></>

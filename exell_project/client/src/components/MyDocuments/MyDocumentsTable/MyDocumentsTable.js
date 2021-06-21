@@ -22,8 +22,8 @@ import Switch from '@material-ui/core/Switch';
 import Badge from '@material-ui/core/Badge';
 
 import DeleteIcon from '@material-ui/icons/Delete';
-import FilterListIcon from '@material-ui/icons/FilterList';
-import ShareIcon from '@material-ui/icons/Share';
+// import FilterListIcon from '@material-ui/icons/FilterList';
+// import ShareIcon from '@material-ui/icons/Share';
 import OpenInNewIcon from '@material-ui/icons/OpenInNew';
 import LockIcon from '@material-ui/icons/Lock';
 import LockOpenIcon from '@material-ui/icons/LockOpen';
@@ -198,11 +198,11 @@ const EnhancedTableToolbar = (props) => {
                     :
                     <></>
                 }
-                <Tooltip title="Share">
+                {/* <Tooltip title="Share">
                     <IconButton aria-label="Share">
                         <ShareIcon />
                     </IconButton>
-                </Tooltip>
+                </Tooltip> */}
                 <Tooltip title="Delete">
                     <IconButton aria-label="Delete" onClick={() => handleUpdateSelected('RECYCLE')}>
                         <DeleteIcon />
@@ -215,11 +215,11 @@ const EnhancedTableToolbar = (props) => {
                     actionCreateAndGetDocuments={actionCreateAndGetDocuments}
                     rows={rows}
                 />
-                <Tooltip title="Filter list">
+                {/* <Tooltip title="Filter list">
                     <IconButton aria-label="filter list">
                         <FilterListIcon />
                     </IconButton>
-                </Tooltip>
+                </Tooltip> */}
             </>
         )}
     </Toolbar>
