@@ -37,7 +37,9 @@ import Home from './Home/Home'
 import Auth from './Auth/Auth'
 import CRecycled from './Recycled/CRecycled'
 import CPrivateRoute from './CPrivateRoute'
-import Document from './Document/Document'
+
+import Document from './Document/DocumentVirtualized'
+// import Document from './Document/Document'
 
 export default function Main() {
     

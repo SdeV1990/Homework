@@ -2,6 +2,7 @@ import React, { useEffect } from 'react' // useState
 import { connect } from 'react-redux'
 import { actionCalculateCellsValue, actionSaveDocument, actionGetDocumentAndCalculateCellsValue, actionChangeCellValue, actionChangeCellsSize } from '../../actions/document'
 import { convertNumberIndexIngoStringIndex } from '../../maths/maths'
+import { AutoSizer, MultiGrid } from 'react-virtualized'
 
 // Material UI
 import Typography from '@material-ui/core/Typography'
@@ -142,11 +143,82 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
             <tr
                 key={rowIndex} 
                 id={rowID}
-                style={{backgroundColor: 'grey', borderTop: "1px lightGrey dotted", borderBottom: "1px lightGrey dotted"}}
+                style={{
+                    backgroundColor: 'grey', 
+                    borderTop: "1px lightGrey dotted", 
+                    borderBottom: "1px lightGrey dotted"
+                }}
             >
                 {cells}
             </tr>
         )
+    }
+
+    // Rendering cells for virtualization
+    const cellRenderer = ({columnIndex, key, rowIndex, style}) => {
+        const columnStringIndex = convertNumberIndexIngoStringIndex(columnIndex)
+        let cellID = `${columnStringIndex}${rowIndex}`
+
+        return (
+            <div 
+                key={key} 
+                style={{
+                    ...style, 
+                    borderBottom: "1px lightGrey dotted",
+                    borderRight: "1px lightGrey dotted",
+                    backgroundColor: columnIndex === 0 || rowIndex === 0 ? "grey" : "white",
+                    color: columnIndex === 0 || rowIndex === 0 ? "white" : "black",
+                    padding: columnIndex === 0 || rowIndex === 0 ? "0 5px" : "-2px",
+                    fontWeight: columnIndex === 0 || rowIndex === 0 ? "bold" : "normal",
+                    textAlign: "center",
+                    boxSizing: "border-box",
+                }}
+                // id={columnId}
+            >
+                { 
+                columnIndex === 0 && rowIndex === 0 ? "" // Nothing for first cell
+                    : columnIndex === 0 ? rowIndex // Number index for rows
+                        : rowIndex === 0 ? convertNumberIndexIngoStringIndex(columnIndex) // String index for column
+                            : <Cell  // For cells
+                                valueForRender = { cellsForRender[cellID] ? cellsForRender[cellID] : null }
+                                cellFormula = { cellsObject[cellID] ? cellsObject[cellID].formula : null }
+                                cellHeight = { rowHeight[rowIndex] ? rowHeight[rowIndex] : rowDefaultHeight }
+                                cellWidth = { columnWidth[columnStringIndex] ? columnWidth[columnStringIndex] : columnDefaultWidth }
+                                // onClick = { (() => console.log('Cell click'))}
+                                cellID = { cellID }
+                                actionCalculateCellsValue = { actionCalculateCellsValue }
+                                actionChangeCellValue = { actionChangeCellValue }
+                                actionChangeCellsSize = { actionChangeCellsSize }
+                            />
+                }
+            </div>
+        )
+    }
+
+    // Get width of each column (index is got with MultiGrid inner methods)
+    const getColumnWidth = ({index}) => {
+
+        // If it is head of row - width of column must be calculated
+        if (index === 0) {
+            return maxRows.toString().length * 8 + 10;
+        }
+
+        // If it isn't head of row - get width from data
+        return columnWidth[convertNumberIndexIngoStringIndex(index)] ? columnWidth[convertNumberIndexIngoStringIndex(index)] + 1 : columnDefaultWidth + 1; // +1 for border
+
+    }
+
+    // Get height of each row (index is got with MultiGrid inner methods)
+    const getRowHeight = ({index}) => {
+        
+        // If it is head of column - get constant
+        if (index === 0) {
+            return 22;
+        }
+
+        // If it isn't head of row - get width from data
+        return rowHeight[index] ? rowHeight[index] : rowDefaultHeight; // +1 for border
+        
     }
 
     return (
@@ -173,11 +245,30 @@ const Document = ( { document, actionCalculateCellsValue, actionSaveDocument, ac
             </Grid>
             <div className="row">
                 <div>
-                    <table style={{borderCollapse: "collapse", borderWidth: "1px"}}>
+                    {/* <table style={{borderCollapse: "collapse", borderWidth: "1px"}}>
                         <tbody>
                             {rows}
                         </tbody>
-                    </table>
+                    </table> */}
+                    <AutoSizer disableHeight>
+                        {({width}) => (
+                            <MultiGrid
+                                fixedColumnCount ={1}
+                                fixedRowCount= {1}
+                                cellRenderer={cellRenderer}
+                                columnWidth={getColumnWidth}
+                                rowCount={maxRows + 1}
+                                columnCount={maxColumns + 1}
+                                enableFixedColumnScroll
+                                enableFixedRowScroll
+                                height={window.outerHeight - 220}
+                                rowHeight={getRowHeight}
+                                width={width}
+                                hideTopRightGridScrollbar
+                                hideBottomLeftGridScrollbar
+                            />
+                        )}
+                    </AutoSizer>
                 </div>
             </div>
         </div>

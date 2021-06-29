@@ -22,7 +22,7 @@ const Cell = ({ valueForRender, cellFormula, cellHeight, cellWidth, cellID, acti
         const isTextAreaValueEmpty = event.target.value === ""
         
         // Is curent formula equal to text area value
-        const isCurrentValueEqualToTextAreaValue = cellFormula !== null ? cellFormula == event.target.value : false
+        const isCurrentValueEqualToTextAreaValue = cellFormula !== null ? cellFormula === event.target.value : false
 
         // If current value is null and text area value is empty AND curent value not equal to text area value
         if ( !(isCurrentValueNull && isTextAreaValueEmpty) && !isCurrentValueEqualToTextAreaValue ) {

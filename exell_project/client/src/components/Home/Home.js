@@ -1,6 +1,5 @@
 import React from 'react'
-import {AutoSizer} from 'react-virtualized'
-import {MultiGrid} from 'react-virtualized'
+import {AutoSizer, MultiGrid} from 'react-virtualized'
 
 const Home = () => {
 
@@ -31,7 +30,7 @@ const Home = () => {
 
     return (
         <>
-            <p style={{marginTop: "64px", fontSize: '32px'}}>Home</p>
+            {/* <p style={{marginTop: "64px", fontSize: '32px'}}>Home</p> */}
             <AutoSizer disableHeight>
                 {({width}) => (
                     <MultiGrid
